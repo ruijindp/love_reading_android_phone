@@ -34,6 +34,9 @@
     <string name="password_not_match">密码输入不一致</string>
     <string name="deleted_">已删除：</string>
     <string name="undone">撤销</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="all">全部</string>
 
     <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>
     <string name="toast_music_err">选择一首音乐吧</string>
@@ -59,6 +62,8 @@
     <string name="activity_feedback">意见反馈</string>
     <string name="activity_change_password">修改密码</string>
     <string name="activity_listened">已听历史</string>
+    <string name="activity_login">登录</string>
+    <string name="activity_category">文章类型</string>
 
     <string name="action_share">分享</string>
     <string name="action_share_wechat">微信好友</string>
@@ -93,4 +98,7 @@
     <string name="test_school">第一实验小学</string>
     <string name="test_grade">六年级</string>
     <string name="test_team_class">一班</string>
+    <string name="test_sub_cate">全部</string>
+    <string name="test_category">语文</string>
+    <string name="test_chapter">第一部分</string>
 </resources>

@@ -23,7 +23,7 @@ import butterknife.OnClick;
  * Created by london on 15/10/27.
  * 迷你播放器
  */
-public class PlayBarFragment extends Fragment {
+public class PlayerBarFragment extends Fragment {
     View rootView;
     @Bind(R.id.view_player_tvTitleReader)
     MarqueeTextView viewPlayerTvTitleReader;

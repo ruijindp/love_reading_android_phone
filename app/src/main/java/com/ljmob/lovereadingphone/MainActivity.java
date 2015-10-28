@@ -22,7 +22,7 @@ import com.afollestad.materialdialogs.Theme;
 import com.ljmob.lovereadingphone.adapter.MainPagerAdapter;
 import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.User;
-import com.ljmob.lovereadingphone.fragment.PlayBarFragment;
+import com.ljmob.lovereadingphone.fragment.PlayerBarFragment;
 import com.londonx.lutil.util.FileUtil;
 import com.londonx.lutil.util.ToastUtil;
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout activityMainLnChangePassword;
     @Bind(R.id.activity_main_lnExit)
     LinearLayout activityMainLnExit;
-    private PlayBarFragment playBarFragment;
+    private PlayerBarFragment playerBarFragment;
 
     boolean isAppBarHided;
     private MaterialDialog cacheDialog;
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        playBarFragment = (PlayBarFragment) getSupportFragmentManager()
+        playerBarFragment = (PlayerBarFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.activity_main_fragmentPlayer);
 
         primaryViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //TODO filter result
+        //TODO filter result for rank
     }
 
     @Override
@@ -186,6 +186,11 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.activity_main_imgHead)
     protected void changeAvatar() {
         ToastUtil.show("changeAvatar");
+    }
+
+    @OnClick(R.id.activity_main_tvLogin)
+    protected void doLogin() {
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @OnClick(R.id.activity_main_lnMyReading)
@@ -279,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showPlayBar() {
-        View playBar = playBarFragment.getView();
+        View playBar = playerBarFragment.getView();
         if (playBar == null) {
             return;
         }
@@ -288,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void closePlayBar() {
-        View playBar = playBarFragment.getView();
+        View playBar = playerBarFragment.getView();
         if (playBar == null) {
             return;
         }

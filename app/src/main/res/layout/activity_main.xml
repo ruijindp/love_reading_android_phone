@@ -21,7 +21,7 @@
 
         <fragment
             android:id="@+id/activity_main_fragmentPlayer"
-            android:name="com.ljmob.lovereadingphone.fragment.PlayBarFragment"
+            android:name="com.ljmob.lovereadingphone.fragment.PlayerBarFragment"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="bottom"
@@ -112,6 +112,7 @@
                 </FrameLayout>
 
                 <TextView
+                    android:id="@+id/activity_main_tvLogin"
                     android:layout_width="96dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"

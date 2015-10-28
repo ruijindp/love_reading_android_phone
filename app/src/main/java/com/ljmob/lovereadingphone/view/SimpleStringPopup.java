@@ -68,7 +68,7 @@ public class SimpleStringPopup extends PopupWindow implements AdapterView.OnItem
 
     public void setStrings(List<String> strings) {
         this.strings = strings;
-        pop_category_lv.setAdapter(new ArrayAdapter<>(context, R.layout.item_cate_simple, strings));
+        pop_category_lv.setAdapter(new ArrayAdapter<>(context, R.layout.item_simple_string, strings));
         int height = (int) ((strings.size() * 40 + 24) * oneDp);//lv margin is 8dp
         setHeight(height > 320 * oneDp ? (int) (320 * oneDp) : height);
     }

@@ -62,7 +62,7 @@ public class FilterActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.action_done) {
             Intent data = new Intent();
             data.putExtra("filter", "filterDone");
-            setResult(MainActivity.INTENT_FILTER, data);
+            setResult(RESULT_OK, data);
             finish();
         }
         return super.onOptionsItemSelected(item);

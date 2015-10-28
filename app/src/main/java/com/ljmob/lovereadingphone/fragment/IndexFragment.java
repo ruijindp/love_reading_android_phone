@@ -1,5 +1,6 @@
 package com.ljmob.lovereadingphone.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.ljmob.lovereadingphone.CategoryActivity;
 import com.ljmob.lovereadingphone.MainActivity;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.adapter.IndexAdapter;
@@ -31,6 +33,7 @@ import butterknife.OnClick;
  * 第一页
  */
 public class IndexFragment extends EasyLoadFragment {
+    public static final int ACTION_CATEGORY = 1;
     LayoutInflater inflater;
     View rootView;
 
@@ -108,13 +111,19 @@ public class IndexFragment extends EasyLoadFragment {
         ((MainActivity) getActivity()).hideAppBar();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ToastUtil.show("IndexFragment.onActivityResult:" + resultCode);
+    }
+
     /**
      * This class contains all butterknife-injected Views & Layouts from layout file 'head_indexx.xml'
      * for easy to all layout elements.
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
-    static class HeadHolder {
+    class HeadHolder {
         @Bind(R.id.head_main_tvCurrentCate)
         TextView headMainTvCurrentCate;
         @Bind(R.id.head_main_tvCate)
@@ -126,7 +135,7 @@ public class IndexFragment extends EasyLoadFragment {
 
         @OnClick(R.id.head_main_tvCate)
         protected void openCateActivity() {
-            ToastUtil.show("openCateActivity");
+            startActivityForResult(new Intent(getActivity(), CategoryActivity.class), ACTION_CATEGORY);
         }
     }
 }

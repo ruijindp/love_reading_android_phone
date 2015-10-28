@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_sub_cate_tvCate"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/selector_cate_stroke"
+    android:gravity="center"
+    android:minHeight="40dp"
+    android:minWidth="120dp"
+    android:text="@string/test_sub_cate"
+    android:textColor="@color/textSecondary" />

@@ -31,6 +31,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingBottom="120dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:paddingTop="16dp">
 
             <!-- 录音-->
@@ -67,6 +69,7 @@
                     android:id="@+id/activity_reading_tvReadCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
                     android:text="@string/test_num"
                     android:textColor="@color/textReadableSecondary" />
             </LinearLayout>
@@ -76,7 +79,7 @@
                 android:id="@+id/activity_reading_lnHeadResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="20dp"
                 android:layout_marginTop="12dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
@@ -110,10 +113,7 @@
                     android:isIndicator="true" />
             </LinearLayout>
 
-            <TextView
-                style="@style/AppTheme.TextReadable"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp" />
+            <include layout="@layout/item_chapter" />
         </LinearLayout>
     </ScrollView>
 

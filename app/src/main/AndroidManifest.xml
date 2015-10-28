@@ -21,7 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/activity_login" />
         <activity
             android:name=".DetailActivity"
             android:label="@string/activity_detail" />
@@ -47,6 +49,9 @@
         <activity
             android:name=".ListenedActivity"
             android:label="@string/activity_listened" />
+        <activity
+            android:name=".CategoryActivity"
+            android:label="@string/activity_category" />
     </application>
 
 </manifest>
