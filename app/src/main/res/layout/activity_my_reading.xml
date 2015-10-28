@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".MyReadingActivity">
 
-    <include layout="@layout/toolbar" />
-
     <android.support.v4.view.ViewPager
         android:id="@+id/activity_my_reading_pager"
         android:layout_width="match_parent"
@@ -72,4 +70,6 @@
                 android:visibility="invisible" />
         </FrameLayout>
     </LinearLayout>
+
+    <include layout="@layout/toolbar" />
 </FrameLayout>

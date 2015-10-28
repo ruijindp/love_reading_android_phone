@@ -6,8 +6,6 @@
     android:clipChildren="false"
     tools:context=".MusicActivity">
 
-    <include layout="@layout/toolbar" />
-
     <ImageView
         android:id="@+id/activity_music_imgBackground"
         android:layout_width="match_parent"
@@ -83,4 +81,6 @@
             android:text="@string/start_reading"
             android:textColor="?colorPrimary" />
     </LinearLayout>
+
+    <include layout="@layout/toolbar" />
 </FrameLayout>

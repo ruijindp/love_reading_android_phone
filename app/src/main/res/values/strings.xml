@@ -32,6 +32,8 @@
     <string name="login_plz">请登录</string>
     <string name="total_">共</string>
     <string name="password_not_match">密码输入不一致</string>
+    <string name="deleted_">已删除：</string>
+    <string name="undone">撤销</string>
 
     <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>
     <string name="toast_music_err">选择一首音乐吧</string>
