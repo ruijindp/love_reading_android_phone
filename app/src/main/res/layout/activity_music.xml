@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    tools:context=".MusicActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <ImageView
+        android:id="@+id/activity_music_imgBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/dcd" />
+
+    <View
+        android:id="@+id/activity_music_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:windowBackground" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp">
+
+        <LinearLayout
+            android:id="@+id/activity_music_lnMusicType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-8dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:text="@string/test_music_type"
+                android:textColor="?colorPrimary"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:contentDescription="@string/dcd" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/div_primary" />
+
+        <ListView
+            android:id="@id/primaryAbsListView"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:divider="@null"
+            tools:listheader="@layout/head_music"
+            tools:listitem="@layout/item_music" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/div_primary" />
+
+        <TextView
+            android:id="@+id/activity_music_tvStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:padding="16dp"
+            android:text="@string/start_reading"
+            android:textColor="?colorPrimary" />
+    </LinearLayout>
+</FrameLayout>

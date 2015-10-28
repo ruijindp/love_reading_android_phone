@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/activity_reading_imgBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/dcd" />
+
+    <View
+        android:id="@+id/activity_reading_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:windowBackground" />
+
+    <ScrollView
+        android:id="@+id/activity_reading_scContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="142dp"
+        android:layout_marginTop="?actionBarSize"
+        android:fadingEdgeLength="128dp"
+        android:overScrollMode="never"
+        android:requiresFadingEdge="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="120dp"
+            android:paddingTop="16dp">
+
+            <!-- 录音-->
+            <LinearLayout
+                android:id="@+id/activity_reading_lnHeadRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/author_"
+                    android:textColor="@color/textReadableSecondary" />
+
+                <TextView
+                    android:id="@+id/activity_reading_tvAuthor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:text="@string/test_author"
+                    android:textColor="@color/textReadableSecondary" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginRight="8dp"
+                    android:contentDescription="@string/dcd" />
+
+                <TextView
+                    android:id="@+id/activity_reading_tvReadCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test_num"
+                    android:textColor="@color/textReadableSecondary" />
+            </LinearLayout>
+
+            <!-- 看结果-->
+            <LinearLayout
+                android:id="@+id/activity_reading_lnHeadResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:layout_marginTop="12dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test_user"
+                    android:textColor="@color/textReadable"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/test_school_team_class"
+                    android:textColor="@color/textReadable" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/test_checker"
+                    android:textColor="@color/textReadable" />
+
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:layout_width="106dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="10dp"
+                    android:isIndicator="true" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/AppTheme.TextReadable"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/activity_reading_frameCount"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+
+    <include layout="@layout/toolbar_trans" />
+
+    <!-- 录音-->
+    <FrameLayout
+        android:id="@+id/activity_reading_controllerRecord"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/activity_reading_imgRetry"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="94dp"
+            android:layout_marginTop="22dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/dcd" />
+
+        <ImageView
+            android:id="@+id/activity_reading_imgRecord"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/dcd" />
+
+        <ImageView
+            android:id="@+id/activity_reading_imgDone"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="94dp"
+            android:layout_marginTop="22dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/dcd" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="94dp"
+            android:text="@string/retry"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="@string/timer"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="94dp"
+            android:text="@string/done"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+    </FrameLayout>
+
+    <!-- 看结果-->
+    <LinearLayout
+        android:id="@+id/activity_reading_controllerResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/activity_reading_tvTimerCurrent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/timer"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+
+            <!--android:progressDrawable="@drawable/layer_seekbar"-->
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/activity_reading_sbPlayer"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:progress="10"
+                android:progressDrawable="@drawable/layer_seekbar"
+                android:secondaryProgress="20"
+                android:thumb="@drawable/selector_seekbar_thumb" />
+
+            <TextView
+                android:id="@+id/activity_reading_tvTimerTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/timer"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp">
+
+            <ImageView
+                android:id="@+id/activity_reading_imgPlay"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/dcd" />
+
+            <ImageView
+                android:id="@+id/activity_reading_imgLetMeTry"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="14dp"
+                android:layout_marginLeft="104dp"
+                android:layout_marginTop="8dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/dcd" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="104dp"
+                android:text="@string/feeling"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/activity_reading_imgFeeling"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="14dp"
+                android:layout_marginRight="72dp"
+                android:layout_marginTop="12dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/dcd" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="72dp"
+                android:text="@string/feeling"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/activity_reading_imgLike"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="14dp"
+                android:layout_marginRight="136dp"
+                android:layout_marginTop="12dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/dcd" />
+
+            <TextView
+                android:id="@+id/activity_reading_tvLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="136dp"
+                android:text="@string/like_"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

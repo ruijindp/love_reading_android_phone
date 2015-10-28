@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="12dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:singleLine="true"
+        android:text="@string/test_unity"
+        android:textColor="@color/textSecondary"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/item_main_ln0"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="-8dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/item_main_imgCover0"
+                    android:layout_width="match_parent"
+                    android:layout_height="168dp"
+                    android:contentDescription="@string/dcd"
+                    android:transitionName="view" />
+
+                <LinearLayout
+                    android:layout_width="84dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/shape_item_main_gradient"
+                    android:gravity="center_vertical|right"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:id="@+id/item_main_tvReadCount0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/test_num"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:contentDescription="@string/dcd" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/item_main_tvTitle0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/test_title" />
+
+            <TextView
+                android:id="@+id/item_main_tvAuthor0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/test_author" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_main_ln1"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/item_main_imgCover1"
+                    android:layout_width="match_parent"
+                    android:layout_height="168dp"
+                    android:contentDescription="@string/dcd"
+                    android:transitionName="view" />
+
+                <LinearLayout
+                    android:layout_width="84dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/shape_item_main_gradient"
+                    android:gravity="center_vertical|right"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:id="@+id/item_main_tvReadCount1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/test_num"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:contentDescription="@string/dcd" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/item_main_tvTitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/test_title" />
+
+            <TextView
+                android:id="@+id/item_main_tvAuthor1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/test_author" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

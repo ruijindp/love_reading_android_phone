@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/primarySwipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <ListView
+        android:id="@id/primaryAbsListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:divider="@drawable/inset_divider"
+        android:dividerHeight="0.5dp"
+        tools:listheader="@layout/toolbar_trans"
+        tools:listitem="@layout/item_rank" />
+
+</android.support.v4.widget.SwipeRefreshLayout>

@@ -1,0 +1,94 @@
+<resources>
+    <string name="app_name">LoveReadingPhone</string>
+
+    <string name="dcd">dcd</string>
+    <string name="login">登录</string>
+    <string name="cate">分类</string>
+    <string name="author_">作者:</string>
+    <string name="start_n_reading">开始\n朗读</string>
+    <string name="start_reading">开始朗读</string>
+    <string name="listen">试听</string>
+    <string name="retry">重读</string>
+    <string name="done">完成</string>
+    <string name="timer">00:00</string>
+    <string name="like_">喜欢(%1$)</string>
+    <string name="feeling">读者感想</string>
+    <string name="let_me_try">我也要读</string>
+    <string name="share_">分享到:</string>
+    <string name="city">城市</string>
+    <string name="area">区域</string>
+    <string name="school">学校</string>
+    <string name="grade">年级</string>
+    <string name="team_class">班级</string>
+    <string name="my_reading">我的朗读</string>
+    <string name="students_reading">学生朗读</string>
+    <string name="listened">已听历史</string>
+    <string name="clean_cache">清除缓存</string>
+    <string name="feedback">意见反馈</string>
+    <string name="change_pwd">修改密码</string>
+    <string name="exit">退出登录</string>
+    <string name="not_rated">未评分</string>
+    <string name="rated">已评分</string>
+    <string name="login_plz">请登录</string>
+    <string name="total_">共</string>
+    <string name="password_not_match">密码输入不一致</string>
+
+    <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>
+    <string name="toast_music_err">选择一首音乐吧</string>
+    <string name="toast_clean_ok">已全部清除</string>
+    <string name="toast_clean_undone">一些文件将在退出时删除</string>
+
+    <string name="dialog_feeling">说点什么吧!</string>
+    <string name="dialog_feeling_confirm">上传</string>
+    <string name="dialog_clean_cache">是否清除所有缓存</string>
+
+    <string name="hint_feeling">在上传之前说说你的感想吧</string>
+    <string name="hint_feedback">有什么想对我们说的？</string>
+    <string name="hint_pwd_old">原密码</string>
+    <string name="hint_pwd_new">新密码</string>
+    <string name="hint_pwd_confirm">确认新密码</string>
+
+    <string name="activity_detail">文章详情</string>
+    <string name="activity_music">选择音乐</string>
+    <string name="activity_reading">朗读文章</string>
+    <string name="activity_filter">筛选</string>
+    <string name="activity_my_reading">我的朗读</string>
+    <string name="activity_my_reading_teacher">学生朗读</string>
+    <string name="activity_feedback">意见反馈</string>
+    <string name="activity_change_password">修改密码</string>
+    <string name="activity_listened">已听历史</string>
+
+    <string name="action_share">分享</string>
+    <string name="action_share_wechat">微信好友</string>
+    <string name="action_share_wechat_moment">微信朋友圈</string>
+    <string name="action_share_qq">QQ好友</string>
+    <string name="action_share_qq_zone">QQ空间</string>
+    <string name="action_share_weibo">新浪微博</string>
+    <string name="action_done">完成</string>
+    <string name="action_commit">提交</string>
+    <string name="action_clean">清空</string>
+
+    <string name="test_long">一二三四甲乙丙丁子丑寅卯ABCD The quick brown fox jumps over the lazy dog.</string>
+    <string name="test_title">从百草园到三味书屋</string>
+    <string name="test_title_author">从百草园到三味书屋 - 鲁迅</string>
+    <string name="test_title_reader">从百草园到三味书屋 - 吴晗</string>
+    <string name="test_author">鲁迅</string>
+    <string name="test_time">16:25</string>
+    <string name="test_cate">一年级语文</string>
+    <string name="test_num">19</string>
+    <string name="test_content">　　我小时候，家在哈佛尔，并不是有钱的人家，也就是刚刚够生活罢了。我父亲做着事，很晚才从办公室回来，挣的钱不多。我有两个姐姐。\n\n　　我母亲对我们的拮据生活感到非常痛苦。那时家里样样都要节省，有人请吃饭是从来不敢答应的，以免回请；买日用品也是常常买减价的，买拍卖的底货；姐姐的长袍是自己做的，买15个铜子一米的花边，常常要在价钱上计较半天。\n　　可是每星期日，我们都要衣冠整齐地到海边栈桥上去散步。那时候，只要一看见从远方回来的大海船进口来，父亲总要说他那句永不变更的话：\n　　我小时候，家在哈佛尔，并不是有钱的人家，也就是刚刚够生活罢了。我父亲做着事，很晚才从办公室回来，挣的钱不多。我有两个姐姐。\n\n　　我母亲对我们的拮据生活感到非常痛苦。那时家里样样都要节省，有人请吃饭是从来不敢答应的，以免回请；买日用品也是常常买减价的，买拍卖的底货；姐姐的长袍是自己做的，买15个铜子一米的花边，常常要在价钱上计较半天。\n　　可是每星期日，我们都要衣冠整齐地到海边栈桥上去散步。那时候，只要一看见从远方回来的大海船进口来，父亲总要说他那句永不变更的话：</string>
+    <string name="test_music_type">舒缓</string>
+    <string name="test_music_name">E调前进曲（巴哈）</string>
+    <string name="test_user">吴晗</string>
+    <string name="test_school_team_class">闵行区汽轮小学 - 五(1)班</string>
+    <string name="test_school_name">闵行区汽轮小学</string>
+    <string name="test_checker">(审核老师：王安石)</string>
+    <string name="test_unity">第一单元</string>
+    <string name="test_tab">TAB</string>
+    <string name="test_rank">1</string>
+    <string name="test_city">上海市</string>
+    <string name="test_area">闵行区</string>
+    <string name="test_school">第一实验小学</string>
+    <string name="test_grade">六年级</string>
+    <string name="test_team_class">一班</string>
+</resources>

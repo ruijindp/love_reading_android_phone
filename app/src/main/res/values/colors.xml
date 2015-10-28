@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF5722</color>
+    <color name="colorPrimaryDark">#E64A19</color>
+    <color name="colorAccent">#00A581</color>
+    <color name="colorWindowBg">#FAFAFA</color>
+    <color name="colorPlayerBg">#F2d9d9d9</color>
+    <color name="colorHeaderGray">#F2F2F2</color>
+
+    <color name="pressed">#11000000</color>
+    <color name="pressedColorAccent">#019172</color>
+
+    <color name="div_primary">#FF3D00</color>
+    <color name="div_detail">#B6FFFFFF</color>
+    <!-- 54%-->
+    <color name="div_tab">#76000000</color>
+    <color name="div_list">#34000000</color>
+
+    <color name="textPrimary">#000</color>
+    <color name="textSecondary">#B8B8B8</color>
+    <color name="textThird">#595959</color>
+    <!-- 87% -->
+    <color name="textReadable">#DC000000</color>
+    <color name="textReadableSecondary">#34000000</color>
+    <color name="textRed">#EA0000</color>
+    <color name="textRank">#F15A25</color>
+
+    <color name="test_ab">@android:color/white</color>
+    <color name="test">#44000000</color>
+</resources>

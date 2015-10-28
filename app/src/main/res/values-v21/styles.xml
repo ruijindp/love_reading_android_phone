@@ -1,0 +1,16 @@
+<resources>
+
+    <style name="AppTheme.Main">
+        <item name="android:windowContentTransitions">false</item>
+        <item name="android:windowAllowEnterTransitionOverlap">false</item>
+        <item name="android:windowAllowReturnTransitionOverlap">false</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/default_transition
+        </item>
+        <item name="android:windowSharedElementExitTransition">@transition/default_transition</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+</resources>

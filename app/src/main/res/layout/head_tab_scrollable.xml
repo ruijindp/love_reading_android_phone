@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@android:color/white"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:id="@+id/head_tab_ln"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:divider="@drawable/inset_divider_tab"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+        <include layout="@layout/view_tab_item_scrollable"/>
+    </LinearLayout>
+</HorizontalScrollView>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.AppCompatRadioButton
+        android:id="@+id/item_music_rbSelect"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="20dp"
+        android:clickable="false"
+        android:focusable="false" />
+
+    <TextView
+        android:id="@+id/item_music_tvMusic"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/test_music_name"
+        android:textColor="@color/textPrimary" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/item_music_imgGif"
+        android:layout_width="36dp"
+        android:layout_height="36dp" />
+
+</LinearLayout>

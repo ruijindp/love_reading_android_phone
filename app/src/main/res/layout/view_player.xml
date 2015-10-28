@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_player_root"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@color/colorPlayerBg"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginLeft="12dp" />
+
+    <com.ljmob.lovereadingphone.view.MarqueeTextView
+        android:id="@+id/view_player_tvTitleReader"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="@string/test_title_reader"
+        android:textColor="@color/textReadable"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/view_player_imgPlay"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginRight="24dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/dcd" />
+
+    <ImageView
+        android:id="@+id/view_player_imgClose"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginRight="16dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/dcd" />
+</LinearLayout>

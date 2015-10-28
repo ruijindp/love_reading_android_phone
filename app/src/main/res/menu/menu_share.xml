@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_share_wechat"
+        android:icon="@color/test"
+        android:title="@string/action_share_wechat"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_share_wechat_moment"
+        android:icon="@color/test"
+        android:title="@string/action_share_wechat_moment"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_share_qq"
+        android:icon="@color/test"
+        android:title="@string/action_share_qq"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_share_qq_zone"
+        android:icon="@color/test"
+        android:title="@string/action_share_qq_zone"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_share"
+        android:icon="@color/test"
+        android:title="@string/action_share_weibo"
+        app:showAsAction="always" />
+</menu>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="primaryAbsListView" type="id" />
+    <item name="primarySwipeRefreshLayout" type="id" />
+    <item name="primaryContentTextView" type="id" />
+    <item name="primaryViewPager" type="id" />
+</resources>
