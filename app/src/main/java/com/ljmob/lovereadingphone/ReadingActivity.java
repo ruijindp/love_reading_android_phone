@@ -5,25 +5,22 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.cocosw.bottomsheet.BottomSheet;
+import com.ljmob.lovereadingphone.adapter.ReadingStatusPagerAdapter;
 import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.Article;
 import com.ljmob.lovereadingphone.entity.Music;
@@ -35,7 +32,6 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import jp.wasabeef.blurry.Blurry;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -58,38 +54,21 @@ public class ReadingActivity extends AppCompatActivity {
     @Bind(R.id.activity_reading_mask)
     View activityReadingMask;
 
-    @Bind(R.id.activity_reading_imgRetry)
-    ImageView activityReadingImgRetry;
-    @Bind(R.id.activity_reading_imgRecord)
-    ImageView activityReadingImgRecord;
-    @Bind(R.id.activity_reading_imgDone)
-    ImageView activityReadingImgDone;
     @Bind(R.id.activity_reading_lnHeadRecord)
     LinearLayout activityReadingLnHeadRecord;
     @Bind(R.id.activity_reading_lnHeadResult)
     LinearLayout activityReadingLnHeadResult;
     @Bind(R.id.activity_reading_frameCount)
     FrameLayout activityReadingFrameCount;
-    @Bind(R.id.activity_reading_controllerRecord)
-    FrameLayout activityReadingControllerRecord;
-    @Bind(R.id.activity_reading_tvTimerCurrent)
-    TextView activityReadingTvTimerCurrent;
-    @Bind(R.id.activity_reading_sbPlayer)
-    SeekBar activityReadingSbPlayer;
-    @Bind(R.id.activity_reading_tvTimerTotal)
-    TextView activityReadingTvTimerTotal;
-    @Bind(R.id.activity_reading_imgPlay)
-    ImageView activityReadingImgPlay;
-    @Bind(R.id.activity_reading_imgLetMeTry)
-    ImageView activityReadingImgLetMeTry;
-    @Bind(R.id.activity_reading_imgFeeling)
-    ImageView activityReadingImgFeeling;
-    @Bind(R.id.activity_reading_imgLike)
-    ImageView activityReadingImgLike;
-    @Bind(R.id.activity_reading_tvLike)
-    TextView activityReadingTvLike;
-    @Bind(R.id.activity_reading_controllerResult)
-    LinearLayout activityReadingControllerResult;
+
+    @Bind(R.id.activity_reading_scContent)
+    ScrollView activityReadingScContent;
+    @Bind(R.id.activity_reading_tvChecker)
+    TextView activityReadingTvChecker;
+    @Bind(R.id.activity_reading_rbRate)
+    AppCompatRatingBar activityReadingRbRate;
+    @Bind(R.id.activity_reading_pagerStatus)
+    ViewPager activityReadingPagerStatus;
 
     MenuItem shareMenuItem;
 
@@ -98,15 +77,13 @@ public class ReadingActivity extends AppCompatActivity {
     Result result;
     ImageLoader imageLoader = ImageLoader.getInstance();
     Status currentStatus = Status.record;
-    @Bind(R.id.activity_reading_scContent)
-    ScrollView activityReadingScContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         result = (Result) getIntent().getSerializableExtra("result");
         if (result != null) {
-            currentStatus = Status.result;
+            //TODO currentStatus = Status.result;
         } else {
             article = (Article) getIntent().getSerializableExtra("article");
             if (article == null) {
@@ -174,9 +151,8 @@ public class ReadingActivity extends AppCompatActivity {
             case record:
                 shareMenuItem.setVisible(false);
                 break;
-            case result:
+            default:
                 shareMenuItem.setVisible(true);
-                break;
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -217,44 +193,8 @@ public class ReadingActivity extends AppCompatActivity {
         activityReadingTvAuthor.setText(article.author);
         activityReadingTvReadCount.setText(String.format("%d", article.read_count));
         primaryContentTextView.setText(article.content);
-    }
-
-    @OnClick(R.id.activity_reading_imgRetry)
-    protected void retry() {
-        ToastUtil.show("retry");
-    }
-
-    @OnClick(R.id.activity_reading_imgRecord)
-    protected void recordOrPause() {
-        ToastUtil.show("recordOrPause");
-    }
-
-    @OnClick(R.id.activity_reading_imgDone)
-    protected void done() {
-        MaterialDialog feelingDialog = new MaterialDialog.Builder(this)
-                .theme(Theme.LIGHT)
-                .title(R.string.dialog_feeling)
-                .positiveText(R.string.dialog_feeling_confirm)
-                .positiveColorRes(R.color.colorPrimary)
-                .customView(R.layout.view_dialog_feeling, true)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog,
-                                        @NonNull DialogAction dialogAction) {
-                        materialDialog.dismiss();
-                        //TODO test code
-                        EditText etFeeling = (EditText) materialDialog.getCustomView();
-                        String feeling = "";
-                        if (etFeeling != null) {
-                            feeling = etFeeling.getText().toString();
-                        }
-                        currentStatus = Status.result;
-                        makeViewByStatus();
-                        ToastUtil.show(feeling);
-                    }
-                })
-                .build();
-        feelingDialog.show();
+        activityReadingPagerStatus.setAdapter(
+                new ReadingStatusPagerAdapter(getSupportFragmentManager()));
     }
 
     private void makeBlurry() {
@@ -314,20 +254,28 @@ public class ReadingActivity extends AppCompatActivity {
             case record:
                 activityReadingLnHeadRecord.setVisibility(View.VISIBLE);
                 activityReadingLnHeadResult.setVisibility(View.GONE);
-                activityReadingControllerRecord.setVisibility(View.VISIBLE);
-                activityReadingControllerResult.setVisibility(View.INVISIBLE);
                 if (shareMenuItem != null) {
                     shareMenuItem.setVisible(false);
                 }
+                activityReadingPagerStatus.setCurrentItem(0);
                 break;
-            case result:
+            case notRatedResult:
+                ToastUtil.show("未打分状态仅教师可见");
                 activityReadingLnHeadRecord.setVisibility(View.GONE);
                 activityReadingLnHeadResult.setVisibility(View.VISIBLE);
-                activityReadingControllerRecord.setVisibility(View.INVISIBLE);
-                activityReadingControllerResult.setVisibility(View.VISIBLE);
+                activityReadingTvChecker.setVisibility(View.GONE);
+                activityReadingRbRate.setVisibility(View.GONE);
+                activityReadingPagerStatus.setCurrentItem(1);
+                break;
+            case ratedResult:
+                activityReadingLnHeadRecord.setVisibility(View.GONE);
+                activityReadingLnHeadResult.setVisibility(View.VISIBLE);
+                activityReadingTvChecker.setVisibility(View.VISIBLE);
+                activityReadingRbRate.setVisibility(View.VISIBLE);
                 if (shareMenuItem != null) {
                     shareMenuItem.setVisible(true);
                 }
+                activityReadingPagerStatus.setCurrentItem(2);
                 break;
         }
         activityReadingScContent.post(new Runnable() {
@@ -338,7 +286,12 @@ public class ReadingActivity extends AppCompatActivity {
         });
     }
 
-    private enum Status {
-        record, result
+    public void setCurrentStatus(Status currentStatus) {
+        this.currentStatus = currentStatus;
+        makeViewByStatus();
+    }
+
+    public enum Status {
+        record, notRatedResult, ratedResult
     }
 }

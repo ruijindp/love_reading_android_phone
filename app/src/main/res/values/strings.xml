@@ -27,6 +27,8 @@
     <string name="feedback">意见反馈</string>
     <string name="change_pwd">修改密码</string>
     <string name="exit">退出登录</string>
+    <string name="rate_plz">请评分</string>
+    <string name="rate">评分</string>
     <string name="not_rated">未评分</string>
     <string name="rated">已评分</string>
     <string name="login_plz">请登录</string>
@@ -37,6 +39,8 @@
     <string name="username">用户名</string>
     <string name="password">密码</string>
     <string name="all">全部</string>
+    <string name="total__count">共%1$篇</string>
+
 
     <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>
     <string name="toast_music_err">选择一首音乐吧</string>
@@ -101,4 +105,5 @@
     <string name="test_sub_cate">全部</string>
     <string name="test_category">语文</string>
     <string name="test_chapter">第一部分</string>
+    <string name="test_feeling">感觉读的还不错，老师求五分！</string>
 </resources>

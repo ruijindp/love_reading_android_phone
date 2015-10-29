@@ -55,7 +55,7 @@ public class PlayerBarFragment extends Fragment {
 
     @OnClick(R.id.view_player_imgClose)
     protected void closePlayer() {
-        ((MainActivity) getActivity()).closePlayBar();
+        ((MainActivity) getActivity()).closePlayerBar();
     }
 
     @OnClick(R.id.view_player_root)

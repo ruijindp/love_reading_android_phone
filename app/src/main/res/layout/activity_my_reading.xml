@@ -10,66 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:id="@+id/activity_my_reading_lnTab"
+    <FrameLayout
+        android:id="@+id/activity_my_reading_frameTabs"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="?actionBarSize"
-        android:background="@android:color/white"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?actionBarSize">
 
-        <FrameLayout
-            android:id="@+id/activity_my_reading_frameNotRated"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?selectableItemBackground"
-            android:clickable="true">
-
-            <TextView
-                android:id="@+id/activity_my_reading_tvNotRated"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="0.87"
-                android:gravity="center"
-                android:text="@string/not_rated"
-                android:textColor="?colorAccent" />
-
-            <View
-                android:id="@+id/activity_my_reading_viewNotRated"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_gravity="bottom"
-                android:background="?colorAccent" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/activity_my_reading_frameRated"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?selectableItemBackground"
-            android:clickable="true">
-
-            <TextView
-                android:id="@+id/activity_my_reading_tvRated"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="0.54"
-                android:gravity="center"
-                android:text="@string/rated"
-                android:textColor="?colorAccent" />
-
-            <View
-                android:id="@+id/activity_my_reading_viewRated"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_gravity="bottom"
-                android:background="?colorAccent"
-                android:visibility="invisible" />
-        </FrameLayout>
-    </LinearLayout>
+        <include layout="@layout/head_tab" />
+    </FrameLayout>
 
     <include layout="@layout/toolbar" />
 </FrameLayout>

@@ -16,14 +16,18 @@ import java.util.List;
 public class MyReadingPagerAdapter extends FragmentPagerAdapter {
     List<MyReadingFragment> myReadingFragments;
 
-    public MyReadingPagerAdapter(FragmentManager fm) {
+    public MyReadingPagerAdapter(FragmentManager fm, boolean isRated) {
         super(fm);
         myReadingFragments = new ArrayList<>();
         MyReadingFragment notRatedFragment = new MyReadingFragment();
-        notRatedFragment.type = MyReadingFragment.Type.notRated;
+        notRatedFragment.type = isRated ?
+                MyReadingFragment.Type.rated :
+                MyReadingFragment.Type.notRated;
         myReadingFragments.add(notRatedFragment);
         MyReadingFragment ratedFragment = new MyReadingFragment();
-        ratedFragment.type = MyReadingFragment.Type.rated;
+        ratedFragment.type = isRated ?
+                MyReadingFragment.Type.rated :
+                MyReadingFragment.Type.notRated;
         myReadingFragments.add(ratedFragment);
     }
 
