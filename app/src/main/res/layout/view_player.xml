@@ -12,7 +12,8 @@
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:layout_marginLeft="12dp" />
+        android:layout_marginLeft="12dp"
+        android:src="@drawable/gif" />
 
     <com.ljmob.lovereadingphone.view.MarqueeTextView
         android:id="@+id/view_player_tvTitleReader"
@@ -27,6 +28,7 @@
         android:textColor="@color/textReadable"
         android:textSize="16sp" />
 
+    <!--icon_mini_stop-->
     <ImageView
         android:id="@+id/view_player_imgPlay"
         android:layout_width="32dp"
@@ -34,7 +36,8 @@
         android:layout_marginRight="24dp"
         android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:contentDescription="@string/dcd" />
+        android:contentDescription="@string/dcd"
+        android:src="@mipmap/icon_mini_zanting" />
 
     <ImageView
         android:id="@+id/view_player_imgClose"
@@ -43,5 +46,6 @@
         android:layout_marginRight="16dp"
         android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:contentDescription="@string/dcd" />
+        android:contentDescription="@string/dcd"
+        android:src="@mipmap/icon_mini_guanbi" />
 </LinearLayout>

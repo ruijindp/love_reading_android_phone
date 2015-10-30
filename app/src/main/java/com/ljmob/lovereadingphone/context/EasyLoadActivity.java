@@ -133,45 +133,37 @@ public abstract class EasyLoadActivity extends AppCompatActivity implements
     public void onResponse(LResponse response) {
         if (response.requestCode == GET_DATA) {
             isLoading = false;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+            if (primarySwipeRefreshLayout != null && primarySwipeRefreshLayout.isRefreshing()) {
+                primarySwipeRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        primarySwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 100);
+            }
+            if (response.responseCode == 401) {
+                Intent loginIntent = new Intent(this, LoginActivity.class);
+                loginIntent.putExtra("isReLogin", true);
+                startActivity(loginIntent);
+                return;
+            }
+
+            if (response.responseCode != 200) {
+                ToastUtil.serverErr(response);
+                return;
+            }
+
+            if (response.requestCode == GET_DATA) {
+                if (response.body.startsWith("[")) {
                     try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
+                        JSONArray jsonArray = new JSONArray(response.body);
+                        hasMore = jsonArray.length() == PAGE_SIZE;
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    primarySwipeRefreshLayout.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            primarySwipeRefreshLayout.setRefreshing(false);
-                        }
-                    });
-                }
-            }).start();
-        }
-        if (response.responseCode == 401) {
-            Intent loginIntent = new Intent(this, LoginActivity.class);
-            loginIntent.putExtra("isReLogin", true);
-            startActivity(loginIntent);
-            return;
-        }
-
-        if (response.responseCode != 200) {
-            ToastUtil.serverErr(response);
-            return;
-        }
-
-        if (response.requestCode == GET_DATA) {
-            if (response.body.startsWith("[")) {
-                try {
-                    JSONArray jsonArray = new JSONArray(response.body);
-                    hasMore = jsonArray.length() == PAGE_SIZE;
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
+            responseData(response);
         }
-        responseData(response);
     }
 }

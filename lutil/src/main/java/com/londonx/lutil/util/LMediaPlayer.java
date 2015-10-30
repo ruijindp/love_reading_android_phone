@@ -32,7 +32,10 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
      * @param skbProgress show play and buffering progress
      */
     public LMediaPlayer(SurfaceView surfaceView, SeekBar skbProgress) {
-        setSeekBar(skbProgress);
+        if (skbProgress != null) {
+            this.skbProgress = skbProgress;
+            skbProgress.setOnSeekBarChangeListener(this);
+        }
         if (surfaceView != null) {
             surfaceHolder = surfaceView.getHolder();
             surfaceHolder.addCallback(this);
@@ -40,11 +43,6 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
         mediaPlayer = new MediaPlayer();
         Timer mTimer = new Timer();
         mTimer.schedule(mTimerTask, 0, 1000);
-    }
-
-    public void setSeekBar(SeekBar skbProgress) {
-        this.skbProgress = skbProgress;
-        skbProgress.setOnSeekBarChangeListener(this);
     }
 
     /**
@@ -55,9 +53,15 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
     TimerTask mTimerTask = new TimerTask() {
         @Override
         public void run() {
-            if (mediaPlayer == null)
+            if (mediaPlayer == null) {
                 return;
-            if (mediaPlayer.isPlaying() && !skbProgress.isPressed()) {
+            }
+            boolean isPlaying = false;
+            try {
+                isPlaying = mediaPlayer.isPlaying();
+            } catch (IllegalStateException ignore) {
+            }
+            if (isPlaying && skbProgress != null && !skbProgress.isPressed()) {
                 handleProgress.sendEmptyMessage(0);
             }
         }
@@ -73,11 +77,28 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
         mediaPlayer.start();
     }
 
+
     /**
      * online media url
      *
      * @param videoUrl media(video and mp3) url
      */
+    public void prepareUrl(String videoUrl) {
+        try {
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(videoUrl);
+            mediaPlayer.prepare();//prepare之后自动播放
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * online media url
+     *
+     * @param videoUrl media(video and mp3) url
+     */
+    @Deprecated
     public void playUrl(String videoUrl) {
         try {
             mediaPlayer.reset();
@@ -145,7 +166,9 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
 
     @Override
     public void onBufferingUpdate(MediaPlayer arg0, int bufferingProgress) {
-        skbProgress.setSecondaryProgress(bufferingProgress);
+        if (skbProgress != null) {
+            skbProgress.setSecondaryProgress(bufferingProgress);
+        }
     }
 
     @Override
@@ -153,7 +176,7 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
         int position = mediaPlayer.getCurrentPosition();
         int duration = mediaPlayer.getDuration();
 
-        if (duration > 0) {
+        if (duration > 0 && skbProgress != null) {
             skbProgress.setMax(duration);
             skbProgress.setProgress(position);
         }

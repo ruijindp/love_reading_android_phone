@@ -35,7 +35,7 @@ public class SimpleStringPopup extends PopupWindow implements AdapterView.OnItem
         super(context);
         this.context = context;
         if (rootView == null) {
-            rootView = LayoutInflater.from(context).inflate(R.layout.pop_category, parent, false);
+            rootView = LayoutInflater.from(context).inflate(R.layout.pop_simple_string, parent, false);
             pop_category_lv = (ListView) rootView.findViewById(R.id.pop_category_lv);
             pop_category_lv.setOnItemClickListener(this);
             oneDp = context.getResources().getDisplayMetrics().density;

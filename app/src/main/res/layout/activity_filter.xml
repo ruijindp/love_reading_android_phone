@@ -63,7 +63,8 @@
             <ImageView
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:contentDescription="@string/dcd" />
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_drop_down" />
         </LinearLayout>
 
         <LinearLayout
@@ -91,7 +92,8 @@
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:layout_marginRight="16dp"
-                android:contentDescription="@string/dcd" />
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_drop_down" />
         </LinearLayout>
     </LinearLayout>
 
@@ -134,7 +136,8 @@
         <ImageView
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:contentDescription="@string/dcd" />
+            android:contentDescription="@string/dcd"
+            android:src="@mipmap/icon_drop_down" />
     </LinearLayout>
 
     <View
@@ -197,7 +200,8 @@
             <ImageView
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:contentDescription="@string/dcd" />
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_drop_down" />
         </LinearLayout>
 
         <LinearLayout
@@ -225,7 +229,8 @@
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:layout_marginRight="16dp"
-                android:contentDescription="@string/dcd" />
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_drop_down" />
         </LinearLayout>
     </LinearLayout>
 

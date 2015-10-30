@@ -123,6 +123,23 @@ public class MainActivity extends AppCompatActivity {
     @OnPageChange(R.id.primaryViewPager)
     public void pageTo(int index) {
         showAppBar();
+        switch (index) {
+            case 0:
+                showView(toolbarImgIndex);
+                hideView(toolbarImgArticle);
+                hideView(toolbarImgRank);
+                break;
+            case 1:
+                hideView(toolbarImgIndex);
+                showView(toolbarImgArticle);
+                hideView(toolbarImgRank);
+                break;
+            case 2:
+                hideView(toolbarImgIndex);
+                hideView(toolbarImgArticle);
+                showView(toolbarImgRank);
+                break;
+        }
         if (primaryViewPager.getCurrentItem() == index) {
             return;
         }
@@ -171,5 +188,17 @@ public class MainActivity extends AppCompatActivity {
         }
         playBar.animate().translationY(playBar.getHeight())
                 .setInterpolator(new AccelerateInterpolator(2)).start();
+    }
+
+    private void showView(View view) {
+        if (view.getAlpha() != 1.0f) {
+            view.animate().alpha(1.0f).setDuration(200).start();
+        }
+    }
+
+    private void hideView(View view) {
+        if (view.getAlpha() != 0.54f) {
+            view.animate().alpha(0.54f).setDuration(200).start();
+        }
     }
 }

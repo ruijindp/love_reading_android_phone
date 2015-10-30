@@ -3,25 +3,30 @@ package com.ljmob.lovereadingphone.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ljmob.lovereadingphone.CategoryActivity;
+import com.ljmob.lovereadingphone.LoginActivity;
 import com.ljmob.lovereadingphone.MainActivity;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.adapter.IndexAdapter;
-import com.ljmob.lovereadingphone.context.EasyLoadFragment;
 import com.ljmob.lovereadingphone.entity.Article;
-import com.ljmob.lovereadingphone.entity.ArticleShelf;
+import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.util.ArticleShelfWrapper;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.entity.LResponse;
+import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,12 +37,31 @@ import butterknife.OnClick;
  * Created by london on 15/10/26.
  * 第一页
  */
-public class IndexFragment extends EasyLoadFragment {
+public class IndexFragment extends Fragment implements
+        LRequestTool.OnResponseListener,
+        SwipeRefreshLayout.OnRefreshListener,
+        AbsListView.OnScrollListener {
     public static final int ACTION_CATEGORY = 1;
+    private static final int API_ARTICLES = 2;
+    private static final int PAGE_SIZE = 10;
+
     LayoutInflater inflater;
     View rootView;
 
+    @Bind(R.id.primaryAbsListView)
+    ListView primaryAbsListView;
+    @Bind(R.id.primarySwipeRefreshLayout)
+    SwipeRefreshLayout primarySwipeRefreshLayout;
     HeadHolder headHolder;
+
+    int currentPage = 1;
+    int currentVisiblePosition = -1;
+    boolean isLoading;
+    boolean hasMore = true;
+
+    LRequestTool requestTool;
+    List<Article> articles;
+    IndexAdapter adapter;
 
     @Nullable
     @Override
@@ -45,70 +69,123 @@ public class IndexFragment extends EasyLoadFragment {
         this.inflater = inflater;
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.view_primary_list, container, false);
-            setContentView(rootView);
-            int startOffset = getResources().getDimensionPixelSize(R.dimen.subject_list_refresh_start_offset);
-            int endOffset = getResources().getDimensionPixelSize(R.dimen.subject_list_refresh_end_offset);
-            primarySwipeRefreshLayout.setProgressViewOffset(false, startOffset, endOffset);
-
-            View headEmpty = inflater.inflate(R.layout.toolbar_trans, primaryListView, false);
-            View headMain = inflater.inflate(R.layout.head_index, primaryListView, false);
-            headHolder = new HeadHolder(headMain);
-
-            ((ListView) primaryListView).addHeaderView(headEmpty);
-            ((ListView) primaryListView).addHeaderView(headMain);
         }
-        initData("", new DefaultParam());
+        ButterKnife.bind(this, rootView);
+        initViews(inflater);
+        getData();
         return rootView;
     }
 
-    @Override
-    public void initData(String apiUrl, HashMap<String, Object> params) {
-        super.initData(apiUrl, params);
-
-        //TODO test
-        List<ArticleShelf> shelf = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            ArticleShelf articleShelf = new ArticleShelf();
-            articleShelf.article[0] = new Article();
-            articleShelf.article[0].author = "莫迫桑";
-            articleShelf.article[0].content = getString(R.string.test_content);
-            articleShelf.article[0].cover_img = R.mipmap.test_cover + "";
-            articleShelf.article[0].title = "我的叔叔于勒";
-            articleShelf.article[1] = new Article();
-            articleShelf.article[1].author = "莫迫桑";
-            articleShelf.article[1].content = getString(R.string.test_content);
-            articleShelf.article[1].cover_img = R.mipmap.test_cover + "";
-            articleShelf.article[1].title = "我的叔叔于勒";
-            shelf.add(articleShelf);
+    public void getData() {
+        if (!primarySwipeRefreshLayout.isRefreshing()) {
+            primarySwipeRefreshLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    primarySwipeRefreshLayout.setRefreshing(true);
+                }
+            }, 100);
         }
-        primaryListView.setAdapter(new IndexAdapter(getActivity(), shelf));
+        if (requestTool == null) {
+            requestTool = new LRequestTool(this);
+        }
+        DefaultParam param = new DefaultParam();
+        param.put("page", currentPage);
+        requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_ARTICLES, param, API_ARTICLES);
     }
 
-    @Override
-    public void onRefreshData() {
-        ToastUtil.show("onRefreshData");
+    public void initViews(LayoutInflater inflater) {
+        primarySwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark);
+        int startOffset = getResources().getDimensionPixelSize(R.dimen.subject_list_refresh_start_offset);
+        int endOffset = getResources().getDimensionPixelSize(R.dimen.subject_list_refresh_end_offset);
+        primarySwipeRefreshLayout.setProgressViewOffset(false, startOffset, endOffset);
+        View headEmpty = inflater.inflate(R.layout.toolbar_trans, primaryAbsListView, false);
+        View headMain = inflater.inflate(R.layout.head_index, primaryAbsListView, false);
+        headHolder = new HeadHolder(headMain);
+        headHolder.headMainTvCurrentCate.setText(R.string.all);
+
+        if (primaryAbsListView.getHeaderViewsCount() == 0) {
+            primaryAbsListView.addHeaderView(headEmpty);
+            primaryAbsListView.addHeaderView(headMain);
+        }
+
+        primarySwipeRefreshLayout.setOnRefreshListener(this);
+        primaryAbsListView.setOnScrollListener(this);
     }
 
-    @Override
     public void onLoadMore() {
-        ToastUtil.show("onLoadMore");
+        currentPage++;
+        getData();
     }
 
     @Override
-    public void responseData(LResponse response) {
+    public void onResponse(LResponse response) {
+        isLoading = false;
+        if (primarySwipeRefreshLayout!=null) {
+            primarySwipeRefreshLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    primarySwipeRefreshLayout.setRefreshing(false);
+                }
+            }, 100);
+        }
+        if (response.responseCode == 401) {
+            Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
+            loginIntent.putExtra("isReLogin", true);
+            startActivity(loginIntent);
+            return;
+        }
 
+        if (response.responseCode != 200) {
+            ToastUtil.serverErr(response);
+            return;
+        }
+
+        switch (response.requestCode) {
+            case API_ARTICLES:
+                List<Article> appendData = new Gson()
+                        .fromJson(response.body, new TypeToken<List<Article>>() {
+                        }.getType());
+                hasMore = appendData.size() == PAGE_SIZE;
+                if (currentPage == 1) {
+                    articles = appendData;
+                    adapter = new IndexAdapter(getActivity(), ArticleShelfWrapper.wrap(articles), false);
+                    primaryAbsListView.setAdapter(adapter);
+                } else {
+                    articles.addAll(appendData);
+                    adapter.setNewData(ArticleShelfWrapper.wrap(articles));
+                }
+                break;
+        }
     }
 
     @Override
-    public void showAppBar() {
-        super.showAppBar();
-        ((MainActivity) getActivity()).showAppBar();
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
     }
 
     @Override
-    public void hideAppBar() {
-        super.hideAppBar();
-        ((MainActivity) getActivity()).hideAppBar();
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if (currentVisiblePosition == -1) {
+            currentVisiblePosition = firstVisibleItem;
+        } else {
+            if (currentVisiblePosition > firstVisibleItem) {
+                ((MainActivity) getActivity()).showAppBar();
+            } else if (currentVisiblePosition < firstVisibleItem) {
+                ((MainActivity) getActivity()).hideAppBar();
+            }
+            currentVisiblePosition = firstVisibleItem;
+        }
+        if (isLoading || view.getCount() == 0) {
+            return;
+        }
+
+        //Load more when scrolling over last PAGE_SIZE / 2 items;
+        boolean isDivDPage = firstVisibleItem + visibleItemCount > totalItemCount - PAGE_SIZE / 2;
+        if (isDivDPage && hasMore) {
+            onLoadMore();
+            currentPage++;
+            getData();
+            isLoading = true;
+        }
     }
 
     @Override
@@ -117,8 +194,20 @@ public class IndexFragment extends EasyLoadFragment {
         ToastUtil.show("IndexFragment.onActivityResult:" + resultCode);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onRefresh() {
+        currentPage = 1;
+        getData();
+    }
+
     /**
-     * This class contains all butterknife-injected Views & Layouts from layout file 'head_indexx.xml'
+     * This class contains all butterknife-injected Views & Layouts from layout file 'head_index.xml'
      * for easy to all layout elements.
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
@@ -126,8 +215,6 @@ public class IndexFragment extends EasyLoadFragment {
     class HeadHolder {
         @Bind(R.id.head_main_tvCurrentCate)
         TextView headMainTvCurrentCate;
-        @Bind(R.id.head_main_tvCate)
-        TextView headMainTvCate;
 
         HeadHolder(View view) {
             ButterKnife.bind(this, view);

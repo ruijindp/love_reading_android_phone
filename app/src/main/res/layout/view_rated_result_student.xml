@@ -53,19 +53,20 @@
             android:layout_marginBottom="24dp"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="@string/dcd" />
+            android:contentDescription="@string/dcd"
+            android:src="@mipmap/icon_pause" />
 
         <ImageView
             android:id="@+id/view_rated_result_imgLetMeTry"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="14dp"
             android:layout_marginLeft="104dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="@string/dcd" />
+            android:contentDescription="@string/dcd"
+            android:src="@mipmap/icon_sing" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,7 +88,8 @@
             android:layout_marginTop="12dp"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="@string/dcd" />
+            android:contentDescription="@string/dcd"
+            android:src="@mipmap/icon_impression" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -109,7 +111,8 @@
             android:layout_marginTop="12dp"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="@string/dcd" />
+            android:contentDescription="@string/dcd"
+            android:src="@mipmap/icon_love_u" />
 
         <TextView
             android:id="@+id/view_rated_result_tvLike"

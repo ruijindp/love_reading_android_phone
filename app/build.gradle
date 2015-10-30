@@ -45,6 +45,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'//圆形图片
     compile 'com.jakewharton:butterknife:7.0.1'//View injector
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    compile 'com.google.code.gson:gson:2.4'
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'//全局字体
     compile 'jp.wasabeef:blurry:1.0.4'//毛玻璃
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.10'//GIF图

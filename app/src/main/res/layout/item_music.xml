@@ -18,13 +18,17 @@
         android:id="@+id/item_music_tvMusic"
         android:layout_width="0px"
         android:layout_height="wrap_content"
+        android:layout_marginRight="12dp"
         android:layout_weight="1"
         android:text="@string/test_music_name"
         android:textColor="@color/textPrimary" />
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/item_music_imgGif"
-        android:layout_width="36dp"
-        android:layout_height="36dp" />
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/gif"
+        android:tint="?colorAccent"
+        android:visibility="invisible" />
 
 </LinearLayout>

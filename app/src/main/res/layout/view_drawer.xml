@@ -50,6 +50,7 @@
 
                         <TextView
                             android:id="@+id/view_drawer_tvUserName"
+                            fontPath="@string/font_bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="12dp"
@@ -62,7 +63,8 @@
                             android:id="@+id/view_drawer_imgSex"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            android:contentDescription="@string/dcd" />
+                            android:contentDescription="@string/dcd"
+                            android:src="@mipmap/icon_boy" />
                     </LinearLayout>
 
                     <TextView
@@ -115,11 +117,13 @@
                 android:textColor="@color/textReadable"
                 android:textSize="16sp" />
 
+            <!--icon_bottom-->
             <ImageView
                 android:id="@+id/view_drawer_imgMyReadingThumb"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:contentDescription="@string/dcd" />
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_top_0" />
         </LinearLayout>
 
         <LinearLayout
@@ -148,11 +152,13 @@
                 android:textColor="@color/textReadable"
                 android:textSize="16sp" />
 
+            <!--icon_bottom-->
             <ImageView
                 android:id="@+id/view_drawer_imgStudentReadingThumb"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:contentDescription="@string/dcd" />
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_top_0" />
         </LinearLayout>
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout

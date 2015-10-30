@@ -33,7 +33,8 @@
                 style="@style/AppTheme.AppBarImage"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:contentDescription="@string/dcd" />
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_woailangdu" />
 
             <ImageView
                 android:id="@+id/toolbar_imgArticle"
@@ -42,14 +43,18 @@
                 android:layout_height="48dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:contentDescription="@string/dcd" />
+                android:alpha=".54"
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_meiwentuijian" />
 
             <ImageView
                 android:id="@+id/toolbar_imgRank"
                 style="@style/AppTheme.AppBarImage"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:contentDescription="@string/dcd" />
+                android:alpha=".54"
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_top" />
         </LinearLayout>
 
         <ImageView
@@ -59,7 +64,8 @@
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
-            android:contentDescription="@string/dcd" />
+            android:contentDescription="@string/dcd"
+            android:src="@mipmap/icon_search" />
     </LinearLayout>
 
 </android.support.v7.widget.Toolbar>

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">LoveReadingPhone</string>
 
+    <string name="font_regular">fonts/default-Regular.ttf</string>
+    <string name="font_bold">fonts/default-Bold.ttf</string>
+
     <string name="dcd">dcd</string>
     <string name="login">登录</string>
     <string name="cate">分类</string>

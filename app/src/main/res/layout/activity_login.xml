@@ -44,6 +44,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_qingkong"
                 android:visibility="invisible" />
         </FrameLayout>
 
@@ -77,7 +78,8 @@
                 android:layout_gravity="center_vertical|right"
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
-                android:contentDescription="@string/dcd" />
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_xianshi" />
 
             <ImageView
                 android:id="@+id/activity_login_imgCleanPassword"
@@ -88,6 +90,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_qingkong"
                 android:visibility="invisible" />
         </FrameLayout>
 

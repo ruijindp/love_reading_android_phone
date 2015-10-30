@@ -35,7 +35,8 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@string/dcd"
-                android:padding="12dp" />
+                android:padding="12dp"
+                android:src="@mipmap/icon_play_icon" />
         </FrameLayout>
 
         <FrameLayout
@@ -46,6 +47,7 @@
 
             <TextView
                 android:id="@+id/item_listened_tvTitle"
+                fontPath="@string/font_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/test_title"
@@ -96,7 +98,8 @@
             android:layout_width="16dp"
             android:layout_height="16.5dp"
             android:layout_marginRight="8dp"
-            android:contentDescription="@string/dcd" />
+            android:contentDescription="@string/dcd"
+            android:src="@mipmap/icon_love_s" />
 
         <TextView
             android:id="@+id/item_listened_imgLikeCount"

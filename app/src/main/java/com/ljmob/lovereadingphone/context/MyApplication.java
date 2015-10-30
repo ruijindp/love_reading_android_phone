@@ -29,7 +29,7 @@ public class MyApplication extends Application {
         Lutil.init(this);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("default.ttf")
+                        .setDefaultFontPath("fonts/default-Regular.ttf")
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );

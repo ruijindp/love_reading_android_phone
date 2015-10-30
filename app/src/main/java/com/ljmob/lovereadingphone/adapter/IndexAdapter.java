@@ -28,10 +28,12 @@ import butterknife.ButterKnife;
  */
 public class IndexAdapter extends LAdapter {
     Activity activity;
+    boolean showUnit;
 
-    public IndexAdapter(Activity activity, List<? extends LEntity> lEntities) {
+    public IndexAdapter(Activity activity, List<? extends LEntity> lEntities, boolean showUnit) {
         super(lEntities);
         this.activity = activity;
+        this.showUnit = showUnit;
     }
 
     @Override
@@ -53,55 +55,64 @@ public class IndexAdapter extends LAdapter {
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
     class ViewHolder {
-        @Bind(R.id.item_main_imgCover0)
-        ImageView itemMainImgCover0;
-        @Bind(R.id.item_main_tvReadCount0)
-        TextView itemMainTvReadCount0;
-        @Bind(R.id.item_main_tvTitle0)
-        TextView itemMainTvTitle0;
-        @Bind(R.id.item_main_tvAuthor0)
-        TextView itemMainTvAuthor0;
-        @Bind(R.id.item_main_ln0)
-        LinearLayout itemMainLn0;
-        @Bind(R.id.item_main_imgCover1)
-        ImageView itemMainImgCover1;
-        @Bind(R.id.item_main_tvReadCount1)
-        TextView itemMainTvReadCount1;
-        @Bind(R.id.item_main_tvTitle1)
-        TextView itemMainTvTitle1;
-        @Bind(R.id.item_main_tvAuthor1)
-        TextView itemMainTvAuthor1;
-        @Bind(R.id.item_main_ln1)
-        LinearLayout itemMainLn1;
+        @Bind(R.id.item_index_tvUnit)
+        TextView itemIndexTvUnit;
+        @Bind(R.id.item_index_imgCover0)
+        ImageView itemIndexImgCover0;
+        @Bind(R.id.item_index_tvReadCount0)
+        TextView itemIndexTvReadCount0;
+        @Bind(R.id.item_index_tvTitle0)
+        TextView itemIndexTvTitle0;
+        @Bind(R.id.item_index_tvAuthor0)
+        TextView itemIndexTvAuthor0;
+        @Bind(R.id.item_index_ln0)
+        LinearLayout itemIndexLn0;
+        @Bind(R.id.item_index_imgCover1)
+        ImageView itemIndexImgCover1;
+        @Bind(R.id.item_index_tvReadCount1)
+        TextView itemIndexTvReadCount1;
+        @Bind(R.id.item_index_tvTitle1)
+        TextView itemIndexTvTitle1;
+        @Bind(R.id.item_index_tvAuthor1)
+        TextView itemIndexTvAuthor1;
+        @Bind(R.id.item_index_ln1)
+        LinearLayout itemIndexLn1;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
 
         public void setArticleShelf(ArticleShelf shelf) {
-            SimpleImageLoader.displayImage(shelf.article[0].cover_img, itemMainImgCover0);
-            itemMainTvTitle0.setText(shelf.article[0].title);
-            itemMainTvAuthor0.setText(shelf.article[0].author);
-            itemMainTvReadCount0.setText(String.format("%d", shelf.article[0].read_count));
+            if (showUnit) {
+                itemIndexTvUnit.setVisibility(View.VISIBLE);
+            } else {
+                itemIndexTvUnit.setVisibility(View.GONE);
+            }
+            SimpleImageLoader
+                    .displayImage(shelf.articles[0].cover_img.cover_img.normal.url, itemIndexImgCover0);
+            itemIndexTvTitle0.setText(shelf.articles[0].title);
+            itemIndexTvAuthor0.setText(shelf.articles[0].author);
+            itemIndexTvReadCount0.setText(String.format("%d", shelf.articles[0].count));
 
-            ArticleClickListener listener0 = new ArticleClickListener(shelf.article[0], 0);
-            itemMainLn0.setOnClickListener(listener0);
+            ArticleClickListener listener0 = new ArticleClickListener(shelf.articles[0], 0);
+            itemIndexLn0.setOnClickListener(listener0);
 
-            if (shelf.article[1] != null) {
-                SimpleImageLoader.displayImage(shelf.article[1].cover_img, itemMainImgCover1);
-                itemMainTvTitle1.setText(shelf.article[1].title);
-                itemMainTvAuthor1.setText(shelf.article[1].author);
-                itemMainTvReadCount1.setText(String.format("%d", shelf.article[1].read_count));
+            if (shelf.articles[1] != null) {
+                SimpleImageLoader
+                        .displayImage(shelf.articles[1].cover_img.cover_img.normal.url, itemIndexImgCover1);
+                itemIndexTvTitle1.setText(shelf.articles[1].title);
+                itemIndexTvAuthor1.setText(shelf.articles[1].author);
+                itemIndexTvReadCount1.setText(String.format("%d", shelf.articles[1].count));
 
-                ArticleClickListener listener1 = new ArticleClickListener(shelf.article[1], 1);
-                itemMainLn1.setOnClickListener(listener1);
+                ArticleClickListener listener1 = new ArticleClickListener(shelf.articles[1], 1);
+                itemIndexLn1.setOnClickListener(listener1);
 
-                if (itemMainLn1.getVisibility() != View.VISIBLE) {
-                    itemMainLn1.setVisibility(View.VISIBLE);
+                if (itemIndexLn1.getVisibility() != View.VISIBLE) {
+                    itemIndexLn1.setVisibility(View.VISIBLE);
                 }
             } else {
-                if (itemMainLn1.getVisibility() != View.INVISIBLE) {
-                    itemMainLn1.setVisibility(View.INVISIBLE);
+                if (itemIndexLn1.getVisibility() != View.INVISIBLE) {
+                    itemIndexLn1.setVisibility(View.INVISIBLE);
                 }
             }
         }
@@ -122,13 +133,13 @@ public class IndexAdapter extends LAdapter {
                 View view;
                 switch (index) {
                     case 0:
-                        view = itemMainImgCover0;
+                        view = itemIndexImgCover0;
                         break;
                     case 1:
-                        view = itemMainImgCover1;
+                        view = itemIndexImgCover1;
                         break;
                     default:
-                        view = itemMainImgCover0;
+                        view = itemIndexImgCover0;
                         break;
                 }
 //                ActivityTool.start(activity, detailIntent, view);

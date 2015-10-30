@@ -27,6 +27,7 @@
         android:requiresFadingEdge="vertical">
 
         <LinearLayout
+            android:id="@+id/activity_reading_lnContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -85,6 +86,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    fontPath="@string/font_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/test_user"
@@ -115,7 +117,7 @@
                     android:isIndicator="true" />
             </LinearLayout>
 
-            <include layout="@layout/item_chapter" />
+            <!--<include layout="@layout/item_section" />-->
         </LinearLayout>
     </ScrollView>
 

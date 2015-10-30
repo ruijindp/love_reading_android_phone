@@ -3,27 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_share_wechat"
-        android:icon="@color/test"
+        android:icon="@mipmap/icon_wechat"
         android:title="@string/action_share_wechat"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_share_wechat_moment"
-        android:icon="@color/test"
+        android:icon="@mipmap/icon_friends"
         android:title="@string/action_share_wechat_moment"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_share_qq"
-        android:icon="@color/test"
+        android:icon="@mipmap/icon_qq"
         android:title="@string/action_share_qq"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_share_qq_zone"
-        android:icon="@color/test"
+        android:icon="@mipmap/icon_qq_zone"
         android:title="@string/action_share_qq_zone"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_share"
-        android:icon="@color/test"
+        android:icon="@mipmap/icon_weibo"
         android:title="@string/action_share_weibo"
         app:showAsAction="always" />
 </menu>

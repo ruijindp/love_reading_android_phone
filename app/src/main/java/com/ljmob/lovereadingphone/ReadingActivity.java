@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,10 +24,11 @@ import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.Article;
 import com.ljmob.lovereadingphone.entity.Music;
 import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.entity.Section;
+import com.ljmob.lovereadingphone.net.NetConstant;
 import com.londonx.lutil.util.ToastUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,8 +47,6 @@ public class ReadingActivity extends AppCompatActivity {
     TextView activityReadingTvAuthor;
     @Bind(R.id.activity_reading_tvReadCount)
     TextView activityReadingTvReadCount;
-    @Bind(R.id.primaryContentTextView)
-    TextView primaryContentTextView;
     @Bind(R.id.activity_reading_imgBackground)
     ImageView activityReadingImgBackground;
     @Bind(R.id.activity_reading_mask)
@@ -77,6 +75,8 @@ public class ReadingActivity extends AppCompatActivity {
     Result result;
     ImageLoader imageLoader = ImageLoader.getInstance();
     Status currentStatus = Status.record;
+    @Bind(R.id.activity_reading_lnContent)
+    LinearLayout activityReadingLnContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,36 +107,18 @@ public class ReadingActivity extends AppCompatActivity {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setTitle(article.title);
         }
-        setInitData();
+        initData();
 
         if (MyApplication.blurryBg != null) {
             activityReadingImgBackground.setImageBitmap(MyApplication.blurryBg);
             activityReadingMask.setVisibility(View.INVISIBLE);
         } else {
-            @DrawableRes int mipmapId;
-            try {
-                mipmapId = Integer.parseInt(article.cover_img);
-            } catch (Exception ignore) {
-                mipmapId = 0;
-            }
-            imageLoader.displayImage(mipmapId == 0 ? article.cover_img : ("drawable://" + mipmapId),
+            imageLoader.displayImage(NetConstant.ROOT_URL + article.cover_img.cover_img.small.url,
                     activityReadingImgBackground,
-                    new ImageLoadingListener() {
-                        @Override
-                        public void onLoadingStarted(String imageUri, View view) {
-                        }
-
-                        @Override
-                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                        }
-
+                    new SimpleImageLoadingListener() {
                         @Override
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                             makeBlurry();
-                        }
-
-                        @Override
-                        public void onLoadingCancelled(String imageUri, View view) {
                         }
                     });
         }
@@ -189,12 +171,18 @@ public class ReadingActivity extends AppCompatActivity {
     }
 
 
-    private void setInitData() {
+    private void initData() {
         activityReadingTvAuthor.setText(article.author);
-        activityReadingTvReadCount.setText(String.format("%d", article.read_count));
-        primaryContentTextView.setText(article.content);
+        activityReadingTvReadCount.setText(String.format("%d", article.count));
         activityReadingPagerStatus.setAdapter(
                 new ReadingStatusPagerAdapter(getSupportFragmentManager()));
+        for (Section s : article.sections) {
+            View sectionView = getLayoutInflater()
+                    .inflate(R.layout.item_section, activityReadingLnContent, false);
+            SectionHolder holder = new SectionHolder(sectionView);
+            holder.primarySectionTitle.setText(s.title);
+            holder.primarySectionContent.setText(s.content);
+        }
     }
 
     private void makeBlurry() {
@@ -293,5 +281,22 @@ public class ReadingActivity extends AppCompatActivity {
 
     public enum Status {
         record, notRatedResult, ratedResult
+    }
+
+    /**
+     * This class contains all butterknife-injected Views & Layouts from layout file 'item_section.xml'
+     * for easy to all layout elements.
+     *
+     * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
+     */
+    static class SectionHolder {
+        @Bind(R.id.primarySectionTitle)
+        TextView primarySectionTitle;
+        @Bind(R.id.primarySectionContent)
+        TextView primarySectionContent;
+
+        SectionHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

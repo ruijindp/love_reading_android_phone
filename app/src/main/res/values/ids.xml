@@ -3,6 +3,7 @@
     <item name="primaryAbsListView" type="id" />
     <item name="primarySwipeRefreshLayout" type="id" />
     <item name="primaryContentTextView" type="id" />
-    <item name="primaryChapterTextView" type="id" />
+    <item name="primarySectionTitle" type="id" />
+    <item name="primarySectionContent" type="id" />
     <item name="primaryViewPager" type="id" />
 </resources>

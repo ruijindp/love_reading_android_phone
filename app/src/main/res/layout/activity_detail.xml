@@ -24,6 +24,7 @@
         android:layout_marginTop="?actionBarSize">
 
         <LinearLayout
+            android:id="@+id/activity_detail_lnContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -37,13 +38,18 @@
                 android:id="@+id/activity_detail_imgCover"
                 android:layout_width="184dp"
                 android:layout_height="184dp"
+                android:background="@mipmap/bg_front_cover"
                 android:contentDescription="@string/dcd"
-                android:padding="18dp"
+                android:paddingBottom="24dp"
+                android:paddingLeft="22dp"
+                android:paddingRight="22dp"
+                android:paddingTop="20dp"
                 android:scaleType="centerCrop"
                 android:transitionName="view" />
 
             <TextView
                 android:id="@+id/activity_detail_tvTitle"
+                fontPath="@string/font_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/test_title"
@@ -75,7 +81,9 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginRight="8dp"
-                    android:contentDescription="@string/dcd" />
+                    android:contentDescription="@string/dcd"
+                    android:src="@mipmap/icon_listen"
+                    android:tint="@color/textThird" />
 
                 <TextView
                     android:id="@+id/activity_detail_tvReadCount"
@@ -92,7 +100,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/div_detail" />
 
-            <include layout="@layout/item_chapter" />
+            <!--<include layout="@layout/item_section" />-->
 
         </LinearLayout>
     </ScrollView>
@@ -102,7 +110,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_margin="16dp" />
+        android:layout_margin="16dp"
+        android:src="@mipmap/icon_recording" />
 
     <include layout="@layout/toolbar" />
 </FrameLayout>

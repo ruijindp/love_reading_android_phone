@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,15 +15,22 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ljmob.lovereadingphone.adapter.MusicAdapter;
 import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.Article;
 import com.ljmob.lovereadingphone.entity.Music;
+import com.ljmob.lovereadingphone.entity.MusicType;
+import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.ljmob.lovereadingphone.view.SimpleStringPopup;
+import com.londonx.lutil.entity.LResponse;
+import com.londonx.lutil.util.LMediaPlayer;
+import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +46,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by london on 15/10/23.
  * 音乐选择
  */
-public class MusicActivity extends AppCompatActivity {
+public class MusicActivity extends AppCompatActivity implements
+        LRequestTool.OnResponseListener {
+    private static final int API_MUSICS = 1;
+    private static final int API_MUSIC_TYPES = 2;
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.activity_music_imgBackground)
@@ -53,13 +63,19 @@ public class MusicActivity extends AppCompatActivity {
     ListView primaryAbsListView;
     @Bind(R.id.activity_music_tvStart)
     TextView activityMusicTvStart;
+    @Bind(R.id.activity_music_tvCurrentMusicType)
+    TextView activityMusicTvCurrentMusicType;
 
     SimpleStringPopup musicTypePopup;
 
     Article article;
     ImageLoader imageLoader = ImageLoader.getInstance();
+    LRequestTool requestTool;
     MusicAdapter adapter;
     List<Music> musics;
+    List<MusicType> musicTypes;
+    MusicType selectedMusicType;
+    LMediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,50 +98,55 @@ public class MusicActivity extends AppCompatActivity {
             activityMusicImgBackground.setImageBitmap(MyApplication.blurryBg);
             activityMusicMask.setVisibility(View.INVISIBLE);
         } else {
-            @DrawableRes int mipmapId;
-            try {
-                mipmapId = Integer.parseInt(article.cover_img);
-            } catch (Exception ignore) {
-                mipmapId = 0;
-            }
-            imageLoader.displayImage(mipmapId == 0 ? article.cover_img : ("drawable://" + mipmapId),
+            imageLoader.displayImage(NetConstant.ROOT_URL + article.cover_img.cover_img.small.url,
                     activityMusicImgBackground,
-                    new ImageLoadingListener() {
-                        @Override
-                        public void onLoadingStarted(String imageUri, View view) {
-                        }
-
-                        @Override
-                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                        }
-
+                    new SimpleImageLoadingListener() {
                         @Override
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                             makeBlurry();
                         }
-
-                        @Override
-                        public void onLoadingCancelled(String imageUri, View view) {
-                        }
                     });
         }
+        requestTool = new LRequestTool(this);
+        mediaPlayer = new LMediaPlayer(null, null);
+        initData();
+    }
 
-        //TODO test code
-        musics = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            Music music = new Music();
-            music.name = getString(R.string.test_music_name);
-            musics.add(music);
-        }
-        adapter = new MusicAdapter(musics);
-        primaryAbsListView.setAdapter(adapter);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.stop();
     }
 
     @OnItemClick(R.id.primaryAbsListView)
-    protected void selectAndPlay(View item, int position) {
+    protected void selectAndPlay(View item, final int position) {
         MusicAdapter.ViewHolder holder = (MusicAdapter.ViewHolder) item.getTag();
         adapter.setSelectedIndex(position);
+        adapter.setPlayingIndex(-1);
         holder.setSelected(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mediaPlayer.prepareUrl(NetConstant.ROOT_URL + musics.get(position).file_url);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mediaPlayer.play();
+                    }
+                });
+                try {
+                    Thread.sleep(1200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setPlayingIndex(position);
+                    }
+                });
+            }
+        }).start();
     }
 
     @OnClick(R.id.activity_music_tvStart)
@@ -144,21 +165,8 @@ public class MusicActivity extends AppCompatActivity {
 
     @OnClick(R.id.activity_music_lnMusicType)
     protected void showMusicTypes() {
-        //TODo
         if (musicTypePopup == null) {
-            musicTypePopup = new SimpleStringPopup(this, activityMusicLnMusicType);
-            final List<String> strings = new ArrayList<>();
-            strings.add("舒缓");
-            strings.add("古典");
-            strings.add("钢琴曲");
-            strings.add("轻音乐");
-            musicTypePopup.setStrings(strings);
-            musicTypePopup.setSimpleStringListener(new SimpleStringPopup.SimpleStringListener() {
-                @Override
-                public void selectStringAt(SimpleStringPopup popup, int index) {
-                    ToastUtil.show(strings.get(index));
-                }
-            });
+            return;
         }
         musicTypePopup.showAsDropDown(activityMusicLnMusicType);
     }
@@ -227,5 +235,68 @@ public class MusicActivity extends AppCompatActivity {
                 });
             }
         }).start();
+    }
+
+    private void initData() {
+        getMusic();
+        requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_MUSIC_TYPES,
+                new DefaultParam(), API_MUSIC_TYPES);
+    }
+
+    private void getMusic() {
+        DefaultParam param = new DefaultParam();
+        if (selectedMusicType != null && selectedMusicType.id != 0) {
+            param.put("music_type_id", selectedMusicType.id);
+        }
+        requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_MUSICS, param, API_MUSICS);
+    }
+
+    @Override
+    public void onResponse(LResponse response) {
+        if (response.responseCode != 200) {
+            ToastUtil.serverErr(response);
+            return;
+        }
+        switch (response.requestCode) {
+            case API_MUSICS:
+                musics = new Gson()
+                        .fromJson(response.body, new TypeToken<List<Music>>() {
+                        }.getType());
+                if (adapter == null) {
+                    adapter = new MusicAdapter(musics);
+                    primaryAbsListView.setAdapter(adapter);
+                } else {
+                    adapter.setNewData(musics);
+                }
+                break;
+            case API_MUSIC_TYPES:
+                musicTypes = new Gson().fromJson(response.body,
+                        new TypeToken<List<MusicType>>() {
+                        }.getType());
+                MusicType defaultMusicType = new MusicType();
+                defaultMusicType.id = 0;
+                defaultMusicType.name = getString(R.string.all);
+
+                musicTypePopup = new SimpleStringPopup(this, activityMusicLnMusicType);
+                musicTypes.add(0, defaultMusicType);
+                final List<String> strings = new ArrayList<>();
+                for (MusicType mt : musicTypes) {
+                    strings.add(mt.name);
+                }
+                musicTypePopup.setStrings(strings);
+                musicTypePopup.setSimpleStringListener(new SimpleStringPopup.SimpleStringListener() {
+                    @Override
+                    public void selectStringAt(SimpleStringPopup popup, int index) {
+                        if (index == 0 && selectedMusicType == null) {
+                            return;
+                        }
+                        adapter.setSelectedIndex(-1);
+                        selectedMusicType = musicTypes.get(index);
+                        getMusic();
+                        activityMusicTvCurrentMusicType.setText(selectedMusicType.name);
+                    }
+                });
+                break;
+        }
     }
 }

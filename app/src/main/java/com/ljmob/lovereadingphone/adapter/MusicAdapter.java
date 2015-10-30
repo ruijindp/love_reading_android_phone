@@ -25,6 +25,7 @@ import pl.droidsonroids.gif.GifImageView;
  */
 public class MusicAdapter extends LAdapter {
     private int selectedIndex = -1;
+    private int playingIndex = -1;
     private int accentColor;
     private int textColor;
     private ViewHolder selectedHolder;
@@ -47,6 +48,11 @@ public class MusicAdapter extends LAdapter {
         ViewHolder holder = (ViewHolder) convertView.getTag();
         holder.setMusic((Music) lEntities.get(position));
         holder.setSelected(position == selectedIndex);
+        if (position == playingIndex) {
+            holder.itemMusicImgGif.setVisibility(View.VISIBLE);
+        } else {
+            holder.itemMusicImgGif.setVisibility(View.INVISIBLE);
+        }
         return convertView;
     }
 
@@ -56,6 +62,15 @@ public class MusicAdapter extends LAdapter {
 
     public void setSelectedIndex(int selectedIndex) {
         this.selectedIndex = selectedIndex;
+    }
+
+    public int getPlayingIndex() {
+        return playingIndex;
+    }
+
+    public void setPlayingIndex(int playingIndex) {
+        this.playingIndex = playingIndex;
+        notifyDataSetChanged();
     }
 
     /**

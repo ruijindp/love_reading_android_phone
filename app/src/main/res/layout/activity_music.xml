@@ -38,17 +38,20 @@
             android:padding="8dp">
 
             <TextView
+                android:id="@+id/activity_music_tvCurrentMusicType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="24dp"
-                android:text="@string/test_music_type"
+                android:text="@string/all"
                 android:textColor="?colorPrimary"
                 android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:contentDescription="@string/dcd" />
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_drop_down"
+                android:tint="?colorPrimary" />
         </LinearLayout>
 
         <View

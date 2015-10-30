@@ -16,6 +16,7 @@
         android:background="@color/textSecondary" />
 
     <TextView
+        fontPath="@string/font_bold"
         android:id="@+id/head_main_tvCurrentCate"
         android:layout_width="0px"
         android:layout_height="wrap_content"

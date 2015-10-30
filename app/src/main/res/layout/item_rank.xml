@@ -9,6 +9,7 @@
 
     <TextView
         android:id="@+id/item_rank_tvRank"
+        fontPath="@string/font_bold"
         android:layout_width="26dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -88,10 +89,12 @@
         android:layout_width="16dp"
         android:layout_height="16.5dp"
         android:layout_marginRight="8dp"
-        android:contentDescription="@string/dcd" />
+        android:contentDescription="@string/dcd"
+        android:src="@mipmap/icon_love_s" />
 
     <TextView
         android:id="@+id/item_rank_tvPraiseCount"
+        fontPath="@string/font_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"

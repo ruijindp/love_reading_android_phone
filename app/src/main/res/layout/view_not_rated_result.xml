@@ -55,19 +55,20 @@
             android:layout_marginBottom="24dp"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="@string/dcd" />
+            android:contentDescription="@string/dcd"
+            android:src="@mipmap/icon_pause" />
 
         <ImageView
             android:id="@+id/view_not_rated_result_imgRate"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="14dp"
             android:layout_marginLeft="104dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="@string/dcd" />
+            android:contentDescription="@string/dcd"
+            android:src="@mipmap/icon_pingfen" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,15 +82,15 @@
 
         <ImageView
             android:id="@+id/view_not_rated_result_imgFeeling"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="14dp"
             android:layout_marginRight="104dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="@string/dcd" />
+            android:contentDescription="@string/dcd"
+            android:src="@mipmap/icon_impression" />
 
         <TextView
             android:layout_width="wrap_content"

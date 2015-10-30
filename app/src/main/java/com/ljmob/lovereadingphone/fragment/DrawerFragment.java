@@ -76,6 +76,10 @@ public class DrawerFragment extends Fragment {
     CircleImageView viewDrawerImgHead;
     @Bind(R.id.view_drawer_exLayout)
     ExpandableRelativeLayout viewDrawerExLayout;
+    @Bind(R.id.view_drawer_imgMyReadingThumb)
+    ImageView viewDrawerImgMyReadingThumb;
+    @Bind(R.id.view_drawer_imgStudentReadingThumb)
+    ImageView viewDrawerImgStudentReadingThumb;
 
     private MaterialDialog cacheDialog;
     private long cacheSize;
@@ -123,11 +127,25 @@ public class DrawerFragment extends Fragment {
 
     @OnClick(R.id.view_drawer_lnMyReading)
     protected void myReading() {
+        if (viewDrawerExLayout.isExpanded()) {
+            viewDrawerImgMyReadingThumb.setImageResource(R.mipmap.icon_top_0);
+            viewDrawerImgStudentReadingThumb.setImageResource(R.mipmap.icon_top_0);
+        } else {
+            viewDrawerImgMyReadingThumb.setImageResource(R.mipmap.icon_bottom);
+            viewDrawerImgStudentReadingThumb.setImageResource(R.mipmap.icon_bottom);
+        }
         viewDrawerExLayout.toggle();
     }
 
     @OnClick(R.id.view_drawer_lnStudentReading)
     protected void studentReading() {
+        if (viewDrawerExLayout.isExpanded()) {
+            viewDrawerImgMyReadingThumb.setImageResource(R.mipmap.icon_top_0);
+            viewDrawerImgStudentReadingThumb.setImageResource(R.mipmap.icon_top_0);
+        } else {
+            viewDrawerImgMyReadingThumb.setImageResource(R.mipmap.icon_bottom);
+            viewDrawerImgStudentReadingThumb.setImageResource(R.mipmap.icon_bottom);
+        }
         viewDrawerExLayout.toggle();
     }
 

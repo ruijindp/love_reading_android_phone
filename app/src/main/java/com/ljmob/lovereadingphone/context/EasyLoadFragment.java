@@ -76,7 +76,7 @@ public abstract class EasyLoadFragment extends Fragment implements
     }
 
     public void initData(String apiUrl, HashMap<String, Object> params) {
-        if (!primarySwipeRefreshLayout.isRefreshing()) {
+        if (primarySwipeRefreshLayout != null && !primarySwipeRefreshLayout.isRefreshing()) {
             primarySwipeRefreshLayout.post(new Runnable() {
                 @Override
                 public void run() {

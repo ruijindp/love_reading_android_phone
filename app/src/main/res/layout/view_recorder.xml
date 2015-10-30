@@ -7,19 +7,20 @@
 
     <ImageView
         android:id="@+id/view_recorder_imgRetry"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginRight="94dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="26dp"
         android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:contentDescription="@string/dcd" />
+        android:contentDescription="@string/dcd"
+        android:src="@mipmap/icon_re_recording" />
 
     <ImageView
         android:id="@+id/view_recorder_imgRecord"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="45dp"
@@ -27,18 +28,21 @@
         android:layout_marginTop="16dp"
         android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:contentDescription="@string/dcd" />
+        android:contentDescription="@string/dcd"
+        android:src="@mipmap/icon_recording" />
 
+    <!--icon_upload-->
     <ImageView
         android:id="@+id/view_recorder_imgDone"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="94dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="26dp"
         android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:contentDescription="@string/dcd" />
+        android:contentDescription="@string/dcd"
+        android:src="@mipmap/icon_finish" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,6 +65,7 @@
         android:textSize="12sp" />
 
     <TextView
+        android:id="@+id/view_recorder_tvDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
