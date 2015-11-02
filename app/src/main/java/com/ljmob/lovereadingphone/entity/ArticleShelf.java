@@ -7,5 +7,6 @@ import com.londonx.lutil.entity.LEntity;
  * 书架
  */
 public class ArticleShelf extends LEntity {
+    public String unitName;
     public Article[] articles = new Article[2];
 }

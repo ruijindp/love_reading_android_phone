@@ -1,5 +1,6 @@
 package com.ljmob.lovereadingphone.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,7 +20,11 @@ import com.ljmob.lovereadingphone.LoginActivity;
 import com.ljmob.lovereadingphone.MainActivity;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.adapter.IndexAdapter;
+import com.ljmob.lovereadingphone.adapter.IndexUnitAdapter;
 import com.ljmob.lovereadingphone.entity.Article;
+import com.ljmob.lovereadingphone.entity.Grade;
+import com.ljmob.lovereadingphone.entity.Subject;
+import com.ljmob.lovereadingphone.entity.Unit;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.ArticleShelfWrapper;
 import com.ljmob.lovereadingphone.util.DefaultParam;
@@ -41,8 +46,9 @@ public class IndexFragment extends Fragment implements
         LRequestTool.OnResponseListener,
         SwipeRefreshLayout.OnRefreshListener,
         AbsListView.OnScrollListener {
-    public static final int ACTION_CATEGORY = 1;
+    public static final int ACTION_CATEGORY = 0xDE;
     private static final int API_ARTICLES = 2;
+    private static final int API_ARTICLE_UNITS = 3;
     private static final int PAGE_SIZE = 10;
 
     LayoutInflater inflater;
@@ -61,7 +67,11 @@ public class IndexFragment extends Fragment implements
 
     LRequestTool requestTool;
     List<Article> articles;
+    List<Unit> units;
     IndexAdapter adapter;
+
+    Subject selectedSubject;
+    Grade selectedGrade;
 
     @Nullable
     @Override
@@ -77,20 +87,29 @@ public class IndexFragment extends Fragment implements
     }
 
     public void getData() {
-        if (!primarySwipeRefreshLayout.isRefreshing()) {
-            primarySwipeRefreshLayout.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    primarySwipeRefreshLayout.setRefreshing(true);
-                }
-            }, 100);
+        if (currentPage == 1) {
+            if (!primarySwipeRefreshLayout.isRefreshing()) {
+                primarySwipeRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        primarySwipeRefreshLayout.setRefreshing(true);
+                    }
+                }, 100);
+            }
         }
         if (requestTool == null) {
             requestTool = new LRequestTool(this);
         }
+
         DefaultParam param = new DefaultParam();
-        param.put("page", currentPage);
-        requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_ARTICLES, param, API_ARTICLES);
+        if (selectedGrade != null && selectedSubject != null) {
+            param.put("subject_id", selectedSubject.id);
+            param.put("grade_id", selectedGrade.id);
+            requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_ARTICLE_UNITS, param, API_ARTICLE_UNITS);
+        } else {
+            param.put("page", currentPage);
+            requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_ARTICLES, param, API_ARTICLES);
+        }
     }
 
     public void initViews(LayoutInflater inflater) {
@@ -120,7 +139,7 @@ public class IndexFragment extends Fragment implements
     @Override
     public void onResponse(LResponse response) {
         isLoading = false;
-        if (primarySwipeRefreshLayout!=null) {
+        if (primarySwipeRefreshLayout != null) {
             primarySwipeRefreshLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -148,12 +167,18 @@ public class IndexFragment extends Fragment implements
                 hasMore = appendData.size() == PAGE_SIZE;
                 if (currentPage == 1) {
                     articles = appendData;
-                    adapter = new IndexAdapter(getActivity(), ArticleShelfWrapper.wrap(articles), false);
+                    adapter = new IndexAdapter(getActivity(), ArticleShelfWrapper.wrap(articles),
+                            (selectedGrade != null && selectedSubject != null));
                     primaryAbsListView.setAdapter(adapter);
                 } else {
                     articles.addAll(appendData);
                     adapter.setNewData(ArticleShelfWrapper.wrap(articles));
                 }
+                break;
+            case API_ARTICLE_UNITS:
+                units = new Gson().fromJson(response.body, new TypeToken<List<Unit>>() {
+                }.getType());
+                primaryAbsListView.setAdapter(new IndexUnitAdapter(units));
                 break;
         }
     }
@@ -164,6 +189,7 @@ public class IndexFragment extends Fragment implements
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        //hide AppBar
         if (currentVisiblePosition == -1) {
             currentVisiblePosition = firstVisibleItem;
         } else {
@@ -177,7 +203,9 @@ public class IndexFragment extends Fragment implements
         if (isLoading || view.getCount() == 0) {
             return;
         }
-
+        if (selectedSubject != null && selectedGrade != null) {
+            return;
+        }
         //Load more when scrolling over last PAGE_SIZE / 2 items;
         boolean isDivDPage = firstVisibleItem + visibleItemCount > totalItemCount - PAGE_SIZE / 2;
         if (isDivDPage && hasMore) {
@@ -191,7 +219,19 @@ public class IndexFragment extends Fragment implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ToastUtil.show("IndexFragment.onActivityResult:" + resultCode);
+        if (requestCode != ACTION_CATEGORY) {
+            return;
+        }
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        selectedGrade = (Grade) data.getSerializableExtra("grade");
+        selectedSubject = (Subject) data.getSerializableExtra("subject");
+        headHolder.headMainTvCurrentCate.setText(String.format("%s%s",
+                selectedGrade.name, selectedSubject.name));
+
+        currentPage = 1;
+        getData();
     }
 
     @Override
@@ -222,7 +262,8 @@ public class IndexFragment extends Fragment implements
 
         @OnClick(R.id.head_main_tvCate)
         protected void openCateActivity() {
-            startActivityForResult(new Intent(getActivity(), CategoryActivity.class), ACTION_CATEGORY);
+            IndexFragment.this.startActivityForResult(
+                    new Intent(getActivity(), CategoryActivity.class), ACTION_CATEGORY);
         }
     }
 }

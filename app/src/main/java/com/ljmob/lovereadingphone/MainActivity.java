@@ -14,6 +14,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
 import com.ljmob.lovereadingphone.adapter.MainPagerAdapter;
+import com.ljmob.lovereadingphone.fragment.IndexFragment;
 import com.ljmob.lovereadingphone.fragment.PlayerBarFragment;
 import com.londonx.lutil.util.ToastUtil;
 
@@ -86,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //TODO filter result for rank
+        switch (requestCode) {
+            case IndexFragment.ACTION_CATEGORY:
+                ((MainPagerAdapter) primaryViewPager.getAdapter()).getItem(0)
+                        .onActivityResult(requestCode, resultCode, data);
+                break;
+        }
     }
 
     @Override

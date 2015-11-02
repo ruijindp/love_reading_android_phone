@@ -1,13 +1,16 @@
 package com.ljmob.lovereadingphone.adapter;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ljmob.lovereadingphone.CategoryActivity;
 import com.ljmob.lovereadingphone.R;
-import com.ljmob.lovereadingphone.entity.ArticleCategory;
+import com.ljmob.lovereadingphone.entity.Category;
 import com.ljmob.lovereadingphone.view.UnScrollableGridView;
 import com.londonx.lutil.adapter.LAdapter;
 import com.londonx.lutil.entity.LEntity;
@@ -16,14 +19,18 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 
 /**
  * Created by london on 15/10/28.
  * 分类
  */
 public class CategoryAdapter extends LAdapter {
-    public CategoryAdapter(List<? extends LEntity> lEntities) {
+    CategoryActivity categoryActivity;
+
+    public CategoryAdapter(List<? extends LEntity> lEntities, CategoryActivity categoryActivity) {
         super(lEntities);
+        this.categoryActivity = categoryActivity;
     }
 
     @Override
@@ -34,7 +41,7 @@ public class CategoryAdapter extends LAdapter {
             convertView.setTag(new ViewHolder(convertView));
         }
         ViewHolder holder = (ViewHolder) convertView.getTag();
-        holder.setCategory((ArticleCategory) lEntities.get(position));
+        holder.setCategory((Category) lEntities.get(position));
         return convertView;
     }
 
@@ -44,7 +51,7 @@ public class CategoryAdapter extends LAdapter {
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
-    static class ViewHolder {
+    class ViewHolder {
         @Bind(R.id.item_category_imgCategory)
         ImageView itemCategoryImgCategory;
         @Bind(R.id.item_category_tvCategory)
@@ -52,12 +59,25 @@ public class CategoryAdapter extends LAdapter {
         @Bind(R.id.item_category_gridSubCate)
         UnScrollableGridView itemCategoryGridSubCate;
 
+        Category category;
+
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
 
-        public void setCategory(ArticleCategory category) {
-            itemCategoryGridSubCate.setAdapter(new SubCateAdapter(category.sub_categories));
+        public void setCategory(Category category) {
+            this.category = category;
+            itemCategoryTvCategory.setText(category.subject.name);
+            itemCategoryGridSubCate.setAdapter(new SubCateAdapter(category.grades));
+        }
+
+        @OnItemClick(R.id.item_category_gridSubCate)
+        protected void onGradeSelected(int position) {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("subject", category.subject);
+            resultIntent.putExtra("grade", category.grades.get(position));
+            categoryActivity.setResult(Activity.RESULT_OK, resultIntent);
+            categoryActivity.finish();
         }
     }
 }

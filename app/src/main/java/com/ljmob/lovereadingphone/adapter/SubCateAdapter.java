@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.R;
+import com.ljmob.lovereadingphone.entity.Grade;
 import com.londonx.lutil.adapter.LAdapter;
 import com.londonx.lutil.entity.LEntity;
 
@@ -30,6 +31,8 @@ public class SubCateAdapter extends LAdapter {
                     .inflate(R.layout.item_sub_cate, parent, false);
             convertView.setTag(new ViewHolder(convertView));
         }
+        ViewHolder holder = (ViewHolder) convertView.getTag();
+        holder.itemSubCateTvCate.setText(((Grade) getItem(position)).name);
         return convertView;
     }
 

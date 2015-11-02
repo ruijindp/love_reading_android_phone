@@ -11,19 +11,18 @@ import java.util.List;
 public class Article extends LEntity {
     public String title;
     public String author;
-    public CoverImgEntity cover_img;
+    public CoverImg cover_img;
     public Grade grade;
-    public ArticleTypeEntity article_type;
+    public ArticleType article_type;
     public Subject subject;
     public Unit unit;
     public List<Section> sections;
     public int count;
 
-    public static class CoverImgEntity extends LEntity {
+    /**
+     * 封面
+     */
+    public static class CoverImg extends LEntity {
         public Image cover_img;
-    }
-
-    public static class ArticleTypeEntity extends LEntity {
-        public String name;
     }
 }

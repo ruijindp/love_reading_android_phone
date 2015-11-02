@@ -1,10 +1,10 @@
 package com.ljmob.lovereadingphone.adapter;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,25 +13,56 @@ import com.ljmob.lovereadingphone.DetailActivity;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.entity.Article;
 import com.ljmob.lovereadingphone.entity.ArticleShelf;
+import com.ljmob.lovereadingphone.entity.Unit;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
-import com.londonx.lutil.adapter.LAdapter;
-import com.londonx.lutil.entity.LEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by london on 15/10/22.
- * 首页书架
+ * Created by london on 15/11/2.
+ * 带单元信息的IndexAdapter
  */
-public class IndexAdapter extends LAdapter {
-    Activity activity;
+public class IndexUnitAdapter extends BaseAdapter {
+    List<Unit> units;
+    List<ArticleShelf> shelves;
 
-    public IndexAdapter(Activity activity, List<? extends LEntity> lEntities, boolean showUnit) {
-        super(lEntities);
-        this.activity = activity;
+    String lastUnit = "";
+
+    public IndexUnitAdapter(List<Unit> units) {
+        this.units = units;
+        shelves = new ArrayList<>();
+        for (Unit u : units) {
+            for (int i = 0; i < u.articles.size(); i += 2) {
+                ArticleShelf articleShelf = new ArticleShelf();
+                articleShelf.unitName = u.name;
+                articleShelf.articles[0] = u.articles.get(i);
+                if (u.articles.size() > i + 1) {
+                    articleShelf.articles[1] = u.articles.get(i + 1);
+                } else {
+                    articleShelf.articles[1] = null;
+                }
+                shelves.add(articleShelf);
+            }
+        }
+    }
+
+    @Override
+    public int getCount() {
+        return shelves.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return shelves.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return shelves.get(position).id;
     }
 
     @Override
@@ -47,7 +78,7 @@ public class IndexAdapter extends LAdapter {
     }
 
     /**
-     * This class contains all butterknife-injected Views & Layouts from layout file 'item_indexx.xml'
+     * This class contains all butterknife-injected Views & Layouts from layout file 'item_index.xml'
      * for easy to all layout elements.
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
@@ -81,8 +112,16 @@ public class IndexAdapter extends LAdapter {
         }
 
         public void setArticleShelf(ArticleShelf shelf) {
-            if (itemIndexTvUnit.getVisibility() != View.GONE) {
-                itemIndexTvUnit.setVisibility(View.GONE);
+            if (lastUnit.equals(shelf.unitName)) {
+                if (itemIndexTvUnit.getVisibility() != View.GONE) {
+                    itemIndexTvUnit.setVisibility(View.GONE);
+                }
+            } else {
+                if (itemIndexTvUnit.getVisibility() != View.VISIBLE) {
+                    itemIndexTvUnit.setVisibility(View.VISIBLE);
+                }
+                itemIndexTvUnit.setText(shelf.unitName);
+                lastUnit = shelf.unitName;
             }
             SimpleImageLoader
                     .displayImage(shelf.articles[0].cover_img.cover_img.normal.url, itemIndexImgCover0);
@@ -126,20 +165,7 @@ public class IndexAdapter extends LAdapter {
             public void onClick(View v) {
                 Intent detailIntent = new Intent(v.getContext(), DetailActivity.class);
                 detailIntent.putExtra("article", article);
-                View view;
-                switch (index) {
-                    case 0:
-                        view = itemIndexImgCover0;
-                        break;
-                    case 1:
-                        view = itemIndexImgCover1;
-                        break;
-                    default:
-                        view = itemIndexImgCover0;
-                        break;
-                }
-//                ActivityTool.start(activity, detailIntent, view);
-                activity.startActivity(detailIntent);
+                v.getContext().startActivity(detailIntent);
             }
         }
     }
