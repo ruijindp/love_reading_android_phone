@@ -2,6 +2,8 @@ package com.ljmob.lovereadingphone;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -14,8 +16,10 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
 import com.ljmob.lovereadingphone.adapter.MainPagerAdapter;
+import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.fragment.IndexFragment;
 import com.ljmob.lovereadingphone.fragment.PlayerBarFragment;
+import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.londonx.lutil.util.ToastUtil;
 
 import butterknife.Bind;
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private PlayerBarFragment playerBarFragment;
 
     boolean isAppBarHided;
+    boolean isAvatarSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +105,17 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         //TODO get playing from service
         showPlayerBar();
+        if (MyApplication.currentUser != null) {
+            if (!isAvatarSet) {
+                SimpleImageLoader.displayImage(MyApplication.currentUser.avatar.avatar.small.url,
+                        toolbarMainImgHead);
+                isAvatarSet = true;
+            }
+        } else {
+            if (isAvatarSet) {
+                toolbarMainImgHead.setImageDrawable(new ColorDrawable(Color.WHITE));
+            }
+        }
     }
 
     @OnClick(R.id.toolbar_main_imgHead)
@@ -195,6 +211,10 @@ public class MainActivity extends AppCompatActivity {
         }
         playBar.animate().translationY(playBar.getHeight())
                 .setInterpolator(new AccelerateInterpolator(2)).start();
+    }
+
+    public void clearAvatar() {
+        toolbarMainImgHead.setImageDrawable(new ColorDrawable(Color.WHITE));
     }
 
     private void showView(View view) {

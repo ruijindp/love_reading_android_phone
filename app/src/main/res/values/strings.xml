@@ -14,7 +14,7 @@
     <string name="retry">重读</string>
     <string name="done">完成</string>
     <string name="timer">00:00</string>
-    <string name="like_">喜欢(%1$)</string>
+    <string name="like_">喜欢(%1$d)</string>
     <string name="feeling">读者感想</string>
     <string name="let_me_try">我也要读</string>
     <string name="share_">分享到:</string>
@@ -37,18 +37,20 @@
     <string name="login_plz">请登录</string>
     <string name="total_">共</string>
     <string name="password_not_match">密码输入不一致</string>
+    <string name="login_fail">登录失败，用户名或密码错误</string>
     <string name="deleted_">已删除：</string>
     <string name="undone">撤销</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
     <string name="all">全部</string>
-    <string name="total__count">共%1$篇</string>
+    <string name="total__count">共%1$d篇</string>
 
 
     <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>
     <string name="toast_music_err">选择一首音乐吧</string>
     <string name="toast_clean_ok">已全部清除</string>
     <string name="toast_clean_undone">一些文件将在退出时删除</string>
+    <string name="feedback_ok">我们已经收到你的建议，谢谢！</string>
 
     <string name="dialog_feeling">说点什么吧!</string>
     <string name="dialog_feeling_confirm">上传</string>

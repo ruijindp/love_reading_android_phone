@@ -28,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:completionThreshold="1"
                 android:hint="@string/username"
                 android:inputType="text"
                 android:paddingBottom="12sp"
@@ -44,6 +45,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@string/dcd"
+                android:scaleType="centerInside"
                 android:src="@mipmap/icon_qingkong"
                 android:visibility="invisible" />
         </FrameLayout>
@@ -79,6 +81,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@string/dcd"
+                android:scaleType="centerInside"
                 android:src="@mipmap/icon_xianshi" />
 
             <ImageView
@@ -90,6 +93,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@string/dcd"
+                android:scaleType="centerInside"
                 android:src="@mipmap/icon_qingkong"
                 android:visibility="invisible" />
         </FrameLayout>
@@ -99,13 +103,37 @@
             android:layout_height="0.5dp"
             android:background="@color/div_list" />
 
+        <FrameLayout
+            android:id="@+id/activity_login_frameErr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="3dp"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/activity_login_tvReason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/login_fail"
+                android:textColor="?colorPrimary"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="right"
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_caveat" />
+        </FrameLayout>
+
         <TextView
             android:id="@+id/activity_login_btnLogin"
             android:layout_width="60dp"
             android:layout_height="32dp"
             android:layout_gravity="right"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/selector_btn_accent"
             android:gravity="center"
             android:text="@string/login"

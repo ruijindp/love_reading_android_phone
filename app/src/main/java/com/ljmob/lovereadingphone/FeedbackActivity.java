@@ -9,6 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.util.DefaultParam;
+import com.londonx.lutil.entity.LResponse;
+import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
 
 import butterknife.Bind;
@@ -19,11 +23,15 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by london on 15/10/27.
  * 反馈
  */
-public class FeedbackActivity extends AppCompatActivity {
+public class FeedbackActivity extends AppCompatActivity implements LRequestTool.OnResponseListener {
+    private static final int API_FEEDBACK = 1;
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.activity_feedback_et)
     EditText activityFeedbackEt;
+
+    LRequestTool requestTool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +43,7 @@ public class FeedbackActivity extends AppCompatActivity {
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
+        requestTool = new LRequestTool(this);
     }
 
     @Override
@@ -53,9 +62,17 @@ public class FeedbackActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else {
-            ToastUtil.show(activityFeedbackEt.getText().toString());
+            String feedback = activityFeedbackEt.getText().toString();
+            DefaultParam param = new DefaultParam();
+            param.put("content", feedback);
+            requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_FEEDBACK, param, API_FEEDBACK);
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResponse(LResponse response) {
+        ToastUtil.show(R.string.feedback_ok);
     }
 }

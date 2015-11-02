@@ -41,6 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="168dp"
                     android:contentDescription="@string/dcd"
+                    android:scaleType="centerCrop"
                     android:transitionName="view" />
 
                 <LinearLayout
@@ -107,6 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="168dp"
                     android:contentDescription="@string/dcd"
+                    android:scaleType="centerCrop"
                     android:transitionName="view" />
 
                 <LinearLayout

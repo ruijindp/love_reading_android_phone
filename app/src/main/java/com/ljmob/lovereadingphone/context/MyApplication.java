@@ -3,7 +3,9 @@ package com.ljmob.lovereadingphone.context;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 
+import com.google.gson.Gson;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.entity.User;
 import com.londonx.lutil.Lutil;
@@ -55,7 +57,10 @@ public class MyApplication extends Application {
         ImageLoader.getInstance().init(builder.build());
 
         //TODO set currentUser
-        currentUser = new User();
-        currentUser.role = User.Role.student;
+        String UB64 = Lutil.preferences.getString("UB64", "");
+        if (UB64.length() != 0) {
+            currentUser = new Gson()
+                    .fromJson(new String(Base64.decode(UB64, Base64.DEFAULT)), User.class);
+        }
     }
 }

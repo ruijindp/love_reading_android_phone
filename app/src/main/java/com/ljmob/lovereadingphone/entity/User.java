@@ -7,10 +7,30 @@ import com.londonx.lutil.entity.LEntity;
  * 用户
  */
 public class User extends LEntity {
-    public String token = "none";
+
+    /**
+     * account=a&password=123456
+     * token : Z_xvfXszjVu_9BgfzSde
+     * name : 测试1
+     * avatar : {"avatar":{"url":"/user_avatar/Z_xvfXszjVu_9BgfzSde.png","normal":{"url":"/user_avatar/Z_xvfXszjVu_9BgfzSde.png"},"small":{"url":"/user_avatar/Z_xvfXszjVu_9BgfzSde.png"},"large":{"url":"/user_avatar/Z_xvfXszjVu_9BgfzSde.png"},"big":{"url":"/user_avatar/Z_xvfXszjVu_9BgfzSde.png"}}}
+     * role : teacher
+     */
+
+    public String token;
+    public String name;
     public Role role = Role.student;
+    public Avatar avatar;
+    public Sex sex;
+
+    public class Avatar extends LEntity {
+        public Image avatar;
+    }
 
     public enum Role {
-        student, teacher
+        teacher, student
+    }
+
+    public enum Sex {
+        boy, girl
     }
 }

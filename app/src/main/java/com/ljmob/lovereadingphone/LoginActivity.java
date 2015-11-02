@@ -1,19 +1,38 @@
 package com.ljmob.lovereadingphone;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.ljmob.lovereadingphone.context.MyApplication;
+import com.ljmob.lovereadingphone.entity.User;
+import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.util.DefaultParam;
+import com.londonx.lutil.Lutil;
+import com.londonx.lutil.entity.LResponse;
+import com.londonx.lutil.util.LRequestTool;
+import com.londonx.lutil.util.ToastUtil;
+import com.londonx.lutil.util.UserTool;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,7 +45,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by london on 15/10/21.
  * 登录界面
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements LRequestTool.OnResponseListener {
+    private static final int USER_SIGN_IN = 1;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -42,6 +62,13 @@ public class LoginActivity extends AppCompatActivity {
     ImageView activityLoginImgCleanPassword;
     @Bind(R.id.activity_login_btnLogin)
     TextView activityLoginBtnLogin;
+    @Bind(R.id.activity_login_tvReason)
+    TextView activityLoginTvReason;
+    @Bind(R.id.activity_login_frameErr)
+    FrameLayout activityLoginFrameErr;
+
+    LRequestTool requestTool;
+    List<UserTool.SimpleUser> simpleUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +80,27 @@ public class LoginActivity extends AppCompatActivity {
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
-    }
+        requestTool = new LRequestTool(this);
 
+        activityLoginEtUserName.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                simpleUsers = UserTool.getSimpleUsers(LoginActivity.this);
+                List<String> userNames = new ArrayList<>();
+                for (UserTool.SimpleUser s : simpleUsers) {
+                    userNames.add(s.username);
+                }
+                activityLoginEtUserName.setAdapter(new ArrayAdapter<>(LoginActivity.this,
+                        android.R.layout.simple_dropdown_item_1line, userNames));
+                activityLoginEtUserName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        chooseUser(position);
+                    }
+                });
+            }
+        }, 16);
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -69,9 +115,40 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResponse(LResponse response) {
+        activityLoginBtnLogin.setEnabled(true);
+        if (response.responseCode != 200) {
+            activityLoginFrameErr.setVisibility(View.VISIBLE);
+            ToastUtil.serverErr(response);
+            return;
+        }
+        activityLoginFrameErr.setVisibility(View.INVISIBLE);
+        switch (response.requestCode) {
+            case USER_SIGN_IN:
+                try {
+                    MyApplication.currentUser = new Gson().fromJson(response.body, User.class);
+                } catch (Exception ignore) {
+                    break;
+                }
+                String userB64 = Base64.encodeToString(response.body.getBytes(), Base64.DEFAULT);
+                SharedPreferences.Editor editor = Lutil.preferences.edit();
+                editor.putString("UB64", userB64);
+                editor.apply();
+                UserTool.rememberUser(this, activityLoginEtUserName.getText().toString(),
+                        activityLoginEtPassword.getText().toString());
+                finish();
+                break;
+        }
+    }
+
     @OnClick(R.id.activity_login_btnLogin)
     protected void doLogin() {
-        finish();
+        activityLoginBtnLogin.setEnabled(false);
+        DefaultParam param = new DefaultParam();
+        param.put("account", activityLoginEtUserName.getText().toString());
+        param.put("password", activityLoginEtPassword.getText().toString());
+        requestTool.doPost(NetConstant.ROOT_URL + NetConstant.USER_SIGN_IN, param, USER_SIGN_IN);
     }
 
     @OnClick(R.id.activity_login_imgCleanUserName)
@@ -111,5 +188,10 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             activityLoginImgCleanPassword.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void chooseUser(int position) {
+        UserTool.SimpleUser simpleUser = simpleUsers.get(position);
+        activityLoginEtPassword.setText(simpleUser.password);
     }
 }
