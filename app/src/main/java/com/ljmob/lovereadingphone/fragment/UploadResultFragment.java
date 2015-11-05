@@ -24,10 +24,10 @@ import butterknife.OnClick;
 
 /**
  * Created by london on 15/10/29.
- * 看未评分结果（仅教师）
+ * 试听未上传
  */
 
-public class NotRatedResultFragment extends Fragment {
+public class UploadResultFragment extends Fragment {
     View rootView;
     @Bind(R.id.view_not_rated_result_tvTimerCurrent)
     TextView viewNotRatedResultTvTimerCurrent;
