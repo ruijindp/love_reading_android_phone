@@ -9,7 +9,6 @@
                 <item android:state_enabled="false">
                     <color android:color="@color/colorAccent" />
                 </item>
-                <!--<item android:drawable="@drawable/abc_scrubber_primary_mtrl_alpha" />-->
             </selector>
         </scale>
     </item>

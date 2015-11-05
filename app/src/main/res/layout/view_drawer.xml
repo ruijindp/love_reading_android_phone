@@ -326,6 +326,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/view_drawer_div"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginBottom="8dp"

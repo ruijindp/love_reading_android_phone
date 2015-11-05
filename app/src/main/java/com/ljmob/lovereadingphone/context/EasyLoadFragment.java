@@ -61,9 +61,13 @@ public abstract class EasyLoadFragment extends Fragment implements
         primaryListView.setOnScrollListener(this);
     }
 
-    public abstract void onRefreshData();
+    public void onRefreshData() {
 
-    public abstract void onLoadMore();
+    }
+
+    public void onLoadMore() {
+
+    }
 
     public abstract void responseData(LResponse response);
 

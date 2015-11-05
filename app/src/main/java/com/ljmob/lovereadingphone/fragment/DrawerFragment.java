@@ -107,6 +107,8 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
     TextView viewDrawerTvNotRatedCount;
     @Bind(R.id.view_drawer_tvRatedCount)
     TextView viewDrawerTvRatedCount;
+    @Bind(R.id.view_drawer_div)
+    View viewDrawerDiv;
 
     private MaterialDialog cacheDialog;
     private long cacheSize;
@@ -293,6 +295,9 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
 
     @OnClick(R.id.view_drawer_lnExit)
     protected void exit() {
+        if (MyApplication.currentUser == null) {
+            return;
+        }
         requestTool.doPost(NetConstant.ROOT_URL + NetConstant.USER_SIGN_OUT,
                 new DefaultParam(), USER_SIGN_OUT);
         MyApplication.currentUser = null;
@@ -302,6 +307,18 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
     }
 
     private void initDrawerViews() {
+        if (MyApplication.currentUser == null) {//默认显示“我的朗读”
+            viewDrawerLnMyReading.setVisibility(View.VISIBLE);
+            viewDrawerLnStudentReading.setVisibility(View.GONE);
+
+            viewDrawerDiv.setVisibility(View.INVISIBLE);
+            viewDrawerLnChangePassword.setVisibility(View.INVISIBLE);
+            viewDrawerLnExit.setVisibility(View.INVISIBLE);
+        } else {
+            viewDrawerDiv.setVisibility(View.VISIBLE);
+            viewDrawerLnChangePassword.setVisibility(View.VISIBLE);
+            viewDrawerLnExit.setVisibility(View.VISIBLE);
+        }
         viewDrawerTvNotRatedCount.setText(getString(R.string.total__count, 0));
         viewDrawerTvRatedCount.setText(getString(R.string.total__count, 0));
         if (MyApplication.currentUser == null) {//用户未登录

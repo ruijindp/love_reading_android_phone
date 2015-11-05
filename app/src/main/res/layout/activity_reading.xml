@@ -8,7 +8,8 @@
         android:id="@+id/activity_reading_imgBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/dcd" />
+        android:contentDescription="@string/dcd"
+        android:scaleType="centerCrop" />
 
     <View
         android:id="@+id/activity_reading_mask"

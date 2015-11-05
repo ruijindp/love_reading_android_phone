@@ -238,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void clearAvatar() {
         toolbarMainImgHead.setImageDrawable(new ColorDrawable(Color.WHITE));
+        isAvatarSet = false;
     }
 
     public void setAvatar(String avatarApiUrl) {

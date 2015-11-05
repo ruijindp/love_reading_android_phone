@@ -183,6 +183,9 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
 
     @Override
     public boolean handleMessage(Message msg) {
+        if (mediaPlayer == null) {
+            return false;
+        }
         int position = mediaPlayer.getCurrentPosition();
         int duration = mediaPlayer.getDuration();
         if (onProgressChangeListener != null) {

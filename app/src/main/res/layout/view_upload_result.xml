@@ -30,7 +30,6 @@
             android:layout_weight="1"
             android:progress="10"
             android:progressDrawable="@drawable/layer_seekbar"
-            android:secondaryProgress="20"
             android:thumb="@drawable/selector_seekbar_thumb" />
 
         <TextView

@@ -13,6 +13,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.context.MyApplication;
+import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.entity.User;
 import com.londonx.lutil.util.ToastUtil;
 
@@ -35,6 +36,7 @@ public class RatedResultFragment extends Fragment {
     TextView viewRatedResultTvTimerTotal;
     @Bind(R.id.view_rated_result_tvLike)
     TextView viewRatedResultTvLike;
+    private Result result;
 
     @Nullable
     @Override
@@ -81,5 +83,9 @@ public class RatedResultFragment extends Fragment {
     @OnClick(R.id.view_rated_result_tvLike)
     protected void like() {
         ToastUtil.show("like");
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
     }
 }

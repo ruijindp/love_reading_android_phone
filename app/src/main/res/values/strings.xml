@@ -12,10 +12,12 @@
     <string name="start_reading">开始朗读</string>
     <string name="listen">试听</string>
     <string name="retry">重读</string>
+    <string name="re_reading">再读一遍</string>
     <string name="done">完成</string>
     <string name="timer">00:00</string>
     <string name="like_">喜欢(%1$d)</string>
     <string name="feeling">读者感想</string>
+    <string name="feeling_my">感想</string>
     <string name="let_me_try">我也要读</string>
     <string name="share_">分享到:</string>
     <string name="city">城市</string>

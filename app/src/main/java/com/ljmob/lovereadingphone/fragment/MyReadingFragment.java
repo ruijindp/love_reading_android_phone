@@ -1,5 +1,6 @@
 package com.ljmob.lovereadingphone.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ljmob.lovereadingphone.MyReadingActivity;
 import com.ljmob.lovereadingphone.R;
+import com.ljmob.lovereadingphone.ReadingActivity;
 import com.ljmob.lovereadingphone.adapter.MyReadingAdapter;
 import com.ljmob.lovereadingphone.context.EasyLoadFragment;
 import com.ljmob.lovereadingphone.context.MyApplication;
@@ -22,6 +24,9 @@ import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.entity.LResponse;
 
 import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 
 /**
  * Created by london on 15/10/27.
@@ -51,7 +56,49 @@ public class MyReadingFragment extends EasyLoadFragment {
 
             initData();
         }
+        ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void showAppBar() {
+        super.showAppBar();
+        ((MyReadingActivity) getActivity()).showAppBar();
+    }
+
+    @Override
+    public void hideAppBar() {
+        super.hideAppBar();
+        ((MyReadingActivity) getActivity()).hideAppBar();
+    }
+
+    @Override
+    public void responseData(LResponse response) {
+        if (response.requestCode == EasyLoadFragment.GET_DATA) {
+            List<Result> appendData = new Gson().fromJson(response.body, new TypeToken<List<Result>>() {
+            }.getType());
+            if (currentPage == 1) {
+                results = appendData;
+                myReadingAdapter = new MyReadingAdapter(results, type);
+                primaryListView.setAdapter(myReadingAdapter);
+            } else {
+                results.addAll(appendData);
+                myReadingAdapter.setNewData(results);
+            }
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @OnItemClick(R.id.primaryAbsListView)
+    protected void inspectResult(int position) {
+        Intent intent = new Intent(getContext(), ReadingActivity.class);
+        intent.putExtra("result", results.get(position - 1));//有header
+        startActivity(intent);
     }
 
     private void initData() {
@@ -75,32 +122,6 @@ public class MyReadingFragment extends EasyLoadFragment {
         }
     }
 
-    @Override
-    public void onRefreshData() {
-
-    }
-
-    @Override
-    public void onLoadMore() {
-
-    }
-
-    @Override
-    public void responseData(LResponse response) {
-        if (response.requestCode == EasyLoadFragment.GET_DATA) {
-            List<Result> appendData = new Gson().fromJson(response.body, new TypeToken<List<Result>>() {
-            }.getType());
-            if (currentPage == 1) {
-                results = appendData;
-                myReadingAdapter = new MyReadingAdapter(results, type);
-                primaryListView.setAdapter(myReadingAdapter);
-            } else {
-                results.addAll(appendData);
-                myReadingAdapter.setNewData(results);
-            }
-        }
-    }
-
     public void setSubject(Subject subject) {
         this.subject = subject;
         initData();
@@ -108,17 +129,5 @@ public class MyReadingFragment extends EasyLoadFragment {
 
     public enum Type {
         notRated, rated
-    }
-
-    @Override
-    public void showAppBar() {
-        super.showAppBar();
-        ((MyReadingActivity) getActivity()).showAppBar();
-    }
-
-    @Override
-    public void hideAppBar() {
-        super.hideAppBar();
-        ((MyReadingActivity) getActivity()).hideAppBar();
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -119,6 +120,7 @@ public class ReadingActivity extends AppCompatActivity implements
             } else {
                 currentStatus = Status.ratedResult;
             }
+            article = result.article;
         } else {
             article = (Article) getIntent().getSerializableExtra("article");
             if (article == null) {
@@ -144,7 +146,7 @@ public class ReadingActivity extends AppCompatActivity implements
         }
         initData();
 
-        if (MyApplication.blurryBg != null) {
+        if (MyApplication.blurryBg != null && result == null) {
             activityReadingImgBackground.setImageBitmap(MyApplication.blurryBg);
             activityReadingMask.setAlpha(0.4f);
         } else {
@@ -189,7 +191,6 @@ public class ReadingActivity extends AppCompatActivity implements
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
-
 
     private void doShare() {
         //TODO shareSDk
@@ -280,6 +281,10 @@ public class ReadingActivity extends AppCompatActivity implements
             uploadResultFragment = new UploadResultFragment();
             notRatedResultFragment = new NotRatedResultFragment();
             ratedResultFragment = new RatedResultFragment();
+            if (result != null) {
+                notRatedResultFragment.setResult(result);
+                setRatedResult(result);
+            }
 
             fragments.add(recorderFragment);
             fragments.add(uploadResultFragment);
@@ -359,7 +364,6 @@ public class ReadingActivity extends AppCompatActivity implements
                 if (shareMenuItem != null) {
                     shareMenuItem.setVisible(false);
                 }
-                //TODO gif
                 recorderFragment.setMetaData(music, article);
                 activityReadingPagerStatus.setCurrentItem(0);
                 break;
@@ -372,7 +376,6 @@ public class ReadingActivity extends AppCompatActivity implements
                 activityReadingPagerStatus.setCurrentItem(1);
                 break;
             case notRatedResult:
-                ToastUtil.show("未打分状态仅教师可见");
                 activityReadingLnHeadRecord.setVisibility(View.GONE);
                 activityReadingLnHeadResult.setVisibility(View.VISIBLE);
                 activityReadingTvChecker.setVisibility(View.GONE);
@@ -454,6 +457,13 @@ public class ReadingActivity extends AppCompatActivity implements
 
     public void stopCountDown() {
         activityReadingImgCountDown.setVisibility(View.INVISIBLE);
+    }
+
+
+    public void setRatedResult(@NonNull Result result) {
+        if (result.score.size() != 0) {
+            ratedResultFragment.setResult(result);
+        }
     }
 
     public enum Status {

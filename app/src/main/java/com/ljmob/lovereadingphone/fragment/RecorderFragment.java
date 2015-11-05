@@ -1,5 +1,6 @@
 package com.ljmob.lovereadingphone.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -74,11 +75,17 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (recorder != null && recorder.isRecording()) {
+            release();
+        }
         ButterKnife.unbind(this);
     }
 
     @Override
     public void onAmplitude(float amplitude) {
+        if (viewRecorderRipple == null) {
+            return;
+        }
         viewRecorderRipple.setAmplitude(amplitude);
     }
 
@@ -92,12 +99,20 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            if (!isRunning) {
+                break;
+            }
             if (currentStatus == Status.recording) {
                 recTime += 200;
+                if (viewRecorderTvTime == null) {
+                    break;
+                }
                 viewRecorderTvTime.post(new Runnable() {
                     @Override
                     public void run() {
-                        viewRecorderTvTime.setText(DateFormat.format("mm:ss", recTime));
+                        if (isRunning) {
+                            viewRecorderTvTime.setText(DateFormat.format("mm:ss", recTime));
+                        }
                     }
                 });
             }
@@ -220,8 +235,10 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
     }
 
     public void release() {
-        player.stop();
         isRunning = false;
+        if (player != null) {
+            player.stop();
+        }
     }
 
     private void countDown() {
@@ -239,7 +256,11 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
         viewRecorderRipple.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ((ReadingActivity) getActivity()).stopCountDown();
+                Activity activity = getActivity();
+                if (activity == null) {
+                    return;
+                }
+                ((ReadingActivity) activity).stopCountDown();
                 currentStatus = Status.ready;
                 recordOrPause();
             }
