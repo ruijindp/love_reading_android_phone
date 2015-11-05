@@ -61,6 +61,7 @@ public class ReadingActivity extends AppCompatActivity implements
         , LRequestTool.OnUploadListener {
 
     private static final int API_RESULTS_UPLOAD = 1;
+    private static final int API_HISTORY = 2;
 
     @Bind(R.id.toolbar_trans)
     Toolbar toolbarTrans;
@@ -72,12 +73,10 @@ public class ReadingActivity extends AppCompatActivity implements
     ImageView activityReadingImgBackground;
     @Bind(R.id.activity_reading_mask)
     View activityReadingMask;
-
     @Bind(R.id.activity_reading_lnHeadRecord)
     LinearLayout activityReadingLnHeadRecord;
     @Bind(R.id.activity_reading_lnHeadResult)
     LinearLayout activityReadingLnHeadResult;
-
     @Bind(R.id.activity_reading_scContent)
     ScrollView activityReadingScContent;
     @Bind(R.id.activity_reading_tvChecker)
@@ -90,6 +89,11 @@ public class ReadingActivity extends AppCompatActivity implements
     LinearLayout activityReadingLnContent;
     @Bind(R.id.activity_reading_imgCountDown)
     GifImageView activityReadingImgCountDown;
+
+    @Bind(R.id.activity_reading_tvReader)
+    TextView activityReadingTvReader;
+    @Bind(R.id.activity_reading_tvSchoolClass)
+    TextView activityReadingTvSchoolClass;
 
     List<Fragment> fragments;
     MenuItem shareMenuItem;
@@ -114,11 +118,15 @@ public class ReadingActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         result = (Result) getIntent().getSerializableExtra("result");
+        requestTool = new LRequestTool(this);
         if (result != null) {
             if (result.score.size() == 0) {
                 currentStatus = Status.notRatedResult;
             } else {
                 currentStatus = Status.ratedResult;
+                DefaultParam param = new DefaultParam();
+                param.put("result_id", result.id);
+                requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_HISTORY, param, API_HISTORY);
             }
             article = result.article;
         } else {
@@ -160,7 +168,6 @@ public class ReadingActivity extends AppCompatActivity implements
                     });
         }
         makeViewByStatus();
-        requestTool = new LRequestTool(this);
     }
 
     @Override
@@ -283,7 +290,6 @@ public class ReadingActivity extends AppCompatActivity implements
             ratedResultFragment = new RatedResultFragment();
             if (result != null) {
                 notRatedResultFragment.setResult(result);
-                setRatedResult(result);
             }
 
             fragments.add(recorderFragment);
@@ -381,6 +387,18 @@ public class ReadingActivity extends AppCompatActivity implements
                 activityReadingTvChecker.setVisibility(View.GONE);
                 activityReadingRbRate.setVisibility(View.GONE);
                 activityReadingPagerStatus.setCurrentItem(2);
+                activityReadingTvReader.setText(result.user.name);
+
+                if (result.user.team_classes.size() == 0) {//学生
+                    activityReadingTvSchoolClass.setVisibility(View.GONE);
+                } else {
+                    activityReadingTvSchoolClass.setVisibility(View.VISIBLE);
+                    String schoolClass = String.format("%s - %s%s",
+                            result.user.team_classes.get(0).school.name,
+                            result.user.team_classes.get(0).grade.name,
+                            result.user.team_classes.get(0).name);
+                    activityReadingTvSchoolClass.setText(schoolClass);
+                }
                 break;
             case ratedResult:
                 activityReadingLnHeadRecord.setVisibility(View.GONE);
@@ -391,6 +409,20 @@ public class ReadingActivity extends AppCompatActivity implements
                     shareMenuItem.setVisible(true);
                 }
                 activityReadingPagerStatus.setCurrentItem(3);
+                activityReadingRbRate.setRating(result.score.get(0).score);
+                activityReadingTvReader.setText(result.user.name);
+                if (result.user.team_classes.size() == 0) {//学生
+                    activityReadingTvSchoolClass.setVisibility(View.GONE);
+                } else {
+                    activityReadingTvSchoolClass.setVisibility(View.VISIBLE);
+                    String schoolClass = String.format("%s - %s%s",
+                            result.user.team_classes.get(0).school.name,
+                            result.user.team_classes.get(0).grade.name,
+                            result.user.team_classes.get(0).name);
+                    activityReadingTvSchoolClass.setText(schoolClass);
+                }
+                activityReadingTvChecker.setText(getString(R.string.checker_, result.score.get(0).user.name));
+
                 break;
         }
         activityReadingScContent.post(new Runnable() {
@@ -461,9 +493,13 @@ public class ReadingActivity extends AppCompatActivity implements
 
 
     public void setRatedResult(@NonNull Result result) {
-        if (result.score.size() != 0) {
-            ratedResultFragment.setResult(result);
+        if (result.score.size() == 0) {
+            return;
         }
+        this.result = result;
+        ratedResultFragment.setResult(result);
+        currentStatus = Status.ratedResult;
+        makeViewByStatus();
     }
 
     public enum Status {

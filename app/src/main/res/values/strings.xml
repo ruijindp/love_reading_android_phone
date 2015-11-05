@@ -54,6 +54,10 @@
     <string name="change_pwd_new">新密码不能为空</string>
     <string name="change_pwd_new_too_short">新密码至少6位数</string>
     <string name="change_pwd_confirm">密码输入不一致</string>
+    <string name="committing">正在提交</string>
+    <string name="committed">谢谢你的评分！</string>
+    <string name="_school_count">%1$s 等%2$d所学校</string>
+    <string name="checker_">(审核老师：%1$s)</string>
 
 
     <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>

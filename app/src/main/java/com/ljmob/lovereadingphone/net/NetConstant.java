@@ -22,6 +22,9 @@ public class NetConstant {
     public static final String API_STUDENT_RESULTS = "/api/v1/student_results";
     public static final String API_AVATAR = "/api/v1/user_infos/avatar";
     public static final String API_PASSWORD = "/api/v1/user_infos/password";
+    public static final String API_SCORE = "/api/v1/results/score";
+    public static final String API_HISTORY = "/api/v1/history";
+    public static final String API_HISTORY_DELETED = "/api/v1/history/delete";
 
     public static final String USER_SIGN_IN = "/users/sign_in.json";
     public static final String USER_SIGN_OUT = "/users/sign_out.json";

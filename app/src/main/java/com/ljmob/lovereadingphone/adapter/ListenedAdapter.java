@@ -10,11 +10,13 @@ import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by london on 15/10/28.
@@ -22,9 +24,11 @@ import butterknife.ButterKnife;
  */
 public class ListenedAdapter extends RecyclerView.Adapter {
     List<Result> results;
+    OnResultClickListener onResultClickListener;
 
-    public ListenedAdapter(List<Result> results) {
+    public ListenedAdapter(List<Result> results, OnResultClickListener onResultClickListener) {
         this.results = results;
+        this.onResultClickListener = onResultClickListener;
     }
 
     @Override
@@ -35,14 +39,33 @@ public class ListenedAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         Result result = results.get(position);
-        ((ViewHolder) holder).itemListenedTvTitle.setText(String.format("标题标题标题%d", result.id));
+        ViewHolder holder = ((ViewHolder) viewHolder);
+        holder.setPosition(position);
+
+        SimpleImageLoader.displayImage(result.article.cover_img.cover_img.small.url,
+                holder.itemListenedImgCover);
+        holder.itemListenedTvTitle.setText(result.article.title);
+        if (result.score.size() == 0) {
+            holder.itemListenedRbRating.setVisibility(View.INVISIBLE);
+        } else {
+            holder.itemListenedRbRating.setVisibility(View.VISIBLE);
+            holder.itemListenedRbRating.setRating(result.score.get(0).score);
+        }
+        holder.itemListenedTvUser.setText(result.user.name);
+        holder.itemListenedTvSchool.setText(result.user.team_classes.get(0).school.name);
+        holder.itemListenedTvLikeCount.setText(String.format("%d", result.votes));
     }
 
     @Override
     public int getItemCount() {
         return results.size();
+    }
+
+    public void setNewData(List<Result> results) {
+        this.results = results;
+        notifyDataSetChanged();
     }
 
     /**
@@ -66,12 +89,30 @@ public class ListenedAdapter extends RecyclerView.Adapter {
         TextView itemListenedTvSchool;
         @Bind(R.id.item_listened_imgLike)
         ImageView itemListenedImgLike;
-        @Bind(R.id.item_listened_imgLikeCount)
-        TextView itemListenedImgLikeCount;
+        @Bind(R.id.item_listened_tvLikeCount)
+        TextView itemListenedTvLikeCount;
+
+        int position = -1;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
+
+        public void setPosition(int position) {
+            this.position = position;
+        }
+
+        @OnClick(R.id.item_listened_viewRoot)
+        protected void onItemClick() {
+            if (position == -1) {
+                return;
+            }
+            onResultClickListener.onResultClick(position);
+        }
+    }
+
+    public interface OnResultClickListener {
+        void onResultClick(int position);
     }
 }

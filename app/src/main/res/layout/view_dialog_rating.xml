@@ -5,8 +5,9 @@
 
     <android.widget.RatingBar
         android:id="@+id/view_dialog_rating_rb"
-        android:layout_width="184dp"
-        android:layout_height="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
         android:layout_gravity="center"
-        android:rating="5" />
+        android:max="5"
+        android:progressDrawable="@drawable/layer_rating_l_orange" />
 </FrameLayout>

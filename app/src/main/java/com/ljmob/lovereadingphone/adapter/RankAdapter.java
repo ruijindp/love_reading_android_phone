@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.R;
@@ -51,8 +50,8 @@ public class RankAdapter extends LAdapter {
         ImageView itemRankImgCover;
         @Bind(R.id.item_rank_tvTitle)
         TextView itemRankTvTitle;
-        @Bind(R.id.item_rank_rating)
-        RatingBar itemRankRating;
+        @Bind(R.id.item_rank_tvFeeling)
+        TextView itemRankTvFeeling;
         @Bind(R.id.item_rank_tvUser)
         TextView itemRankTvUser;
         @Bind(R.id.item_rank_tvSchool)

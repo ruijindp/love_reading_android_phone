@@ -88,6 +88,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/activity_reading_tvReader"
                     fontPath="@string/font_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -97,6 +98,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/activity_reading_tvSchoolClass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -113,10 +115,11 @@
 
                 <android.support.v7.widget.AppCompatRatingBar
                     android:id="@+id/activity_reading_rbRate"
-                    android:layout_width="106dp"
-                    android:layout_height="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
                     android:layout_marginTop="10dp"
-                    android:isIndicator="true" />
+                    android:isIndicator="true"
+                    android:progressDrawable="@drawable/layer_rating_s_accent" />
             </LinearLayout>
 
             <!--<include layout="@layout/item_section" />-->

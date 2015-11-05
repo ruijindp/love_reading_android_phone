@@ -32,6 +32,7 @@
             android:id="@+id/item_my_reading_tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_marginRight="16dp"
             android:text="@string/test_time"
             android:textColor="@color/div_tab" />
@@ -39,8 +40,10 @@
         <RatingBar
             android:id="@+id/item_my_rbRating"
             android:layout_width="100dp"
-            android:layout_height="16dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="-4dp"
             android:isIndicator="true"
+            android:progressDrawable="@drawable/layer_rating_s_orange"
             android:rating="5" />
     </LinearLayout>
 
@@ -49,17 +52,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:visibility="gone"
         android:layout_marginLeft="72dp"
-        android:orientation="horizontal">
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <RatingBar
             android:id="@+id/item_my_rbRatingTeacher"
             android:layout_width="100dp"
-            android:layout_height="16dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="-6dp"
             android:isIndicator="true"
-            android:rating="5"
-            android:visibility="gone" />
+            android:progressDrawable="@drawable/layer_rating_s_orange" />
 
         <View
             android:id="@+id/item_my_reading_viewAnchorRated"

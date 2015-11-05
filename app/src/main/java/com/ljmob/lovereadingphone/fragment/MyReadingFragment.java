@@ -33,6 +33,8 @@ import butterknife.OnItemClick;
  * 我的朗读
  */
 public class MyReadingFragment extends EasyLoadFragment {
+    public static boolean hasDataChanged;
+
     public Type type;
     View rootView;
     List<Result> results;
@@ -58,6 +60,15 @@ public class MyReadingFragment extends EasyLoadFragment {
         }
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (hasDataChanged) {
+            hasDataChanged = false;
+            onRefresh();
+        }
     }
 
     @Override

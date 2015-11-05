@@ -2,6 +2,8 @@ package com.ljmob.lovereadingphone.entity;
 
 import com.londonx.lutil.entity.LEntity;
 
+import java.util.List;
+
 /**
  * Created by london on 15/10/21.
  * 用户
@@ -21,6 +23,7 @@ public class User extends LEntity {
     public Role role = Role.student;
     public Avatar avatar;
     public Sex sex;
+    public List<TeamClass> team_classes;
 
     public class Avatar extends LEntity {
         public Image avatar;

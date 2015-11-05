@@ -8,7 +8,7 @@ import com.londonx.lutil.entity.LEntity;
  * 分数
  */
 public class Score extends LEntity {
-    public int score;
+    public float score;
     public String comment;
     public long created_at;
     public User user;

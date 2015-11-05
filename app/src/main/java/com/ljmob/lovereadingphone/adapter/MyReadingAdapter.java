@@ -52,22 +52,23 @@ public class MyReadingAdapter extends LAdapter {
         }
         SimpleImageLoader.displayImage(result.article.cover_img.cover_img.small.url
                 , holder.itemMyReadingImgCover);
+        holder.itemMyReadingTvReader.setText(result.user.name);
         switch (type) {
             case notRated:
                 if (MyApplication.currentUser.role == User.Role.student) {//学生未评分
                     holder.itemMyReadingLnTeacher.setVisibility(View.GONE);
                     holder.itemMyReadingLnStudent.setVisibility(View.VISIBLE);
                     holder.itemMyRbRating.setVisibility(View.INVISIBLE);
-                    holder.itemMyReadingTvTime.setText(DateFormat.format("mm:ss",
-                            result.created_at * 1000));
+                    holder.itemMyReadingTvTime.setText(DateFormat.format("HH:mm",
+                            result.created_at * 1000l));
                 } else {//教师未评分
                     holder.itemMyReadingLnTeacher.setVisibility(View.VISIBLE);
                     holder.itemMyReadingLnStudent.setVisibility(View.GONE);
                     holder.itemMyReadingViewAnchorRated.setVisibility(View.GONE);
                     holder.itemMyReadingViewAnchorNotRated.setVisibility(View.VISIBLE);
                     holder.itemMyRbRatingTeacher.setVisibility(View.GONE);
-                    holder.itemMyReadingTvTimeTeacher.setText(DateFormat.format("mm:ss",
-                            result.created_at * 1000));
+                    holder.itemMyReadingTvTimeTeacher.setText(DateFormat.format("HH:mm",
+                            result.created_at * 1000l));
                 }
                 break;
             case rated:
@@ -75,8 +76,8 @@ public class MyReadingAdapter extends LAdapter {
                     holder.itemMyReadingLnTeacher.setVisibility(View.GONE);
                     holder.itemMyReadingLnStudent.setVisibility(View.VISIBLE);
                     holder.itemMyRbRating.setVisibility(View.VISIBLE);
-                    holder.itemMyReadingTvTime.setText(DateFormat.format("mm:ss",
-                            result.created_at * 1000));
+                    holder.itemMyReadingTvTime.setText(DateFormat.format("HH:mm",
+                            result.created_at * 1000l));
                     holder.itemMyRbRating.setRating(result.score.get(0).score);
                 } else {//教师已评分
                     holder.itemMyReadingLnTeacher.setVisibility(View.VISIBLE);
@@ -84,8 +85,8 @@ public class MyReadingAdapter extends LAdapter {
                     holder.itemMyReadingViewAnchorRated.setVisibility(View.VISIBLE);
                     holder.itemMyReadingViewAnchorNotRated.setVisibility(View.GONE);
                     holder.itemMyRbRatingTeacher.setVisibility(View.VISIBLE);
-                    holder.itemMyReadingTvTimeTeacher.setText(DateFormat.format("mm:ss",
-                            result.created_at * 1000));
+                    holder.itemMyReadingTvTimeTeacher.setText(DateFormat.format("HH:mm",
+                            result.created_at * 1000l));
                     holder.itemMyRbRatingTeacher.setRating(result.score.get(0).score);
                 }
                 break;

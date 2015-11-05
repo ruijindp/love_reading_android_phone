@@ -143,6 +143,9 @@ public class FileUtil {
 
     public static long getFileSize(File file) {
         long length = 0;
+        if (!file.exists()) {
+            return length;
+        }
         if (file.isFile()) {
             length += file.length();
         } else {

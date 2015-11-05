@@ -17,14 +17,20 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.google.gson.Gson;
 import com.ljmob.lovereadingphone.LoginActivity;
 import com.ljmob.lovereadingphone.MusicActivity;
 import com.ljmob.lovereadingphone.R;
+import com.ljmob.lovereadingphone.ReadingActivity;
 import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.entity.Score;
 import com.ljmob.lovereadingphone.entity.User;
 import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.util.DefaultParam;
+import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LMediaPlayer;
+import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
 
 import butterknife.Bind;
@@ -36,7 +42,9 @@ import butterknife.OnClick;
  * 看未评分结果（仅教师）
  */
 
-public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnProgressChangeListener {
+public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnProgressChangeListener, LRequestTool.OnResponseListener {
+    private static final int API_SCORE = 1;
+
     View rootView;
     @Bind(R.id.view_not_rated_result_tvTimerCurrent)
     TextView viewNotRatedResultTvTimerCurrent;
@@ -55,6 +63,9 @@ public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnP
 
     private Result result;
     LMediaPlayer player;
+    LRequestTool requestTool;
+    boolean isCommitting;
+    private MaterialDialog ratingDialog;
 
     @Nullable
     @Override
@@ -63,7 +74,6 @@ public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnP
             rootView = inflater.inflate(R.layout.view_not_rated_result, container, false);
         }
         ButterKnife.bind(this, rootView);
-
         if (result != null) {
             startPlay();
         }
@@ -167,7 +177,7 @@ public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnP
     }
 
     private void makeRate() {
-        MaterialDialog ratingDialog = new MaterialDialog.Builder(getActivity())
+        ratingDialog = new MaterialDialog.Builder(getActivity())
                 .theme(Theme.LIGHT)
                 .title(R.string.rate_plz)
                 .customView(R.layout.view_dialog_rating, false)
@@ -179,25 +189,63 @@ public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnP
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog,
                                         @NonNull DialogAction dialogAction) {
+                        if (isCommitting) {
+                            ToastUtil.show(R.string.committing);
+                            return;
+                        }
                         View rootView = materialDialog.getCustomView();
                         if (rootView == null) {
                             materialDialog.dismiss();
                             return;
                         }
-                        float rating = ((RatingBar) rootView
-                                .findViewById(R.id.view_dialog_rating_rb)).getRating();
+                        RatingBar ratingBar = ((RatingBar) rootView
+                                .findViewById(R.id.view_dialog_rating_rb));
+                        float rating = ratingBar.getRating();
                         ToastUtil.show("rating:" + rating);
-//                        ((ReadingActivity) getActivity()).setCurrentStatus(ReadingActivity.Status.ratedResult);
-                        materialDialog.dismiss();
+                        ratingBar.setIsIndicator(true);
+                        uploadScore(rating);
                     }
                 })
                 .build();
         ratingDialog.show();
     }
 
+    private void uploadScore(float rating) {
+        isCommitting = true;
+        ratingDialog.setCancelable(false);
+        if (requestTool == null) {
+            requestTool = new LRequestTool(this);
+        }
+        DefaultParam param = new DefaultParam();
+        param.put("result_id", result.id);
+        param.put("score", rating);
+        requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_SCORE, param, API_SCORE);
+    }
+
     private void release() {
         if (player != null && player.mediaPlayer.isPlaying()) {
             player.stop();
+        }
+    }
+
+    @Override
+    public void onResponse(LResponse response) {
+        ratingDialog.setCancelable(true);
+        isCommitting = false;
+        if (response.responseCode == 401) {
+            ToastUtil.show(R.string.toast_login_timeout);
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            return;
+        }
+        switch (response.requestCode) {
+            case API_SCORE:
+                ToastUtil.show(R.string.committed);
+                ratingDialog.dismiss();
+                MyReadingFragment.hasDataChanged = true;
+                Score score = new Gson().fromJson(response.body, Score.class);
+                result.score.add(score);
+                ((ReadingActivity) getActivity()).setRatedResult(result);
+                break;
         }
     }
 }

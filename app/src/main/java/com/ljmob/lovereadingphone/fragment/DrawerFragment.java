@@ -32,6 +32,7 @@ import com.ljmob.lovereadingphone.MyReadingActivity;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.CheckCount;
+import com.ljmob.lovereadingphone.entity.TeamClass;
 import com.ljmob.lovereadingphone.entity.User;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.DefaultParam;
@@ -49,6 +50,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -339,7 +341,32 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
             SimpleImageLoader.displayImage(MyApplication.currentUser.avatar.avatar.big.url,
                     viewDrawerImgHead);
             viewDrawerTvUserName.setText(MyApplication.currentUser.name);
-            viewDrawerTvSchoolClass.setText("none");
+
+            List<TeamClass> teamClasses = MyApplication.currentUser.team_classes;
+            String schoolClass = null;
+            if (teamClasses.size() != 0 && teamClasses.size() < 2) {//学生
+                TeamClass teamClass = teamClasses.get(0);
+                schoolClass = String.format("%s - %s%s", teamClass.school.name, teamClass.grade.name, teamClass.name);
+            } else {//教师有多个班级，某些教师有多个学校
+                int schoolCount = 0;
+                int lastSchoolId = 0;
+                for (TeamClass t : teamClasses) {
+                    if (t.school.id != lastSchoolId) {
+                        schoolCount++;
+                    }
+                }
+                if (schoolCount == 1) {
+                    schoolClass = teamClasses.get(0).school.name;
+                } else {
+                    schoolClass = getString(R.string._school_count, teamClasses.get(0).school.name, schoolCount);
+                }
+            }
+            if (schoolClass == null) {
+                viewDrawerTvSchoolClass.setVisibility(View.INVISIBLE);
+            } else {
+                viewDrawerTvSchoolClass.setVisibility(View.VISIBLE);
+                viewDrawerTvSchoolClass.setText(schoolClass);
+            }
             if (MyApplication.currentUser.sex == null) {
                 viewDrawerImgSex.setVisibility(View.INVISIBLE);
             } else {

@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
  */
 public class IndexAdapter extends LAdapter {
     Activity activity;
+    int pictureW;
 
     public IndexAdapter(Activity activity, List<? extends LEntity> lEntities, boolean showUnit) {
         super(lEntities);

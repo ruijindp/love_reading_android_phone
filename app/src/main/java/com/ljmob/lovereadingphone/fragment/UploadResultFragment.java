@@ -60,6 +60,7 @@ public class UploadResultFragment extends Fragment implements LMediaPlayer.OnPro
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        player.stop();
         ButterKnife.unbind(this);
     }
 
@@ -125,6 +126,8 @@ public class UploadResultFragment extends Fragment implements LMediaPlayer.OnPro
         if (duration - position <= 100) {
             viewUploadResultImgPlay.setImageResource(R.mipmap.icon_play);
         }
-        viewUploadResultTvTimerCurrent.setText(DateFormat.format("mm:ss", position));
+        if (viewUploadResultTvTimerCurrent!=null) {
+            viewUploadResultTvTimerCurrent.setText(DateFormat.format("mm:ss", position));
+        }
     }
 }
