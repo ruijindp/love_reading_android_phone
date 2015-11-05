@@ -7,16 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ljmob.lovereadingphone.MyReadingActivity;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.adapter.MyReadingAdapter;
 import com.ljmob.lovereadingphone.context.EasyLoadFragment;
+import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.entity.Subject;
+import com.ljmob.lovereadingphone.entity.User;
+import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.entity.LResponse;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,6 +31,8 @@ public class MyReadingFragment extends EasyLoadFragment {
     public Type type;
     View rootView;
     List<Result> results;
+    private Subject subject;
+    MyReadingAdapter myReadingAdapter;
 
     @Nullable
     @Override
@@ -42,19 +48,31 @@ public class MyReadingFragment extends EasyLoadFragment {
             View headEmpty = inflater.inflate(R.layout.head_my_reading, primaryListView, false);
 
             ((ListView) primaryListView).addHeaderView(headEmpty);
-            initData("", new DefaultParam());
+
+            initData();
         }
         return rootView;
     }
 
-    @Override
-    public void initData(String apiUrl, HashMap<String, Object> params) {
-        super.initData(apiUrl, params);
-        results = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            results.add(new Result());
+    private void initData() {
+        if (subject == null) {
+            return;
         }
-        primaryListView.setAdapter(new MyReadingAdapter(results, type));
+        if (rootView == null) {
+            return;
+        }
+        DefaultParam param = new DefaultParam();
+        param.put("subject_id", subject.id);
+        if (type == Type.rated) {
+            param.put("is_check", true);
+        } else {
+            param.put("is_check", false);
+        }
+        if (MyApplication.currentUser.role == User.Role.student) {
+            initData(NetConstant.API_MY_RESULTS, param);
+        } else {
+            initData(NetConstant.API_STUDENT_RESULTS, param);
+        }
     }
 
     @Override
@@ -69,7 +87,23 @@ public class MyReadingFragment extends EasyLoadFragment {
 
     @Override
     public void responseData(LResponse response) {
+        if (response.requestCode == EasyLoadFragment.GET_DATA) {
+            List<Result> appendData = new Gson().fromJson(response.body, new TypeToken<List<Result>>() {
+            }.getType());
+            if (currentPage == 1) {
+                results = appendData;
+                myReadingAdapter = new MyReadingAdapter(results, type);
+                primaryListView.setAdapter(myReadingAdapter);
+            } else {
+                results.addAll(appendData);
+                myReadingAdapter.setNewData(results);
+            }
+        }
+    }
 
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+        initData();
     }
 
     public enum Type {

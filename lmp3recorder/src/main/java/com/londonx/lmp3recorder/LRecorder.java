@@ -96,12 +96,13 @@ public class LRecorder {
     public void destroy() {
         recorder.release();
         echoPlayer.release();
+        recorder = null;
     }
 
     private void initRecorder() {
         minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, NUM_CHANNELS,
                 AudioFormat.ENCODING_PCM_16BIT);
-        recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, NUM_CHANNELS,
+        recorder = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, SAMPLE_RATE, NUM_CHANNELS,
                 AudioFormat.ENCODING_PCM_16BIT, minBufferSize);
 
         echoPlayer = new AudioTrack(AudioManager.STREAM_MUSIC,
@@ -119,7 +120,7 @@ public class LRecorder {
 //                DataOutputStream output = null;
                 RandomAccessFile randomAccessFile = null;
                 try {
-                    randomAccessFile = new RandomAccessFile(rawFile, "w");
+                    randomAccessFile = new RandomAccessFile(rawFile, "rw");
                     if (rawFile.exists()) {
                         randomAccessFile.seek(rawFile.length());
                     } else {

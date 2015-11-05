@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.ljmob.lovereadingphone.entity.Subject;
 import com.ljmob.lovereadingphone.fragment.MyReadingFragment;
 
 import java.util.ArrayList;
@@ -16,19 +17,18 @@ import java.util.List;
 public class MyReadingPagerAdapter extends FragmentPagerAdapter {
     List<MyReadingFragment> myReadingFragments;
 
-    public MyReadingPagerAdapter(FragmentManager fm, boolean isRated) {
+    public MyReadingPagerAdapter(FragmentManager fm, List<Subject> subjects,boolean isRated) {
         super(fm);
         myReadingFragments = new ArrayList<>();
-        MyReadingFragment notRatedFragment = new MyReadingFragment();
-        notRatedFragment.type = isRated ?
-                MyReadingFragment.Type.rated :
-                MyReadingFragment.Type.notRated;
-        myReadingFragments.add(notRatedFragment);
-        MyReadingFragment ratedFragment = new MyReadingFragment();
-        ratedFragment.type = isRated ?
-                MyReadingFragment.Type.rated :
-                MyReadingFragment.Type.notRated;
-        myReadingFragments.add(ratedFragment);
+
+        for (Subject s:subjects){
+            MyReadingFragment notRatedFragment = new MyReadingFragment();
+            notRatedFragment.type = isRated ?
+                    MyReadingFragment.Type.rated :
+                    MyReadingFragment.Type.notRated;
+            myReadingFragments.add(notRatedFragment);
+            notRatedFragment.setSubject(s);
+        }
     }
 
     @Override

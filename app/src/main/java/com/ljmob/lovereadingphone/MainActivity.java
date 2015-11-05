@@ -17,10 +17,12 @@ import android.widget.ImageView;
 
 import com.ljmob.lovereadingphone.adapter.MainPagerAdapter;
 import com.ljmob.lovereadingphone.context.MyApplication;
+import com.ljmob.lovereadingphone.fragment.DrawerFragment;
 import com.ljmob.lovereadingphone.fragment.IndexFragment;
 import com.ljmob.lovereadingphone.fragment.PlayerBarFragment;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.londonx.lutil.util.ToastUtil;
+import com.soundcloud.android.crop.Crop;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView toolbarImgRight;
 
     private PlayerBarFragment playerBarFragment;
+    private DrawerFragment drawerFragment;
 
     boolean isAppBarHided;
     boolean isAvatarSet;
@@ -66,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         playerBarFragment = (PlayerBarFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.activity_main_fragmentPlayer);
+        drawerFragment = (DrawerFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.activity_main_fragmentDrawer);
 
         primaryViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
     }
@@ -91,11 +96,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //TODO filter result for rank
+        //TODO filter result for recommend rank
         switch (requestCode) {
             case IndexFragment.ACTION_CATEGORY:
                 ((MainPagerAdapter) primaryViewPager.getAdapter()).getItem(0)
                         .onActivityResult(requestCode, resultCode, data);
+                break;
+            case Crop.REQUEST_PICK:
+                drawerFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case Crop.REQUEST_CROP:
+                drawerFragment.onActivityResult(requestCode, resultCode, data);
                 break;
         }
     }
@@ -107,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         showPlayerBar();
         if (MyApplication.currentUser != null) {
             if (!isAvatarSet) {
-                SimpleImageLoader.displayImage(MyApplication.currentUser.avatar.avatar.small.url,
+                SimpleImageLoader.displayImage(MyApplication.currentUser.avatar.avatar.normal.url,
                         toolbarMainImgHead);
                 isAvatarSet = true;
             }
@@ -151,16 +162,19 @@ public class MainActivity extends AppCompatActivity {
                 showView(toolbarImgIndex);
                 hideView(toolbarImgArticle);
                 hideView(toolbarImgRank);
+                toolbarImgRight.setImageResource(R.mipmap.icon_search);
                 break;
             case 1:
                 hideView(toolbarImgIndex);
                 showView(toolbarImgArticle);
                 hideView(toolbarImgRank);
+                toolbarImgRight.setImageResource(R.mipmap.icon_filter);
                 break;
             case 2:
                 hideView(toolbarImgIndex);
                 hideView(toolbarImgArticle);
                 showView(toolbarImgRank);
+                toolbarImgRight.setImageResource(R.mipmap.icon_filter);
                 break;
         }
         if (primaryViewPager.getCurrentItem() == index) {
@@ -171,6 +185,15 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.toolbar_imgRight)
     protected void rightButtonClicked() {
+        if (primaryViewPager.getCurrentItem() == PAGE_ARTICLE) {
+            //TODO do search
+            return;
+        }
+        if (primaryViewPager.getCurrentItem() == PAGE_RECOMMEND) {
+            Intent filter = new Intent(this, FilterActivity.class);
+            startActivityForResult(filter, INTENT_FILTER);
+            return;
+        }
         if (primaryViewPager.getCurrentItem() == PAGE_RANK) {
             Intent filter = new Intent(this, FilterActivity.class);
             startActivityForResult(filter, INTENT_FILTER);
@@ -215,6 +238,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void clearAvatar() {
         toolbarMainImgHead.setImageDrawable(new ColorDrawable(Color.WHITE));
+    }
+
+    public void setAvatar(String avatarApiUrl) {
+        SimpleImageLoader.displayImage(avatarApiUrl, toolbarMainImgHead);
     }
 
     private void showView(View view) {

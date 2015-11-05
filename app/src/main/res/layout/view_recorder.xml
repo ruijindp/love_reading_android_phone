@@ -17,6 +17,17 @@
         android:contentDescription="@string/dcd"
         android:src="@mipmap/icon_re_recording" />
 
+    <com.ljmob.lovereadingphone.view.RecorderRipple
+        android:id="@+id/view_recorder_ripple"
+        android:layout_width="72dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginTop="11dp"
+        android:alpha=".86" />
+
     <ImageView
         android:id="@+id/view_recorder_imgRecord"
         android:layout_width="54dp"
@@ -55,6 +66,7 @@
         android:textSize="12sp" />
 
     <TextView
+        android:id="@+id/view_recorder_tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"

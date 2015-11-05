@@ -138,7 +138,19 @@ public class FileUtil {
                 e.printStackTrace();
             }
         }
-        return cacheFolder.length();
+        return getFileSize(cacheFolder);
+    }
+
+    public static long getFileSize(File file) {
+        long length = 0;
+        if (file.isFile()) {
+            length += file.length();
+        } else {
+            for (File f : file.listFiles()) {
+                length += getFileSize(f);
+            }
+        }
+        return length;
     }
 
     public static boolean cleanCache() {

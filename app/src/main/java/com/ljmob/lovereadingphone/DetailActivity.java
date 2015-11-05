@@ -19,7 +19,9 @@ import com.ljmob.lovereadingphone.context.ActivityTool;
 import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.Article;
 import com.ljmob.lovereadingphone.entity.Section;
+import com.ljmob.lovereadingphone.entity.User;
 import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.util.ContentFormatter;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -96,9 +98,29 @@ public class DetailActivity extends AppCompatActivity {
             View sectionView = getLayoutInflater().inflate(R.layout.item_section,
                     activityDetailLnContent, false);
             SectionHolder holder = new SectionHolder(sectionView);
-            holder.primaryChapterTitle.setText(s.title);
+            ContentFormatter.formatSection(article.article_type,
+                    holder.primaryChapterTitle, holder.primaryChapterContent);
+            if (article.sections.size() == 1) {
+                holder.primaryChapterTitle.setVisibility(View.GONE);
+            } else {
+                holder.primaryChapterTitle.setText(s.title);
+            }
             holder.primaryChapterContent.setText(s.content);
             activityDetailLnContent.addView(sectionView);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (MyApplication.currentUser == null) {
+            activityDetailFabStart.setVisibility(View.VISIBLE);
+        } else {
+            if (MyApplication.currentUser.role != User.Role.student) {
+                activityDetailFabStart.setVisibility(View.INVISIBLE);
+            } else {
+                activityDetailFabStart.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -117,6 +139,11 @@ public class DetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.activity_detail_fabStart)
     protected void startReading() {
+        if (MyApplication.currentUser == null) {
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
+            return;
+        }
         Intent musicIntent = new Intent(this, MusicActivity.class);
         musicIntent.putExtra("article", article);
         startActivity(musicIntent);
@@ -151,7 +178,7 @@ public class DetailActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                while (activity_detail_mask.getAlpha() > 0.05f) {
+                while (activity_detail_mask.getAlpha() > 0.40f) {
                     try {
                         Thread.sleep(24);
                     } catch (InterruptedException e) {
@@ -164,12 +191,6 @@ public class DetailActivity extends AppCompatActivity {
                         }
                     });
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        activity_detail_mask.setVisibility(View.INVISIBLE);
-                    }
-                });
             }
         }).start();
     }

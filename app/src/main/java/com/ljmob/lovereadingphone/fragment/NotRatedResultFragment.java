@@ -40,7 +40,7 @@ public class NotRatedResultFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
-            rootView = inflater.inflate(R.layout.view_not_rated_result_teacher, container, false);
+            rootView = inflater.inflate(R.layout.view_not_rated_result, container, false);
         }
         ButterKnife.bind(this, rootView);
         return rootView;

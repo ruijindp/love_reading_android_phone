@@ -1,5 +1,6 @@
 package com.ljmob.lovereadingphone;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -47,9 +49,10 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * 音乐选择
  */
 public class MusicActivity extends AppCompatActivity implements
-        LRequestTool.OnResponseListener {
+        LRequestTool.OnResponseListener, LRequestTool.OnDownloadListener {
     private static final int API_MUSICS = 1;
     private static final int API_MUSIC_TYPES = 2;
+    private static final int DOWNLOAD_FILE = 3;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -69,6 +72,7 @@ public class MusicActivity extends AppCompatActivity implements
     SimpleStringPopup musicTypePopup;
 
     Article article;
+    Music selectedMusic;
     ImageLoader imageLoader = ImageLoader.getInstance();
     LRequestTool requestTool;
     MusicAdapter adapter;
@@ -76,6 +80,11 @@ public class MusicActivity extends AppCompatActivity implements
     List<MusicType> musicTypes;
     MusicType selectedMusicType;
     LMediaPlayer mediaPlayer;
+
+    private TextView dialogMusicDownloadTvProgress;
+    private ProgressBar dialogMusicDownloadPbProgress;
+    private boolean isDownloaded;
+    private Dialog downloadDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +105,7 @@ public class MusicActivity extends AppCompatActivity implements
         }
         if (MyApplication.blurryBg != null) {
             activityMusicImgBackground.setImageBitmap(MyApplication.blurryBg);
-            activityMusicMask.setVisibility(View.INVISIBLE);
+            activityMusicMask.setAlpha(0.4f);
         } else {
             imageLoader.displayImage(NetConstant.ROOT_URL + article.cover_img.cover_img.small.url,
                     activityMusicImgBackground,
@@ -108,14 +117,15 @@ public class MusicActivity extends AppCompatActivity implements
                     });
         }
         requestTool = new LRequestTool(this);
-        mediaPlayer = new LMediaPlayer(null, null);
         initData();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mediaPlayer.stop();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
     }
 
     @OnItemClick(R.id.primaryAbsListView)
@@ -124,9 +134,17 @@ public class MusicActivity extends AppCompatActivity implements
         adapter.setSelectedIndex(position);
         adapter.setPlayingIndex(-1);
         holder.setSelected(true);
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        } else {
+            mediaPlayer = new LMediaPlayer(null, null);
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
+                if (downloadDialog != null) {
+                    return;
+                }
                 mediaPlayer.prepareUrl(NetConstant.ROOT_URL + musics.get(position).file_url);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -156,11 +174,30 @@ public class MusicActivity extends AppCompatActivity implements
             ToastUtil.show(R.string.toast_music_err);
             return;
         }
-        Intent intent = new Intent(this, ReadingActivity.class);
-        intent.putExtra("music", musics.get(position));
-        intent.putExtra("article", article);
-        startActivity(intent);
-        finish();
+        mediaPlayer.stop();
+        selectedMusic = musics.get(position);
+        requestTool.setOnDownloadListener(this);
+        requestTool.download(NetConstant.ROOT_URL + selectedMusic.file_url, DOWNLOAD_FILE);
+
+
+        downloadDialog = new Dialog(this, R.style.AppTheme_DownloadDialog);
+        downloadDialog.setCancelable(false);
+        downloadDialog.setContentView(R.layout.dialog_music_donwload);
+        dialogMusicDownloadTvProgress = (TextView) downloadDialog
+                .findViewById(R.id.dialog_music_download_tvProgress);
+        dialogMusicDownloadPbProgress = (ProgressBar) downloadDialog
+                .findViewById(R.id.dialog_music_download_pbProgress);
+        dialogMusicDownloadPbProgress.setProgress(0);
+        dialogMusicDownloadTvProgress.setText(getString(R.string.download_, "0%"));
+        activityMusicTvStart.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isDownloaded) {
+                    return;
+                }
+                downloadDialog.show();
+            }
+        }, 100);
     }
 
     @OnClick(R.id.activity_music_lnMusicType)
@@ -214,7 +251,7 @@ public class MusicActivity extends AppCompatActivity implements
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                while (activityMusicMask.getAlpha() > 0.05f) {
+                while (activityMusicMask.getAlpha() > 0.4f) {
                     try {
                         Thread.sleep(24);
                     } catch (InterruptedException e) {
@@ -227,12 +264,6 @@ public class MusicActivity extends AppCompatActivity implements
                         }
                     });
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        activityMusicMask.setVisibility(View.INVISIBLE);
-                    }
-                });
             }
         }).start();
     }
@@ -298,5 +329,32 @@ public class MusicActivity extends AppCompatActivity implements
                 });
                 break;
         }
+    }
+
+    @Override
+    public void onStartDownload(LResponse response) {
+    }
+
+    @Override
+    public void onDownloading(float progress) {
+        if (dialogMusicDownloadPbProgress == null) {
+            return;
+        }
+        dialogMusicDownloadPbProgress.setProgress((int) (100 * progress));
+        dialogMusicDownloadTvProgress.setText(getString(R.string.download_, (int) (100 * progress) + "%"));
+    }
+
+    @Override
+    public void onDownloaded(LResponse response) {
+        isDownloaded = true;
+
+        Intent intent = new Intent(this, ReadingActivity.class);
+        intent.putExtra("music", selectedMusic);
+        intent.putExtra("article", article);
+        if (downloadDialog != null && downloadDialog.isShowing()) {
+            downloadDialog.dismiss();
+        }
+        startActivity(intent);
+        finish();
     }
 }

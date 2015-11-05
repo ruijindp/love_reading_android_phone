@@ -11,7 +11,7 @@
     <color name="pressedColorAccent">#019172</color>
 
     <color name="div_primary">#FF3D00</color>
-    <color name="div_detail">#B6FFFFFF</color>
+    <color name="div_detail">#65FFFFFF</color>
     <!-- 54%-->
     <color name="div_tab">#76000000</color>
     <color name="div_list">#34000000</color>
@@ -24,6 +24,8 @@
     <color name="textReadableSecondary">#34000000</color>
     <color name="textRed">#EA0000</color>
     <color name="textRank">#F15A25</color>
+    <!--50%-->
+    <color name="dialog">#7F000000</color>
 
     <color name="test_ab">@android:color/white</color>
     <color name="test">#44000000</color>

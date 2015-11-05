@@ -1,1 +1,1 @@
-include ':app', ':lutil'
+include ':app', ':lutil', ':lmp3recorder'

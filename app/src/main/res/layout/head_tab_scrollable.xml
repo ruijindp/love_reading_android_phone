@@ -11,7 +11,5 @@
         android:layout_height="match_parent"
         android:divider="@drawable/inset_divider_tab"
         android:orientation="horizontal"
-        android:showDividers="middle">
-        <include layout="@layout/view_tab_item_scrollable"/>
-    </LinearLayout>
+        android:showDividers="middle" />
 </HorizontalScrollView>

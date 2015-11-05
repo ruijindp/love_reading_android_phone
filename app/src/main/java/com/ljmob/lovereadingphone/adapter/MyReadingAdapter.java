@@ -1,5 +1,6 @@
 package com.ljmob.lovereadingphone.adapter;
 
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,10 @@ import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.context.MyApplication;
+import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.entity.User;
 import com.ljmob.lovereadingphone.fragment.MyReadingFragment;
+import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.londonx.lutil.adapter.LAdapter;
 import com.londonx.lutil.entity.LEntity;
 
@@ -39,19 +42,32 @@ public class MyReadingAdapter extends LAdapter {
                     .inflate(R.layout.item_my_reading, parent, false);
             convertView.setTag(new ViewHolder(convertView));
         }
+        Result result = (Result) lEntities.get(position);
         ViewHolder holder = (ViewHolder) convertView.getTag();
+        if (result.article.author.length() == 0) {
+            holder.itemMyReadingTvTitle.setText(result.article.title);
+        } else {
+            holder.itemMyReadingTvTitle.setText(String.format("%s - %s",
+                    result.article.title, result.article.author));
+        }
+        SimpleImageLoader.displayImage(result.article.cover_img.cover_img.small.url
+                , holder.itemMyReadingImgCover);
         switch (type) {
             case notRated:
                 if (MyApplication.currentUser.role == User.Role.student) {//学生未评分
                     holder.itemMyReadingLnTeacher.setVisibility(View.GONE);
                     holder.itemMyReadingLnStudent.setVisibility(View.VISIBLE);
                     holder.itemMyRbRating.setVisibility(View.INVISIBLE);
+                    holder.itemMyReadingTvTime.setText(DateFormat.format("mm:ss",
+                            result.created_at * 1000));
                 } else {//教师未评分
                     holder.itemMyReadingLnTeacher.setVisibility(View.VISIBLE);
                     holder.itemMyReadingLnStudent.setVisibility(View.GONE);
                     holder.itemMyReadingViewAnchorRated.setVisibility(View.GONE);
                     holder.itemMyReadingViewAnchorNotRated.setVisibility(View.VISIBLE);
                     holder.itemMyRbRatingTeacher.setVisibility(View.GONE);
+                    holder.itemMyReadingTvTimeTeacher.setText(DateFormat.format("mm:ss",
+                            result.created_at * 1000));
                 }
                 break;
             case rated:
@@ -59,12 +75,18 @@ public class MyReadingAdapter extends LAdapter {
                     holder.itemMyReadingLnTeacher.setVisibility(View.GONE);
                     holder.itemMyReadingLnStudent.setVisibility(View.VISIBLE);
                     holder.itemMyRbRating.setVisibility(View.VISIBLE);
+                    holder.itemMyReadingTvTime.setText(DateFormat.format("mm:ss",
+                            result.created_at * 1000));
+                    holder.itemMyRbRating.setRating(result.score.get(0).score);
                 } else {//教师已评分
                     holder.itemMyReadingLnTeacher.setVisibility(View.VISIBLE);
                     holder.itemMyReadingLnStudent.setVisibility(View.GONE);
                     holder.itemMyReadingViewAnchorRated.setVisibility(View.VISIBLE);
                     holder.itemMyReadingViewAnchorNotRated.setVisibility(View.GONE);
                     holder.itemMyRbRatingTeacher.setVisibility(View.VISIBLE);
+                    holder.itemMyReadingTvTimeTeacher.setText(DateFormat.format("mm:ss",
+                            result.created_at * 1000));
+                    holder.itemMyRbRatingTeacher.setRating(result.score.get(0).score);
                 }
                 break;
         }

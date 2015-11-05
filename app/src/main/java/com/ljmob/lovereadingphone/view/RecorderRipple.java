@@ -5,11 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
-import com.ljmob.teachat.R;
+import com.ljmob.lovereadingphone.R;
 
 /**
  * Created by 英伦 on 2015/3/17.
@@ -34,7 +35,7 @@ public class RecorderRipple extends View implements Handler.Callback, Runnable {
         super(context, attrs);
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        rippleColor = getResources().getColor(typedValue.resourceId);
+        rippleColor = ContextCompat.getColor(context, typedValue.resourceId);
         currentRadius = insetRadius;
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(rippleColor);

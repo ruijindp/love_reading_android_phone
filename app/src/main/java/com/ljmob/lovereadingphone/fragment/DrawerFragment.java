@@ -1,10 +1,14 @@
 package com.ljmob.lovereadingphone.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +41,13 @@ import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.FileUtil;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
+import com.soundcloud.android.crop.Crop;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 import butterknife.Bind;
@@ -52,6 +62,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DrawerFragment extends Fragment implements LRequestTool.OnResponseListener {
     private static final int USER_SIGN_OUT = 1;
     private static final int API_RESULTS_COUNT = 2;
+    private static final int API_AVATAR = 3;
 
     View rootView;
 
@@ -100,6 +111,9 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
     private MaterialDialog cacheDialog;
     private long cacheSize;
     LRequestTool requestTool;
+    private File tempAvatar;
+
+    long lastGetCountAt;
 
     @Nullable
     @Override
@@ -127,9 +141,35 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent result) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == Crop.REQUEST_PICK) {
+            try {
+                tempAvatar = new File(FileUtil.getCacheFolder(), "temp.png");
+                Crop.of(result.getData(), Uri.fromFile(tempAvatar)).asSquare().start(getActivity());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        if (requestCode == Crop.REQUEST_CROP) {
+            if (tempAvatar == null || !tempAvatar.exists() || tempAvatar.length() == 0) {
+                ToastUtil.show(R.string.toast_avatar_err);
+                return;
+            }
+            viewDrawerImgHead.setImageResource(R.color.test);
+            DefaultParam param = new DefaultParam();
+            param.put("avatar", tempAvatar);
+            requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_AVATAR, param, API_AVATAR);
+        }
+    }
+
     @OnClick(R.id.view_drawer_imgHead)
     protected void changeAvatar() {
-        ToastUtil.show("changeAvatar");
+        Crop.pickImage(getActivity());
     }
 
     @OnClick(R.id.view_drawer_tvLogin)
@@ -279,22 +319,26 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
                         new DefaultParam(), API_RESULTS_COUNT);
             }
 
-            SimpleImageLoader.displayImage(MyApplication.currentUser.avatar.avatar.normal.url,
+            SimpleImageLoader.displayImage(MyApplication.currentUser.avatar.avatar.big.url,
                     viewDrawerImgHead);
             viewDrawerTvUserName.setText(MyApplication.currentUser.name);
-//            viewDrawerTvSchoolClass
-            switch (MyApplication.currentUser.sex) {
-                case boy:
-                    viewDrawerImgSex.setVisibility(View.VISIBLE);
-                    viewDrawerImgSex.setImageResource(R.mipmap.icon_boy);
-                    break;
-                case girl:
-                    viewDrawerImgSex.setVisibility(View.VISIBLE);
-                    viewDrawerImgSex.setImageResource(R.mipmap.icon_girl);
-                    break;
-                default:
-                    viewDrawerImgSex.setVisibility(View.INVISIBLE);
-                    break;
+            viewDrawerTvSchoolClass.setText("none");
+            if (MyApplication.currentUser.sex == null) {
+                viewDrawerImgSex.setVisibility(View.INVISIBLE);
+            } else {
+                switch (MyApplication.currentUser.sex) {
+                    case boy:
+                        viewDrawerImgSex.setVisibility(View.VISIBLE);
+                        viewDrawerImgSex.setImageResource(R.mipmap.icon_boy);
+                        break;
+                    case girl:
+                        viewDrawerImgSex.setVisibility(View.VISIBLE);
+                        viewDrawerImgSex.setImageResource(R.mipmap.icon_girl);
+                        break;
+                    default:
+                        viewDrawerImgSex.setVisibility(View.INVISIBLE);
+                        break;
+                }
             }
         }
         if (MyApplication.currentUser != null &&
@@ -328,15 +372,38 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
 
     @Override
     public void onResponse(LResponse response) {
-        if (response.responseCode != 200) {
+        if (response.responseCode != 200 && response.responseCode != 201) {
             ToastUtil.serverErr(response);
             return;
         }
         switch (response.requestCode) {
             case API_RESULTS_COUNT:
+                lastGetCountAt = System.currentTimeMillis();
                 CheckCount checkCount = new Gson().fromJson(response.body, CheckCount.class);
                 viewDrawerTvNotRatedCount.setText(getString(R.string.total__count, checkCount.check_false));
                 viewDrawerTvRatedCount.setText(getString(R.string.total__count, checkCount.check_true));
+                break;
+            case API_AVATAR:
+                ToastUtil.show(R.string.toast_avatar_ok);
+                User.Avatar avatar = null;
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body);
+                    String avatarString = jsonObject.get("avatar").toString();
+                    avatar = new Gson().fromJson(avatarString, User.Avatar.class);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (avatar == null) {
+                    break;
+                }
+                SimpleImageLoader.displayImage(avatar.avatar.big.url, viewDrawerImgHead);
+                ((MainActivity) getActivity()).setAvatar(avatar.avatar.normal.url);
+                MyApplication.currentUser.avatar = avatar;
+                String userB64 = Base64.encodeToString(new Gson()
+                        .toJson(MyApplication.currentUser).getBytes(), Base64.DEFAULT);
+                SharedPreferences.Editor editor = Lutil.preferences.edit();
+                editor.putString("UB64", userB64);
+                editor.apply();
                 break;
         }
     }

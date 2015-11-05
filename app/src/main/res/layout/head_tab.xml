@@ -7,30 +7,4 @@
     android:baselineAligned="false"
     android:divider="@drawable/inset_divider_tab"
     android:orientation="horizontal"
-    android:showDividers="middle">
-
-    <include
-        layout="@layout/view_tab_item"
-        android:layout_width="0px"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-
-    <include
-        layout="@layout/view_tab_item"
-        android:layout_width="0px"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-
-    <include
-        layout="@layout/view_tab_item"
-        android:layout_width="0px"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-
-    <include
-        layout="@layout/view_tab_item"
-        android:layout_width="0px"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-
-</LinearLayout>
+    android:showDividers="middle" />

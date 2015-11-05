@@ -24,6 +24,7 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
     public MediaPlayer mediaPlayer;
     private SurfaceHolder surfaceHolder;
     private SeekBar skbProgress;
+    private OnProgressChangeListener onProgressChangeListener;
 
     /**
      * Media player
@@ -42,7 +43,7 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
         }
         mediaPlayer = new MediaPlayer();
         Timer mTimer = new Timer();
-        mTimer.schedule(mTimerTask, 0, 1000);
+        mTimer.schedule(mTimerTask, 0, 26);
     }
 
     /**
@@ -74,6 +75,9 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
      * start playing
      */
     public void play() {
+        if (mediaPlayer == null) {
+            return;
+        }
         mediaPlayer.start();
     }
 
@@ -84,11 +88,14 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
      * @param videoUrl media(video and mp3) url
      */
     public void prepareUrl(String videoUrl) {
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+        }
         try {
             mediaPlayer.reset();
             mediaPlayer.setDataSource(videoUrl);
             mediaPlayer.prepare();//prepare之后自动播放
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -98,7 +105,6 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
      *
      * @param videoUrl media(video and mp3) url
      */
-    @Deprecated
     public void playUrl(String videoUrl) {
         try {
             mediaPlayer.reset();
@@ -127,6 +133,10 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
         }
     }
 
+    public void setOnProgressChangeListener(OnProgressChangeListener onProgressChangeListener) {
+        this.onProgressChangeListener = onProgressChangeListener;
+    }
+
     @Override
     public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
     }
@@ -148,10 +158,10 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
     }
 
 
-    @Override
     /**
      * 通过onPrepared播放
      */
+    @Override
     public void onPrepared(MediaPlayer arg0) {
         int videoWidth = mediaPlayer.getVideoWidth();
         int videoHeight = mediaPlayer.getVideoHeight();
@@ -175,7 +185,9 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
     public boolean handleMessage(Message msg) {
         int position = mediaPlayer.getCurrentPosition();
         int duration = mediaPlayer.getDuration();
-
+        if (onProgressChangeListener != null) {
+            onProgressChangeListener.progressChanged(position, duration);
+        }
         if (duration > 0 && skbProgress != null) {
             skbProgress.setMax(duration);
             skbProgress.setProgress(position);
@@ -185,6 +197,12 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (!fromUser) {
+            return;
+        }
+        if (onProgressChangeListener != null) {
+            onProgressChangeListener.progressChanged(progress, seekBar.getMax());
+        }
     }
 
     @Override
@@ -194,5 +212,9 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         mediaPlayer.seekTo(seekBar.getProgress());
+    }
+
+    public interface OnProgressChangeListener {
+        void progressChanged(int position, int duration);
     }
 }

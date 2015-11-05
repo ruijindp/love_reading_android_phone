@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.ljmob.lovereadingphone.MainActivity;
@@ -28,7 +27,6 @@ public class RecommendFragment extends EasyLoadFragment {
     LayoutInflater inflater;
     View rootView;
     List<Result> results;
-    LinearLayout head_tab_ln;
 
     @Nullable
     @Override
@@ -42,10 +40,7 @@ public class RecommendFragment extends EasyLoadFragment {
             int endOffset = getResources().getDimensionPixelSize(R.dimen.subject_list_refresh_end_offset);
             primarySwipeRefreshLayout.setProgressViewOffset(false, startOffset, endOffset);
             View headerView = inflater.inflate(R.layout.toolbar_trans, primaryListView, false);
-            View headerViewTab = inflater.inflate(R.layout.head_tab, primaryListView, false);
             ((ListView) primaryListView).addHeaderView(headerView);
-            ((ListView) primaryListView).addHeaderView(headerViewTab);
-            head_tab_ln = (LinearLayout) headerViewTab.findViewById(R.id.head_tab_ln);
         }
         initData("", new DefaultParam());
         return rootView;

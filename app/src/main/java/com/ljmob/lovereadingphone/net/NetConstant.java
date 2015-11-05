@@ -17,6 +17,11 @@ public class NetConstant {
     public static final String API_FEEDBACK = "/api/v1/advise";
     public static final String API_MY_RESULTS_COUNT = "/api/v1/my_results/count";
     public static final String API_STUDENT_RESULTS_COUNT = "/api/v1/student_results/count";
+    public static final String API_RESULTS = "/api/v1/results";
+    public static final String API_MY_RESULTS = "/api/v1/my_results";
+    public static final String API_STUDENT_RESULTS = "/api/v1/student_results";
+    public static final String API_AVATAR = "/api/v1/user_infos/avatar";
+    public static final String API_PASSWORD = "/api/v1/user_infos/password";
 
     public static final String USER_SIGN_IN = "/users/sign_in.json";
     public static final String USER_SIGN_OUT = "/users/sign_out.json";

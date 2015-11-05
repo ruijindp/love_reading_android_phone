@@ -3,38 +3,25 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_dialog_download"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="36dp">
+    android:gravity="center_horizontal|bottom"
+    android:orientation="horizontal"
+    android:paddingBottom="24dp"
+    android:paddingLeft="48dp"
+    android:paddingRight="56dp"
+    android:paddingTop="24dp">
 
-    <LinearLayout
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:contentDescription="@string/dcd"
+        android:src="@mipmap/icon_download" />
+
+    <TextView
+        android:id="@+id/dialog_mix_tvProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:contentDescription="@string/dcd"
-            android:src="@mipmap/icon_download" />
-
-        <TextView
-            android:id="@+id/dialog_music_download_tvProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="12dp"
-            android:text="@string/download_"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/dialog_music_download_pbProgress"
-        style="@style/AppTheme.ProgressBarHorizontal"
-        android:layout_width="208dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="14dp"
-        android:progress="50" />
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="12dp"
+        android:text="@string/mixing"
+        android:textColor="@android:color/white" />
 </LinearLayout>

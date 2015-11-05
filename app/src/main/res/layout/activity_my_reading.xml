@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="?actionBarSize">
 
-        <include layout="@layout/head_tab" />
+        <!--<include layout="@layout/head_tab" />-->
     </FrameLayout>
 
     <include layout="@layout/toolbar" />

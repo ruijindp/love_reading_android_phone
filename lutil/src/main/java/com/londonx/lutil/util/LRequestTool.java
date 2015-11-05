@@ -24,10 +24,12 @@ import java.util.HashMap;
  * Update in 2015-08-19 19:58:15 add URLEncoder in GET
  * Update in 2015-08-21 12:40:53 'com.loopj.android:android-async-http:1.4.8' for large file upload
  * Update in 2015-08-21 19:13:19 avoid downloading the exist file
+ * Update in 2015-11-03 19:12:51 add onUploadListener
  */
 public class LRequestTool {
     private OnResponseListener onResponseListener;
     private OnDownloadListener onDownloadListener;
+    private OnUploadListener onUploadListener;
     private static AsyncHttpClient client;
 
     public LRequestTool(OnResponseListener onResponseListener) {
@@ -101,6 +103,10 @@ public class LRequestTool {
         this.onDownloadListener = onDownloadListener;
     }
 
+    public void setOnUploadListener(OnUploadListener onUploadListener) {
+        this.onUploadListener = onUploadListener;
+    }
+
     public interface OnResponseListener {
         void onResponse(LResponse response);
     }
@@ -111,6 +117,14 @@ public class LRequestTool {
         void onDownloading(float progress);
 
         void onDownloaded(LResponse response);
+    }
+
+    public interface OnUploadListener {
+        void onStartUpload(LResponse response);
+
+        void onUploading(float progress);
+
+        void onUploaded(LResponse response);
     }
 
     private final class HttpHandler extends AsyncHttpResponseHandler {
@@ -129,10 +143,12 @@ public class LRequestTool {
         @Override
         public void onProgress(long bytesWritten, long totalSize) {
             super.onProgress(bytesWritten, totalSize);
-            if (downloadFile == null || onDownloadListener == null) {
-                return;
+            if (downloadFile != null && onDownloadListener != null) {
+                onDownloadListener.onDownloading((float) bytesWritten / (float) totalSize);
             }
-            onDownloadListener.onDownloading((float) bytesWritten / (float) totalSize);
+            if (onUploadListener != null) {
+                onUploadListener.onUploading((float) bytesWritten / (float) totalSize);
+            }
         }
 
         @Override

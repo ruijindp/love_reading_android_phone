@@ -37,6 +37,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile project(':lutil')
+    compile project(':lmp3recorder')
 
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
@@ -51,6 +52,7 @@ dependencies {
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.10'//GIF图
     compile 'com.cocosw:bottomsheet:1.2.0@aar'//bottomSheet
     compile 'com.github.aakira:expandable-layout:1.3.0@aar'//ExpandableLayout
+    compile 'com.soundcloud.android:android-crop:1.0.1@aar'//头像裁剪
 
     compile('com.afollestad.material-dialogs:core:0.8.4.2@aar') {//对话框
         transitive = true
