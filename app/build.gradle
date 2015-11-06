@@ -53,6 +53,7 @@ dependencies {
     compile 'com.cocosw:bottomsheet:1.2.0@aar'//bottomSheet
     compile 'com.github.aakira:expandable-layout:1.3.0@aar'//ExpandableLayout
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'//头像裁剪
+    compile 'info.hoang8f:android-segmented:1.0.6'//segment controller
 
     compile('com.afollestad.material-dialogs:core:0.8.4.2@aar') {//对话框
         transitive = true

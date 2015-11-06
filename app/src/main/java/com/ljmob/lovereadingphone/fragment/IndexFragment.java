@@ -120,7 +120,12 @@ public class IndexFragment extends Fragment implements
         View headEmpty = inflater.inflate(R.layout.toolbar_trans, primaryAbsListView, false);
         View headMain = inflater.inflate(R.layout.head_index, primaryAbsListView, false);
         headHolder = new HeadHolder(headMain);
-        headHolder.headMainTvCurrentCate.setText(R.string.all);
+        if (selectedSubject != null && selectedGrade != null) {
+            headHolder.headMainTvCurrentCate.setText(String.format("%s%s",
+                    selectedGrade.name, selectedSubject.name));
+        } else {
+            headHolder.headMainTvCurrentCate.setText(R.string.all);
+        }
 
         if (primaryAbsListView.getHeaderViewsCount() == 0) {
             primaryAbsListView.addHeaderView(headEmpty);

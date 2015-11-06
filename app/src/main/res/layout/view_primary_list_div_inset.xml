@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:divider="@drawable/inset_divider"
-        android:dividerHeight="0.5dp"
+        android:dividerHeight="0.1dp"
         tools:listheader="@layout/toolbar_trans"
         tools:listitem="@layout/item_rank" />
 

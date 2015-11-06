@@ -75,7 +75,7 @@ public class RatedResultFragment extends Fragment {
         MaterialDialog feelingDialog = new MaterialDialog.Builder(getActivity())
                 .theme(Theme.LIGHT)
                 .title(R.string.feeling)
-                .content(R.string.test_feeling)
+                .content(result.feeling)
                 .build();
         feelingDialog.show();
     }

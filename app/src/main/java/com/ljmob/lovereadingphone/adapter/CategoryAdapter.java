@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.ljmob.lovereadingphone.CategoryActivity;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.entity.Category;
+import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.ljmob.lovereadingphone.view.UnScrollableGridView;
 import com.londonx.lutil.adapter.LAdapter;
 import com.londonx.lutil.entity.LEntity;
@@ -67,6 +68,8 @@ public class CategoryAdapter extends LAdapter {
 
         public void setCategory(Category category) {
             this.category = category;
+            SimpleImageLoader.displayImage(category.subject.img_url.img_url.normal.url,
+                    itemCategoryImgCategory);
             itemCategoryTvCategory.setText(category.subject.name);
             itemCategoryGridSubCate.setAdapter(new SubCateAdapter(category.grades));
         }

@@ -8,4 +8,9 @@ import com.londonx.lutil.entity.LEntity;
  */
 public class Subject extends LEntity {
     public String name;
+    public ImageUrl img_url;
+
+    public class ImageUrl extends LEntity {
+        public Image img_url;
+    }
 }

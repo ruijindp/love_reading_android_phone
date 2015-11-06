@@ -3,12 +3,13 @@ package com.ljmob.lovereadingphone.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.R;
+import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.londonx.lutil.adapter.LAdapter;
 import com.londonx.lutil.entity.LEntity;
 
@@ -34,7 +35,7 @@ public class RecommendAdapter extends LAdapter {
                     .inflate(R.layout.item_recommend, parent, false);
             convertView.setTag(new ViewHolder(convertView));
         }
-
+        ((ViewHolder) convertView.getTag()).setResult((Result) lEntities.get(position));
         return convertView;
     }
 
@@ -49,8 +50,6 @@ public class RecommendAdapter extends LAdapter {
         ImageView itemRecommendImgCover;
         @Bind(R.id.item_recommend_imgPlay)
         ImageView itemRecommendImgPlay;
-        @Bind(R.id.item_recommend_framePlay)
-        FrameLayout itemRecommendFramePlay;
         @Bind(R.id.item_recommend_tvTitle)
         TextView itemRecommendTvTitle;
         @Bind(R.id.item_recommend_rating)
@@ -62,8 +61,25 @@ public class RecommendAdapter extends LAdapter {
         @Bind(R.id.item_recommend_tvPraiseCount)
         TextView itemRecommendTvPraiseCount;
 
+        Result result;
+
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
+        }
+
+        public void setResult(Result result) {
+            this.result = result;
+            SimpleImageLoader.displayImage(result.article.cover_img.cover_img.small.url,
+                    itemRecommendImgCover);
+            itemRecommendTvTitle.setText(result.article.title);
+            if (result.score.size() == 0) {
+                itemRecommendRating.setRating(0);
+            } else {
+                itemRecommendRating.setRating(result.score.get(0).score);
+            }
+            itemRecommendTvUser.setText(result.user.name);
+            itemRecommendTvSchool.setText(result.user.team_classes.get(0).school.name);
+            itemRecommendTvPraiseCount.setText(String.format("%d", result.votes));
         }
     }
 }

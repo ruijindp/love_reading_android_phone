@@ -14,10 +14,7 @@
         android:id="@+id/activity_my_reading_frameTabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?actionBarSize">
-
-        <!--<include layout="@layout/head_tab" />-->
-    </FrameLayout>
+        android:layout_marginTop="?actionBarSize" />
 
     <include layout="@layout/toolbar" />
 </FrameLayout>

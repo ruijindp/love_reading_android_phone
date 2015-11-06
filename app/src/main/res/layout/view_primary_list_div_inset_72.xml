@@ -13,7 +13,7 @@
         android:background="@android:color/white"
         android:clipChildren="false"
         android:divider="@drawable/inset_divider_72"
-        android:dividerHeight="0.5dp"
+        android:dividerHeight="0.1dp"
         tools:listheader="@layout/head_my_reading"
         tools:listitem="@layout/item_my_reading" />
 

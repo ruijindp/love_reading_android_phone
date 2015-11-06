@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.R;
+import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.londonx.lutil.adapter.LAdapter;
 import com.londonx.lutil.entity.LEntity;
 
@@ -34,6 +36,7 @@ public class RankAdapter extends LAdapter {
         }
         ViewHolder holder = (ViewHolder) convertView.getTag();
         holder.itemRankTvRank.setText(String.format("%d", position + 1));
+        holder.setResult((Result) lEntities.get(position));
         return convertView;
     }
 
@@ -61,6 +64,16 @@ public class RankAdapter extends LAdapter {
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
+        }
+
+        public void setResult(Result result) {
+            SimpleImageLoader.displayImage(result.article.cover_img.cover_img.small.url,
+                    itemRankImgCover);
+            itemRankTvTitle.setText(result.article.title);
+            itemRankTvFeeling.setText(result.feeling);
+            itemRankTvUser.setText(result.user.name);
+            itemRankTvSchool.setText(result.user.team_classes.get(0).school.name);
+            itemRankTvPraiseCount.setText(String.format("%d", result.votes));
         }
     }
 }

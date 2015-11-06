@@ -2,8 +2,6 @@ package com.ljmob.lovereadingphone;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -124,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             if (isAvatarSet) {
-                toolbarMainImgHead.setImageDrawable(new ColorDrawable(Color.WHITE));
+                toolbarMainImgHead.setImageResource(R.mipmap.icon_admin);
             }
         }
     }
@@ -168,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 hideView(toolbarImgIndex);
                 showView(toolbarImgArticle);
                 hideView(toolbarImgRank);
-                toolbarImgRight.setImageResource(R.mipmap.icon_filter);
+                toolbarImgRight.setImageResource(R.mipmap.icon_search);
                 break;
             case 2:
                 hideView(toolbarImgIndex);
@@ -237,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearAvatar() {
-        toolbarMainImgHead.setImageDrawable(new ColorDrawable(Color.WHITE));
+        toolbarMainImgHead.setImageResource(R.mipmap.icon_admin);
         isAvatarSet = false;
     }
 

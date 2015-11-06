@@ -25,6 +25,9 @@ public class NetConstant {
     public static final String API_SCORE = "/api/v1/results/score";
     public static final String API_HISTORY = "/api/v1/history";
     public static final String API_HISTORY_DELETED = "/api/v1/history/delete";
+    public static final String API_RECOMMEND = "/api/v1/recommends";
+    public static final String API_RANKS_WEEK = "/api/v1/ranks/week";
+    public static final String API_RANKS_MONTH = "/api/v1/ranks/month";
 
     public static final String USER_SIGN_IN = "/users/sign_in.json";
     public static final String USER_SIGN_OUT = "/users/sign_out.json";
