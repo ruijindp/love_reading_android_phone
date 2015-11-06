@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SearchActivity">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@id/primarySwipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@id/primaryAbsListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listheader="@layout/head_search"
+            tools:listitem="@layout/item_recommend" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/activity_search_cardSearch"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/activity_search_imgBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:clickable="true"
+                android:contentDescription="@string/dcd"
+                android:padding="12dp"
+                android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+                android:tint="?colorPrimary" />
+
+            <FrameLayout
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/activity_search_etKeyWord"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/hint_search"
+                    android:singleLine="true"
+                    android:textColor="@color/textPrimary"
+                    android:textSize="14sp" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/activity_search_imgSearch"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/dcd"
+                android:padding="12dp"
+                android:src="@mipmap/icon_search"
+                android:tint="?colorPrimary" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

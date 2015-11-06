@@ -86,6 +86,13 @@ public class RatedResultFragment extends Fragment {
     }
 
     public void setResult(Result result) {
+        if (result == null) {
+            return;
+        }
         this.result = result;
+    }
+
+    public Result getResult() {
+        return result;
     }
 }

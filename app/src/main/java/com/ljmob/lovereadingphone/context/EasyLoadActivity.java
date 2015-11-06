@@ -59,11 +59,13 @@ public abstract class EasyLoadActivity extends AppCompatActivity implements
         primaryListView.setOnScrollListener(this);
     }
 
-    public abstract void onRefreshData();
-
-    public abstract void onLoadMore();
-
     public abstract void responseData(LResponse response);
+
+    public void onRefreshData() {
+    }
+
+    public void onLoadMore() {
+    }
 
     public void showAppBar() {
 

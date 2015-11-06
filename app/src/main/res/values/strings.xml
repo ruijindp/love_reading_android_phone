@@ -85,6 +85,7 @@
     <string name="hint_pwd_old">原密码</string>
     <string name="hint_pwd_new">新密码</string>
     <string name="hint_pwd_confirm">确认新密码</string>
+    <string name="hint_search">文章标题、作者、读者</string>
 
     <string name="activity_detail">文章详情</string>
     <string name="activity_music">选择音乐</string>
@@ -97,6 +98,7 @@
     <string name="activity_listened">已听历史</string>
     <string name="activity_login">登录</string>
     <string name="activity_category">文章类型</string>
+    <string name="activity_search">搜索</string>
 
     <string name="action_share">分享</string>
     <string name="action_share_wechat">微信好友</string>

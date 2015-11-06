@@ -422,7 +422,9 @@ public class ReadingActivity extends AppCompatActivity implements
                     activityReadingTvSchoolClass.setText(schoolClass);
                 }
                 activityReadingTvChecker.setText(getString(R.string.checker_, result.score.get(0).user.name));
-
+                if (ratedResultFragment.getResult() == null) {
+                    ratedResultFragment.setResult(result);
+                }
                 break;
         }
         activityReadingScContent.post(new Runnable() {

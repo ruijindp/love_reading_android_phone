@@ -21,7 +21,7 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/item_rank_imgCover"
         android:layout_width="40dp"
         android:layout_height="40dp"

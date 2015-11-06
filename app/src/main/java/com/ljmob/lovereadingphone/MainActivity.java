@@ -19,7 +19,6 @@ import com.ljmob.lovereadingphone.fragment.DrawerFragment;
 import com.ljmob.lovereadingphone.fragment.IndexFragment;
 import com.ljmob.lovereadingphone.fragment.PlayerBarFragment;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
-import com.londonx.lutil.util.ToastUtil;
 import com.soundcloud.android.crop.Crop;
 
 import butterknife.Bind;
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //TODO filter result for recommend rank
+        //TODO filter result for recommend and rank
         switch (requestCode) {
             case IndexFragment.ACTION_CATEGORY:
                 ((MainPagerAdapter) primaryViewPager.getAdapter()).getItem(0)
@@ -147,11 +146,6 @@ public class MainActivity extends AppCompatActivity {
         pageTo(PAGE_RANK);
     }
 
-    @OnClick(R.id.toolbar_imgRight)
-    protected void doSearch() {
-        ToastUtil.show("doSearch");
-    }
-
     @OnPageChange(R.id.primaryViewPager)
     public void pageTo(int index) {
         showAppBar();
@@ -183,19 +177,12 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.toolbar_imgRight)
     protected void rightButtonClicked() {
-        if (primaryViewPager.getCurrentItem() == PAGE_ARTICLE) {
-            //TODO do search
+        if (primaryViewPager.getCurrentItem() != PAGE_RANK) {
+            startActivity(new Intent(this, SearchActivity.class));
             return;
         }
-        if (primaryViewPager.getCurrentItem() == PAGE_RECOMMEND) {
-            Intent filter = new Intent(this, FilterActivity.class);
-            startActivityForResult(filter, INTENT_FILTER);
-            return;
-        }
-        if (primaryViewPager.getCurrentItem() == PAGE_RANK) {
-            Intent filter = new Intent(this, FilterActivity.class);
-            startActivityForResult(filter, INTENT_FILTER);
-        }
+        Intent filter = new Intent(this, FilterActivity.class);
+        startActivityForResult(filter, INTENT_FILTER);
     }
 
     public void showAppBar() {
