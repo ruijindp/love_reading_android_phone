@@ -141,7 +141,7 @@ public class ListenedActivity extends AppCompatActivity implements
             startActivity(new Intent(this, LoginActivity.class));
             return;
         }
-        if (response.responseCode != 200) {
+        if (response.responseCode != 200 && response.responseCode != 201) {
             ToastUtil.serverErr(response);
             return;
         }
@@ -184,6 +184,8 @@ public class ListenedActivity extends AppCompatActivity implements
         param.put("result_id", 0);
         requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_HISTORY_DELETED,
                 param, API_HISTORY_DELETED);
+        adapter.notifyItemRangeRemoved(0, results.size());
+        results.clear();
     }
 
     @Override
