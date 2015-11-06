@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_filter_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -41,6 +42,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/activity_filter_lnCity"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -68,6 +70,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/activity_filter_lnArea"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -113,6 +116,7 @@
         android:textSize="14sp" />
 
     <LinearLayout
+        android:id="@+id/activity_filter_lnSchool"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -147,6 +151,7 @@
         android:background="@color/div_list" />
 
     <LinearLayout
+        android:id="@+id/activity_filter_lnGradeClass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -170,6 +175,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/activity_filter_lnGradeClassSelector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -178,6 +184,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/activity_filter_lnGrade"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -205,6 +212,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/activity_filter_lnTeamClass"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -235,6 +243,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/activity_filter_divGradeClass"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginLeft="16dp"

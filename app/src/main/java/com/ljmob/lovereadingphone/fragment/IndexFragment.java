@@ -46,7 +46,7 @@ public class IndexFragment extends Fragment implements
         LRequestTool.OnResponseListener,
         SwipeRefreshLayout.OnRefreshListener,
         AbsListView.OnScrollListener {
-    public static final int ACTION_CATEGORY = 0xDE;
+    public static final int ACTION_CATEGORY = 0xACAE;
     private static final int API_ARTICLES = 2;
     private static final int API_ARTICLE_UNITS = 3;
     private static final int PAGE_SIZE = 10;

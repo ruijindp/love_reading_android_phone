@@ -18,6 +18,8 @@ import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.fragment.DrawerFragment;
 import com.ljmob.lovereadingphone.fragment.IndexFragment;
 import com.ljmob.lovereadingphone.fragment.PlayerBarFragment;
+import com.ljmob.lovereadingphone.fragment.RankFragment;
+import com.ljmob.lovereadingphone.fragment.RecommendFragment;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.soundcloud.android.crop.Crop;
 
@@ -29,8 +31,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int INTENT_FILTER = 1;
-
     private static final int PAGE_ARTICLE = 0;
     private static final int PAGE_RECOMMEND = 1;
     private static final int PAGE_RANK = 2;
@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //TODO filter result for recommend and rank
         switch (requestCode) {
             case IndexFragment.ACTION_CATEGORY:
                 ((MainPagerAdapter) primaryViewPager.getAdapter()).getItem(0)
@@ -104,6 +103,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case Crop.REQUEST_CROP:
                 drawerFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case RecommendFragment.ACTION_RECOMMEND_FILTER:
+                ((MainPagerAdapter) primaryViewPager.getAdapter()).getItem(1)
+                        .onActivityResult(requestCode, resultCode, data);
+                break;
+            case RankFragment.ACTION_RANK_FILTER:
+                ((MainPagerAdapter) primaryViewPager.getAdapter()).getItem(2)
+                        .onActivityResult(requestCode, resultCode, data);
                 break;
         }
     }
@@ -182,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         Intent filter = new Intent(this, FilterActivity.class);
-        startActivityForResult(filter, INTENT_FILTER);
+        startActivityForResult(filter, RankFragment.ACTION_RANK_FILTER);
     }
 
     public void showAppBar() {

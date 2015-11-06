@@ -1,5 +1,6 @@
 package com.ljmob.lovereadingphone.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,17 +17,21 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.ljmob.lovereadingphone.FilterActivity;
 import com.ljmob.lovereadingphone.MainActivity;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.ReadingActivity;
 import com.ljmob.lovereadingphone.adapter.RecommendAdapter;
 import com.ljmob.lovereadingphone.context.EasyLoadFragment;
+import com.ljmob.lovereadingphone.context.MyApplication;
+import com.ljmob.lovereadingphone.entity.City;
+import com.ljmob.lovereadingphone.entity.District;
 import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.entity.School;
 import com.ljmob.lovereadingphone.entity.Subject;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.entity.LResponse;
-import com.londonx.lutil.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +46,7 @@ import butterknife.OnItemClick;
  * 美文推荐
  */
 public class RecommendFragment extends EasyLoadFragment {
+    public static final int ACTION_RECOMMEND_FILTER = 0xACEC;
     private static final int API_SUBJECTS = 1;
 
     @Bind(R.id.view_recommend_frameTabs)
@@ -54,7 +60,12 @@ public class RecommendFragment extends EasyLoadFragment {
     private HeadHolder headHolder;
     private List<Subject> subjects;
     private RecommendAdapter recommendAdapter;
-    private boolean isShowingAppBar;
+    private boolean isShowingAppBar = true;
+
+    private City selectedCity;
+    private District selectedDistrict;
+    private School selectedSchool;
+    private Subject selectedSubject;
 
     @Nullable
     @Override
@@ -75,6 +86,20 @@ public class RecommendFragment extends EasyLoadFragment {
 
         requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_SUBJECTS, new DefaultParam(), API_SUBJECTS);
         return rootView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        selectedCity = (City) data.getSerializableExtra("selectedCity");
+        selectedDistrict = (District) data.getSerializableExtra("selectedDistrict");
+        selectedSchool = (School) data.getSerializableExtra("selectedSchool");
+
+        currentPage = 1;
+        initData(NetConstant.API_RECOMMEND, wrapParams());
     }
 
     @Override
@@ -135,6 +160,38 @@ public class RecommendFragment extends EasyLoadFragment {
         startActivity(intent);
     }
 
+    private DefaultParam wrapParams() {
+        DefaultParam param = new DefaultParam();
+        if (selectedCity == null) {
+            param.put("city_id", 0);
+        } else {
+            param.put("city_id", selectedCity.id);
+            if (headHolder != null && selectedCity.id != 0) {
+                headHolder.headRecommendTvDataSource.setText(selectedCity.name);
+            }
+        }
+        if (selectedDistrict == null) {
+            param.put("district_id", 0);
+        } else {
+            param.put("district_id", selectedDistrict.id);
+            if (headHolder != null && selectedDistrict.id != 0) {
+                headHolder.headRecommendTvDataSource.setText(selectedDistrict.name);
+            }
+        }
+        if (selectedSchool == null) {
+            param.put("school_id", 0);
+        } else {
+            param.put("school_id", selectedSchool.id);
+            if (headHolder != null && selectedSchool.id != 0) {
+                headHolder.headRecommendTvDataSource.setText(selectedSchool.name);
+            }
+        }
+        if (selectedSubject != null) {
+            param.put("subject_id", selectedSubject.id);
+        }
+        return param;
+    }
+
     private void initViewsWithSubjects() {
         if (subjects == null) {
             return;
@@ -183,13 +240,9 @@ public class RecommendFragment extends EasyLoadFragment {
                 tv.setTextColor(ContextCompat.getColor(getContext(), R.color.div_tab));
             }
         }
-        DefaultParam param = new DefaultParam();
-        param.put("city_id", 0);
-        param.put("district_id", 0);
-        param.put("school_id", 0);
-        param.put("subject_id", subjects.get(index).id);
+        selectedSubject = subjects.get(index);
         currentPage = 1;
-        initData(NetConstant.API_RECOMMEND, param);
+        initData(NetConstant.API_RECOMMEND, wrapParams());
     }
 
     /**
@@ -204,11 +257,18 @@ public class RecommendFragment extends EasyLoadFragment {
 
         HeadHolder(View view) {
             ButterKnife.bind(this, view);
+            if (MyApplication.currentUser == null) {
+                headRecommendTvDataSource.setText(R.string.all);
+            } else {
+                headRecommendTvDataSource.setText(R.string.my_school);
+            }
         }
 
         @OnClick(R.id.head_recommend_lnFilter)
         protected void filter() {
-            ToastUtil.show("filter");
+            Intent filterIntent = new Intent(getContext(), FilterActivity.class);
+            filterIntent.putExtra("isRecommend", true);
+            startActivityForResult(filterIntent, ACTION_RECOMMEND_FILTER);
         }
     }
 

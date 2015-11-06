@@ -29,6 +29,10 @@ public class NetConstant {
     public static final String API_RANKS_WEEK = "/api/v1/ranks/week";
     public static final String API_RANKS_MONTH = "/api/v1/ranks/month";
     public static final String API_SEARCH = "/api/v1/search";
+    public static final String API_CITIES = "/api/v1/cities";
+    public static final String API_DISTRICTS = "/api/v1/districts";
+    public static final String API_SCHOOLS = "/api/v1/schools";
+    public static final String API_TEAM_CLASSES = "/api/v1/team_classes";
 
     public static final String USER_SIGN_IN = "/users/sign_in.json";
     public static final String USER_SIGN_OUT = "/users/sign_out.json";

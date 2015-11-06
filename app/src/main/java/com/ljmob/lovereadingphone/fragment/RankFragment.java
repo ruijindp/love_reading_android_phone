@@ -1,5 +1,6 @@
 package com.ljmob.lovereadingphone.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,7 +24,11 @@ import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.ReadingActivity;
 import com.ljmob.lovereadingphone.adapter.RankAdapter;
 import com.ljmob.lovereadingphone.context.EasyLoadFragment;
+import com.ljmob.lovereadingphone.context.MyApplication;
+import com.ljmob.lovereadingphone.entity.City;
+import com.ljmob.lovereadingphone.entity.District;
 import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.entity.School;
 import com.ljmob.lovereadingphone.entity.Subject;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.DefaultParam;
@@ -41,6 +46,7 @@ import info.hoang8f.android.segmented.SegmentedGroup;
  * 排行榜
  */
 public class RankFragment extends EasyLoadFragment {
+    public static final int ACTION_RANK_FILTER = 0xACAF;
     private static final int API_SUBJECTS = 1;
 
     @Bind(R.id.view_recommend_frameTabs)
@@ -52,11 +58,15 @@ public class RankFragment extends EasyLoadFragment {
 
     HeadHolder headHolder;
     private RankAdapter rankAdapter;
-    Subject selectedSubject;
     String currentApi = NetConstant.API_RANKS_WEEK;
     private TextView itemWeek;
     private TextView itemMonth;
     private boolean isShowingAppBar = true;
+
+    private City selectedCity;
+    private District selectedDistrict;
+    private School selectedSchool;
+    private Subject selectedSubject;
 
     @Nullable
     @Override
@@ -143,11 +153,57 @@ public class RankFragment extends EasyLoadFragment {
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        selectedCity = (City) data.getSerializableExtra("selectedCity");
+        selectedDistrict = (District) data.getSerializableExtra("selectedDistrict");
+        selectedSchool = (School) data.getSerializableExtra("selectedSchool");
+
+        currentPage = 1;
+        initData(currentApi, wrapParams());
+    }
+
     @OnItemClick(R.id.primaryAbsListView)
     protected void selectResult(int position) {
         Intent intent = new Intent(getContext(), ReadingActivity.class);
         intent.putExtra("result", results.get(position - 1));//header
         startActivity(intent);
+    }
+
+    private DefaultParam wrapParams() {
+        DefaultParam param = new DefaultParam();
+        if (selectedCity == null) {
+            param.put("city_id", 0);
+        } else {
+            param.put("city_id", selectedCity.id);
+            if (headHolder != null && selectedCity.id != 0) {
+                headHolder.headRankTvDataSource.setText(selectedCity.name);
+            }
+        }
+        if (selectedDistrict == null) {
+            param.put("district_id", 0);
+        } else {
+            param.put("district_id", selectedDistrict.id);
+            if (headHolder != null && selectedDistrict.id != 0) {
+                headHolder.headRankTvDataSource.setText(selectedDistrict.name);
+            }
+        }
+        if (selectedSchool == null) {
+            param.put("school_id", 0);
+        } else {
+            param.put("school_id", selectedSchool.id);
+            if (headHolder != null && selectedSchool.id != 0) {
+                headHolder.headRankTvDataSource.setText(selectedSchool.name);
+            }
+        }
+        if (selectedSubject != null) {
+            param.put("subject_id", selectedSubject.id);
+        }
+        return param;
     }
 
     private void initTabs(LayoutInflater inflater) {
@@ -180,9 +236,7 @@ public class RankFragment extends EasyLoadFragment {
             return;
         }
         currentPage = 1;
-        DefaultParam param = new DefaultParam();
-        param.put("subject_id", selectedSubject.id);
-        initData(currentApi, param);
+        initData(currentApi, wrapParams());
     }
 
     /**
@@ -199,6 +253,11 @@ public class RankFragment extends EasyLoadFragment {
 
         HeadHolder(View view) {
             ButterKnife.bind(this, view);
+            if (MyApplication.currentUser == null) {
+                headRankTvDataSource.setText(R.string.all);
+            } else {
+                headRankTvDataSource.setText(R.string.my_school);
+            }
         }
     }
 
