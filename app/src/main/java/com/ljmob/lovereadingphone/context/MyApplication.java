@@ -57,11 +57,13 @@ public class MyApplication extends Application {
                 .defaultDisplayImageOptions(imageOptions.build());
         ImageLoader.getInstance().init(builder.build());
 
-        //TODO set currentUser
         String UB64 = Lutil.preferences.getString("UB64", "");
         if (UB64.length() != 0) {
-            currentUser = new Gson()
-                    .fromJson(new String(Base64.decode(UB64, Base64.DEFAULT)), User.class);
+            String userString = new String(Base64.decode(UB64, Base64.DEFAULT));
+            if (userString.startsWith("{") && userString.endsWith("}")) {
+                currentUser = new Gson()
+                        .fromJson(userString, User.class);
+            }
         }
     }
 }
