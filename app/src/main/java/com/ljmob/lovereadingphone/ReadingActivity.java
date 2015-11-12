@@ -160,7 +160,8 @@ public class ReadingActivity extends AppCompatActivity implements
         }
         initData();
 
-        if (MyApplication.blurryBg != null && result == null) {
+        if (MyApplication.blurryBg != null
+                && MyApplication.blurryName.equals(article.cover_img.cover_img.small.url)) {
             activityReadingImgBackground.setImageBitmap(MyApplication.blurryBg);
             activityReadingMask.setAlpha(0.4f);
         } else {
@@ -342,6 +343,8 @@ public class ReadingActivity extends AppCompatActivity implements
                 }
                 MyApplication.blurryBg = ((BitmapDrawable) activityReadingImgBackground
                         .getDrawable()).getBitmap();
+                MyApplication.blurryName = article.cover_img.cover_img.small.url;
+
                 fadeMaskOut();
             }
         });

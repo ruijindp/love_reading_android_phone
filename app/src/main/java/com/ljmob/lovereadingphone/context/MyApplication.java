@@ -24,6 +24,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class MyApplication extends Application {
     public static User currentUser;
     public static Bitmap blurryBg;
+    public static String blurryName = "none";
 
     @Override
     public void onCreate() {

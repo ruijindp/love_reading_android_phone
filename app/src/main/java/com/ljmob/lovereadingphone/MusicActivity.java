@@ -103,7 +103,8 @@ public class MusicActivity extends AppCompatActivity implements
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
-        if (MyApplication.blurryBg != null) {
+        if (MyApplication.blurryBg != null &&
+                article.cover_img.cover_img.small.url.equals(MyApplication.blurryName)) {
             activityMusicImgBackground.setImageBitmap(MyApplication.blurryBg);
             activityMusicMask.setAlpha(0.4f);
         } else {
@@ -233,6 +234,7 @@ public class MusicActivity extends AppCompatActivity implements
                 }
                 MyApplication.blurryBg = ((BitmapDrawable) activityMusicImgBackground
                         .getDrawable()).getBitmap();
+                MyApplication.blurryName = article.cover_img.cover_img.small.url;
                 fadeMaskOut();
             }
         });

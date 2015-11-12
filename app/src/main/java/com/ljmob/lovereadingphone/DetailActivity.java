@@ -75,20 +75,26 @@ public class DetailActivity extends AppCompatActivity {
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
-        if (MyApplication.blurryBg != null) {
-            MyApplication.blurryBg.recycle();
-            MyApplication.blurryBg = null;
-            System.gc();
-        }
 
-        imageLoader.displayImage(NetConstant.ROOT_URL + article.cover_img.cover_img.small.url,
-                activityDetailImgBackground, new SimpleImageLoadingListener() {
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        super.onLoadingComplete(imageUri, view, loadedImage);
-                        makeBlurry();
-                    }
-                });
+        if (MyApplication.blurryBg != null &&
+                MyApplication.blurryName.equals(article.cover_img.cover_img.small.url)) {
+            activityDetailImgBackground.setImageBitmap(MyApplication.blurryBg);
+            activity_detail_mask.setAlpha(0.4f);
+        } else {
+            if (MyApplication.blurryBg != null) {
+                MyApplication.blurryBg.recycle();
+                MyApplication.blurryBg = null;
+                System.gc();
+            }
+            imageLoader.displayImage(NetConstant.ROOT_URL + article.cover_img.cover_img.small.url,
+                    activityDetailImgBackground, new SimpleImageLoadingListener() {
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            super.onLoadingComplete(imageUri, view, loadedImage);
+                            makeBlurry();
+                        }
+                    });
+        }
         SimpleImageLoader.displayImage(article.cover_img.cover_img.normal.url, activityDetailImgCover);
         activityDetailTvTitle.setText(article.title);
         activityDetailTvAuthor.setText(article.author);
@@ -172,6 +178,7 @@ public class DetailActivity extends AppCompatActivity {
                 }
                 MyApplication.blurryBg = ((BitmapDrawable) activityDetailImgBackground
                         .getDrawable()).getBitmap();
+                MyApplication.blurryName = article.cover_img.cover_img.small.url;
                 fadeMaskOut();
             }
         });

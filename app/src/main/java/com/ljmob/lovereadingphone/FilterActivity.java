@@ -251,18 +251,22 @@ public class FilterActivity extends AppCompatActivity implements
             if (!cities.get(index).equals(selectedCity)) {
                 districts = null;
                 districtPopup = null;
+                selectedDistrict = null;
                 activityFilterTvArea.setText(R.string.all);
 
                 schools = null;
                 schoolPopup = null;
+                selectedSchool = null;
                 activityFilterTvSchool.setText(R.string.my_school);
 
                 grades = null;
                 gradePopup = null;
+                selectedGrade = null;
                 activityFilterTvGrade.setText(R.string.all);
 
                 teamClasses = null;
                 teamClassPopup = null;
+                selectedTeamClass = null;
                 activityFilterTvTeamClass.setText(R.string.all);
             }
             selectedCity = cities.get(index);
@@ -276,14 +280,17 @@ public class FilterActivity extends AppCompatActivity implements
             if (!districts.get(index).equals(selectedDistrict)) {
                 schools = null;
                 schoolPopup = null;
+                selectedSchool = null;
                 activityFilterTvSchool.setText(R.string.my_school);
 
                 grades = null;
                 gradePopup = null;
+                selectedGrade = null;
                 activityFilterTvGrade.setText(R.string.all);
 
                 teamClasses = null;
                 teamClassPopup = null;
+                selectedTeamClass = null;
                 activityFilterTvTeamClass.setText(R.string.all);
             }
             selectedDistrict = districts.get(index);
@@ -297,10 +304,12 @@ public class FilterActivity extends AppCompatActivity implements
             if (!schools.get(index).equals(selectedSchool)) {
                 grades = null;
                 gradePopup = null;
+                selectedGrade = null;
                 activityFilterTvGrade.setText(R.string.all);
 
                 teamClasses = null;
                 teamClassPopup = null;
+                selectedTeamClass = null;
                 activityFilterTvTeamClass.setText(R.string.all);
             }
             selectedSchool = schools.get(index);
@@ -313,6 +322,7 @@ public class FilterActivity extends AppCompatActivity implements
             if (!grades.get(index).equals(selectedGrade)) {
                 teamClasses = null;
                 teamClassPopup = null;
+                selectedTeamClass = null;
                 activityFilterTvTeamClass.setText(R.string.all);
             }
             selectedGrade = grades.get(index);
