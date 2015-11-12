@@ -16,6 +16,7 @@ import com.ljmob.lovereadingphone.ReadingActivity;
 import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.Article;
 import com.ljmob.lovereadingphone.entity.Music;
+import com.ljmob.lovereadingphone.util.HeadSetTool;
 import com.ljmob.lovereadingphone.util.RecorderFileUtil;
 import com.ljmob.lovereadingphone.view.RecorderRipple;
 import com.londonx.lmp3recorder.LRecorder;
@@ -170,32 +171,37 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
         currentStatus = Status.finished;
         recorder.stop();
 
-        //TODO 耳机才做混音
-        ((ReadingActivity) getActivity()).showMixDialog();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                long mixStart = System.currentTimeMillis();
-                uploadFile = new File(recordedFile.getAbsolutePath().replace(".wav", "_mix.wav"));
-                File musicWav = null;
-                try {
-                    musicWav = Mp3Decoder.syncDecode(musicFile, recTime);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                new SoundMixer(musicWav, recordedFile, uploadFile).syncMixWav();
-
-                ToastUtil.show("mix finish in :" + (System.currentTimeMillis() - mixStart) + "ms");
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((ReadingActivity) getActivity()).setCurrentStatus(ReadingActivity.Status.upload);
-                        ((ReadingActivity) getActivity()).dismissMixDialog();
-                        ((ReadingActivity) getActivity()).setRecorderFile(uploadFile);
+        if (HeadSetTool.isHeadSetConnected(getContext())) {// 耳机才做混音
+            ((ReadingActivity) getActivity()).showMixDialog();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    long mixStart = System.currentTimeMillis();
+                    uploadFile = new File(recordedFile.getAbsolutePath().replace(".wav", "_mix.wav"));
+                    File musicWav = null;
+                    try {
+                        musicWav = Mp3Decoder.syncDecode(musicFile, recTime);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                });
-            }
-        }).start();
+                    new SoundMixer(musicWav, recordedFile, uploadFile).syncMixWav();
+
+                    Log.i("LondonX", "mix finish in :" + (System.currentTimeMillis() - mixStart) + "ms");
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((ReadingActivity) getActivity()).setCurrentStatus(ReadingActivity.Status.upload);
+                            ((ReadingActivity) getActivity()).dismissMixDialog();
+                            ((ReadingActivity) getActivity()).setRecorderFile(uploadFile);
+                        }
+                    });
+                }
+            }).start();
+        } else {
+            uploadFile = recordedFile;
+            ((ReadingActivity) getActivity()).setCurrentStatus(ReadingActivity.Status.upload);
+            ((ReadingActivity) getActivity()).setRecorderFile(uploadFile);
+        }
     }
 
     public void setMetaData(Music music, Article article) {

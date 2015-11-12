@@ -1,7 +1,11 @@
 package com.ljmob.lovereadingphone.fragment;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +31,7 @@ import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.entity.Score;
 import com.ljmob.lovereadingphone.entity.User;
 import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LMediaPlayer;
@@ -42,7 +47,10 @@ import butterknife.OnClick;
  * 看未评分结果（仅教师）
  */
 
-public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnProgressChangeListener, LRequestTool.OnResponseListener {
+public class NotRatedResultFragment extends Fragment implements
+        LMediaPlayer.OnProgressChangeListener,
+        LRequestTool.OnResponseListener,
+        ServiceConnection {
     private static final int API_SCORE = 1;
 
     View rootView;
@@ -62,10 +70,11 @@ public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnP
     ImageView viewNotRatedResultImgPlay;
 
     private Result result;
-    LMediaPlayer player;
     LRequestTool requestTool;
     boolean isCommitting;
     private MaterialDialog ratingDialog;
+
+    private PlayerService playerService;
 
     @Nullable
     @Override
@@ -74,7 +83,8 @@ public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnP
             rootView = inflater.inflate(R.layout.view_not_rated_result, container, false);
         }
         ButterKnife.bind(this, rootView);
-        if (result != null) {
+        if (result != null && result.score.size() == 0) {
+            getActivity().bindService(new Intent(getContext(), PlayerService.class), this, Context.BIND_AUTO_CREATE);
             startPlay();
         }
         return rootView;
@@ -89,12 +99,17 @@ public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnP
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        release();
         ButterKnife.unbind(this);
+        if (result != null && result.score.size() == 0) {
+            getActivity().unbindService(this);
+        }
     }
 
     @Override
     public void progressChanged(int position, int duration) {
+        if (viewNotRatedResultTvTimerCurrent == null) {
+            return;
+        }
         viewNotRatedResultTvTimerCurrent.setText(DateFormat.format("mm:ss", position));
         viewNotRatedResultTvTimerTotal.setText(DateFormat.format("mm:ss", duration));
 
@@ -103,16 +118,55 @@ public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnP
         }
     }
 
-    @OnClick(R.id.view_not_rated_result_imgPlay)
-    protected void playOrPause() {
-        if (player == null) {
+    @Override
+    public void onResponse(LResponse response) {
+        ratingDialog.setCancelable(true);
+        isCommitting = false;
+        if (response.responseCode == 401) {
+            ToastUtil.show(R.string.toast_login_timeout);
+            startActivity(new Intent(getContext(), LoginActivity.class));
             return;
         }
-        if (player.mediaPlayer.isPlaying()) {
-            player.pause();
+        switch (response.requestCode) {
+            case API_SCORE:
+                ToastUtil.show(R.string.committed);
+                ratingDialog.dismiss();
+                MyReadingFragment.hasDataChanged = true;
+                Score score = new Gson().fromJson(response.body, Score.class);
+                result.score.add(score);
+                ((ReadingActivity) getActivity()).setRatedResult(result);
+                break;
+        }
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        playerService = ((PlayerService.PlayerBinder) service).getService();
+        playerService.getPlayer().setSkbProgress(viewNotRatedResultSbPlayer);
+        playerService.getPlayer().setOnProgressChangeListener(this);
+        startPlay();
+        if (playerService.getPlayer().mediaPlayer.isPlaying()) {
+            viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
+        } else {
+            viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+
+    }
+
+    @OnClick(R.id.view_not_rated_result_imgPlay)
+    protected void playOrPause() {
+        if (playerService == null) {
+            return;
+        }
+        if (playerService.getPlayer().mediaPlayer.isPlaying()) {
+            playerService.getPlayer().pause();
             viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
         } else {
-            player.play();
+            playerService.getPlayer().play();
             viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
         }
     }
@@ -146,17 +200,20 @@ public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnP
     public void setResult(Result result) {
         this.result = result;
         if (viewNotRatedResultSbPlayer != null) {
+            getActivity().bindService(new Intent(getContext(), PlayerService.class), this, Context.BIND_AUTO_CREATE);
             startPlay();
         }
     }
 
     private void startPlay() {
-        if (player == null) {
-            player = new LMediaPlayer(null, viewNotRatedResultSbPlayer);
-            player.setOnProgressChangeListener(this);
+        if (playerService == null || result == null) {
+            return;
         }
-        player.prepareUrl(NetConstant.ROOT_URL + result.file_url);
-        player.play();
+        if (playerService.getResult() == null) {
+            playerService.setResult(result);
+        } else if (playerService.getResult().id != result.id) {
+            playerService.setResult(result);
+        }
     }
 
     private void makeViewsByRole() {
@@ -220,32 +277,5 @@ public class NotRatedResultFragment extends Fragment implements LMediaPlayer.OnP
         param.put("result_id", result.id);
         param.put("score", rating);
         requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_SCORE, param, API_SCORE);
-    }
-
-    private void release() {
-        if (player != null && player.mediaPlayer.isPlaying()) {
-            player.stop();
-        }
-    }
-
-    @Override
-    public void onResponse(LResponse response) {
-        ratingDialog.setCancelable(true);
-        isCommitting = false;
-        if (response.responseCode == 401) {
-            ToastUtil.show(R.string.toast_login_timeout);
-            startActivity(new Intent(getContext(), LoginActivity.class));
-            return;
-        }
-        switch (response.requestCode) {
-            case API_SCORE:
-                ToastUtil.show(R.string.committed);
-                ratingDialog.dismiss();
-                MyReadingFragment.hasDataChanged = true;
-                Score score = new Gson().fromJson(response.body, Score.class);
-                result.score.add(score);
-                ((ReadingActivity) getActivity()).setRatedResult(result);
-                break;
-        }
     }
 }

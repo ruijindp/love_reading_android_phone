@@ -56,6 +56,7 @@ dependencies {
     compile 'com.github.aakira:expandable-layout:1.3.0@aar'//ExpandableLayout
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'//头像裁剪
     compile 'info.hoang8f:android-segmented:1.0.6'//segment controller
+    compile 'it.sephiroth.android.library.imagezoom:imagezoom:2.2.2'//图片放大
 
     compile('com.afollestad.material-dialogs:core:0.8.4.2@aar') {//对话框
         transitive = true

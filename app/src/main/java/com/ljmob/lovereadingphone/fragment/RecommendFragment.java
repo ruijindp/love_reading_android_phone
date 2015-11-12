@@ -47,6 +47,7 @@ import butterknife.OnItemClick;
  */
 public class RecommendFragment extends EasyLoadFragment {
     public static final int ACTION_RECOMMEND_FILTER = 0xACEC;
+    public static boolean hasDataChanged = false;
     private static final int API_SUBJECTS = 1;
 
     @Bind(R.id.view_recommend_frameTabs)
@@ -84,8 +85,17 @@ public class RecommendFragment extends EasyLoadFragment {
         }
         ButterKnife.bind(this, rootView);
 
-        requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_SUBJECTS, new DefaultParam(), API_SUBJECTS);
+        initSubjects();
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (hasDataChanged) {
+            initSubjects();
+        }
+        hasDataChanged = false;
     }
 
     @Override
@@ -166,8 +176,12 @@ public class RecommendFragment extends EasyLoadFragment {
             param.put("city_id", 0);
         } else {
             param.put("city_id", selectedCity.id);
-            if (headHolder != null && selectedCity.id != 0) {
-                headHolder.headRecommendTvDataSource.setText(selectedCity.name);
+            if (headHolder != null) {
+                if (selectedCity.id == 0) {
+                    headHolder.headRecommendTvDataSource.setText(R.string.all);
+                } else {
+                    headHolder.headRecommendTvDataSource.setText(selectedCity.name);
+                }
             }
         }
         if (selectedDistrict == null) {
@@ -243,6 +257,10 @@ public class RecommendFragment extends EasyLoadFragment {
         selectedSubject = subjects.get(index);
         currentPage = 1;
         initData(NetConstant.API_RECOMMEND, wrapParams());
+    }
+
+    private void initSubjects() {
+        requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_SUBJECTS, new DefaultParam(), API_SUBJECTS);
     }
 
     /**

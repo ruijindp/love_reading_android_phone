@@ -29,6 +29,7 @@ import com.ljmob.lovereadingphone.entity.Article;
 import com.ljmob.lovereadingphone.entity.Music;
 import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.entity.Section;
+import com.ljmob.lovereadingphone.fragment.MyReadingFragment;
 import com.ljmob.lovereadingphone.fragment.NotRatedResultFragment;
 import com.ljmob.lovereadingphone.fragment.RatedResultFragment;
 import com.ljmob.lovereadingphone.fragment.RecorderFragment;
@@ -36,6 +37,7 @@ import com.ljmob.lovereadingphone.fragment.UploadResultFragment;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.ContentFormatter;
 import com.ljmob.lovereadingphone.util.DefaultParam;
+import com.ljmob.lovereadingphone.util.HeadSetTool;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
@@ -141,6 +143,10 @@ public class ReadingActivity extends AppCompatActivity implements
                 ToastUtil.show(R.string.toast_music_err);
                 finish();
                 return;
+            }
+
+            if (!HeadSetTool.isHeadSetConnected(this)) {
+                ToastUtil.show(R.string.toast_headset);
             }
             currentStatus = Status.record;
         }
@@ -254,6 +260,7 @@ public class ReadingActivity extends AppCompatActivity implements
         switch (response.requestCode) {
             case API_RESULTS_UPLOAD:
                 ToastUtil.show(R.string.toast_upload_ok);
+                MyReadingFragment.hasDataChanged = true;
                 finish();
                 break;
         }
@@ -289,7 +296,11 @@ public class ReadingActivity extends AppCompatActivity implements
             notRatedResultFragment = new NotRatedResultFragment();
             ratedResultFragment = new RatedResultFragment();
             if (result != null) {
-                notRatedResultFragment.setResult(result);
+                if (result.score.size() == 0) {
+                    notRatedResultFragment.setResult(result);
+                } else {
+                    ratedResultFragment.setResult(result);
+                }
             }
 
             fragments.add(recorderFragment);

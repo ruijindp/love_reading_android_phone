@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
         android:name=".context.MyApplication"
@@ -41,7 +42,8 @@
             android:name=".ReadingActivity"
             android:label="@string/activity_reading"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Reading" />
+            android:theme="@style/AppTheme.Reading"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".FilterActivity"
             android:label="@string/activity_filter"
@@ -70,6 +72,12 @@
             android:name=".SearchActivity"
             android:label="@string/activity_search"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ZoomActivity"
+            android:label="@string/activity_zoom"
+            android:screenOrientation="sensor" />
+
+        <service android:name=".service.PlayerService" />
     </application>
 
 </manifest>

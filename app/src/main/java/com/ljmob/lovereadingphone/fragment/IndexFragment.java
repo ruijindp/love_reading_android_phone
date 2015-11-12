@@ -117,17 +117,17 @@ public class IndexFragment extends Fragment implements
         int startOffset = getResources().getDimensionPixelSize(R.dimen.subject_list_refresh_start_offset);
         int endOffset = getResources().getDimensionPixelSize(R.dimen.subject_list_refresh_end_offset);
         primarySwipeRefreshLayout.setProgressViewOffset(false, startOffset, endOffset);
-        View headEmpty = inflater.inflate(R.layout.toolbar_trans, primaryAbsListView, false);
-        View headMain = inflater.inflate(R.layout.head_index, primaryAbsListView, false);
-        headHolder = new HeadHolder(headMain);
-        if (selectedSubject != null && selectedGrade != null) {
-            headHolder.headMainTvCurrentCate.setText(String.format("%s%s",
-                    selectedGrade.name, selectedSubject.name));
-        } else {
-            headHolder.headMainTvCurrentCate.setText(R.string.all);
-        }
 
         if (primaryAbsListView.getHeaderViewsCount() == 0) {
+            View headEmpty = inflater.inflate(R.layout.toolbar_trans, primaryAbsListView, false);
+            View headMain = inflater.inflate(R.layout.head_index, primaryAbsListView, false);
+            headHolder = new HeadHolder(headMain);
+            if (selectedSubject != null && selectedGrade != null) {
+                headHolder.headMainTvCurrentCate.setText(String.format("%s%s",
+                        selectedGrade.name, selectedSubject.name));
+            } else {
+                headHolder.headMainTvCurrentCate.setText(R.string.all);
+            }
             primaryAbsListView.addHeaderView(headEmpty);
             primaryAbsListView.addHeaderView(headMain);
         }

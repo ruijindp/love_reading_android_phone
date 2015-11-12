@@ -137,6 +137,14 @@ public class DetailActivity extends AppCompatActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+    @OnClick(R.id.activity_detail_imgCover)
+    protected void zoomImage() {
+        Intent intent = new Intent(this, ZoomActivity.class);
+        intent.putExtra("image", article.cover_img.cover_img);
+        startActivity(intent);
+    }
+
+
     @OnClick(R.id.activity_detail_fabStart)
     protected void startReading() {
         if (MyApplication.currentUser == null) {

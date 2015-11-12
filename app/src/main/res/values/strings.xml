@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LoveReadingPhone</string>
+    <string name="app_name">欢乐诵</string>
 
     <string name="font_regular">fonts/default-Regular.ttf</string>
     <string name="font_bold">fonts/default-Bold.ttf</string>
@@ -76,6 +76,7 @@
     <string name="toast_avatar_err">图片读取错误，无法设置为新头像</string>
     <string name="toast_avatar_ok">头像设置成功</string>
     <string name="toast_password_ok">密码设置成功</string>
+    <string name="toast_headset">为了提高录音质量，建议使用耳机录制</string>
 
     <string name="dialog_feeling">说点什么吧!</string>
     <string name="dialog_feeling_confirm">上传</string>
@@ -100,6 +101,7 @@
     <string name="activity_login">登录</string>
     <string name="activity_category">文章类型</string>
     <string name="activity_search">搜索</string>
+    <string name="activity_zoom">查看图片</string>
 
     <string name="action_share">分享</string>
     <string name="action_share_wechat">微信好友</string>

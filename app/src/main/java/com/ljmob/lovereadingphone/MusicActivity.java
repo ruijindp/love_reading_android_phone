@@ -134,35 +134,31 @@ public class MusicActivity extends AppCompatActivity implements
         adapter.setSelectedIndex(position);
         adapter.setPlayingIndex(-1);
         holder.setSelected(true);
+
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         } else {
             mediaPlayer = new LMediaPlayer(null, null);
         }
+        if (downloadDialog != null) {
+            return;
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (downloadDialog != null) {
+                mediaPlayer.prepareUrl(NetConstant.ROOT_URL + musics.get(position).file_url);
+                try {
+                    mediaPlayer.play();
+                } catch (IllegalStateException ignore) {
                     return;
                 }
-                mediaPlayer.prepareUrl(NetConstant.ROOT_URL + musics.get(position).file_url);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mediaPlayer.play();
-                    }
-                });
-                try {
-                    Thread.sleep(1200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
+
+                primaryAbsListView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         adapter.setPlayingIndex(position);
                     }
-                });
+                }, 1500);
             }
         }).start();
     }

@@ -47,6 +47,7 @@ import info.hoang8f.android.segmented.SegmentedGroup;
  */
 public class RankFragment extends EasyLoadFragment {
     public static final int ACTION_RANK_FILTER = 0xACAF;
+    public static boolean hasDataChanged = false;
     private static final int API_SUBJECTS = 1;
 
     @Bind(R.id.view_recommend_frameTabs)
@@ -85,9 +86,18 @@ public class RankFragment extends EasyLoadFragment {
             requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_SUBJECTS, new DefaultParam(), API_SUBJECTS);
         }
         ButterKnife.bind(this, rootView);
-        initTabs(inflater);
+        initTabs();
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (hasDataChanged) {
+            refreshDataWithSubject();
+        }
+        hasDataChanged = false;
     }
 
     @Override
@@ -180,8 +190,16 @@ public class RankFragment extends EasyLoadFragment {
             param.put("city_id", 0);
         } else {
             param.put("city_id", selectedCity.id);
-            if (headHolder != null && selectedCity.id != 0) {
-                headHolder.headRankTvDataSource.setText(selectedCity.name);
+            if (headHolder != null) {
+                if (selectedCity.id == 0) {
+                    headHolder.headRankTvDataSource.setText(selectedCity.name);
+                } else {
+                    if (MyApplication.currentUser == null) {
+                        headHolder.headRankTvDataSource.setText(R.string.all);
+                    } else {
+                        headHolder.headRankTvDataSource.setText(R.string.my_school);
+                    }
+                }
             }
         }
         if (selectedDistrict == null) {
@@ -206,7 +224,7 @@ public class RankFragment extends EasyLoadFragment {
         return param;
     }
 
-    private void initTabs(LayoutInflater inflater) {
+    private void initTabs() {
         LinearLayout tabLinear = (LinearLayout) inflater
                 .inflate(R.layout.head_tab, viewRecommendFrameTabs, false);
         if (viewRecommendFrameTabs.getChildCount() != 0) {

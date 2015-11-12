@@ -46,6 +46,17 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
         mTimer.schedule(mTimerTask, 0, 26);
     }
 
+    public void setSurfaceHolder(SurfaceHolder surfaceHolder) {
+        this.surfaceHolder = surfaceHolder;
+        surfaceHolder.addCallback(this);
+    }
+
+    public void setSkbProgress(SeekBar skbProgress) {
+        this.skbProgress = skbProgress;
+        handleProgress.sendEmptyMessage(0);
+        skbProgress.setOnSeekBarChangeListener(this);
+    }
+
     /**
      * ****************************************************
      * 通过定时器和Handler来更新进度条

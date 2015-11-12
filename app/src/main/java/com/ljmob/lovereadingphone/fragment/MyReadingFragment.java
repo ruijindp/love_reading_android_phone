@@ -66,9 +66,9 @@ public class MyReadingFragment extends EasyLoadFragment {
     public void onResume() {
         super.onResume();
         if (hasDataChanged) {
-            hasDataChanged = false;
             onRefresh();
         }
+        hasDataChanged = false;
     }
 
     @Override
