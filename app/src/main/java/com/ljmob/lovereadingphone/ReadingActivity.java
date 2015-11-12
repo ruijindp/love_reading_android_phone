@@ -126,9 +126,11 @@ public class ReadingActivity extends AppCompatActivity implements
                 currentStatus = Status.notRatedResult;
             } else {
                 currentStatus = Status.ratedResult;
-                DefaultParam param = new DefaultParam();
-                param.put("result_id", result.id);
-                requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_HISTORY, param, API_HISTORY);
+                if (MyApplication.currentUser != null) {
+                    DefaultParam param = new DefaultParam();
+                    param.put("result_id", result.id);
+                    requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_HISTORY, param, API_HISTORY);
+                }
             }
             article = result.article;
         } else {

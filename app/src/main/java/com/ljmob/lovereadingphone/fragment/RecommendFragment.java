@@ -1,8 +1,12 @@
 package com.ljmob.lovereadingphone.fragment;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -30,6 +34,7 @@ import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.entity.School;
 import com.ljmob.lovereadingphone.entity.Subject;
 import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.entity.LResponse;
 
@@ -45,7 +50,7 @@ import butterknife.OnItemClick;
  * Created by london on 15/10/26.
  * 美文推荐
  */
-public class RecommendFragment extends EasyLoadFragment {
+public class RecommendFragment extends EasyLoadFragment implements ServiceConnection {
     public static final int ACTION_RECOMMEND_FILTER = 0xACEC;
     public static boolean hasDataChanged = false;
     private static final int API_SUBJECTS = 1;
@@ -68,6 +73,8 @@ public class RecommendFragment extends EasyLoadFragment {
     private School selectedSchool;
     private Subject selectedSubject;
 
+    private PlayerService playerService;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +91,7 @@ public class RecommendFragment extends EasyLoadFragment {
             ((ListView) primaryListView).addHeaderView(headerView);
         }
         ButterKnife.bind(this, rootView);
-
+        getActivity().bindService(new Intent(getContext(), PlayerService.class), this, Context.BIND_AUTO_CREATE);
         initSubjects();
         return rootView;
     }
@@ -116,6 +123,20 @@ public class RecommendFragment extends EasyLoadFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        getActivity().unbindService(this);
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        playerService = ((PlayerService.PlayerBinder) service).getService();
+        if (recommendAdapter != null && recommendAdapter.getPlayerService() == null) {
+            recommendAdapter.setPlayerService(playerService);
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+
     }
 
     @Override
@@ -132,6 +153,7 @@ public class RecommendFragment extends EasyLoadFragment {
                 if (currentPage == 1) {
                     results = appendData;
                     recommendAdapter = new RecommendAdapter(results);
+                    recommendAdapter.setPlayerService(playerService);
                     primaryListView.setAdapter(recommendAdapter);
                 } else {
                     results.addAll(appendData);

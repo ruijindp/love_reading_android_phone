@@ -21,14 +21,12 @@
             android:textColor="@android:color/white"
             android:textSize="12sp" />
 
-
-        <!--android:progressDrawable="@drawable/layer_seekbar"-->
         <android.support.v7.widget.AppCompatSeekBar
             android:id="@+id/view_upload_result_sbPlayer"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:progress="10"
+            android:progress="0"
             android:progressDrawable="@drawable/layer_seekbar"
             android:thumb="@drawable/selector_seekbar_thumb" />
 

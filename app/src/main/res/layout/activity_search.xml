@@ -34,6 +34,7 @@
                 android:id="@+id/activity_search_imgBack"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@string/dcd"
                 android:padding="12dp"

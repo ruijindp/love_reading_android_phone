@@ -1,15 +1,19 @@
 package com.ljmob.lovereadingphone;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.Snackbar.Callback;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -23,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import com.ljmob.lovereadingphone.adapter.ListenedAdapter;
 import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
@@ -40,10 +45,12 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class ListenedActivity extends AppCompatActivity implements
         SwipeRefreshLayout.OnRefreshListener,
-        View.OnClickListener, LRequestTool.OnResponseListener, ListenedAdapter.OnResultClickListener {
+        View.OnClickListener, LRequestTool.OnResponseListener,
+        ListenedAdapter.OnResultClickListener, ServiceConnection {
     public static boolean hasDataChanged;
     private static final int API_HISTORY = 1;
     private static final int API_HISTORY_DELETED = 2;
+    private static final int PAGE_SIZE = 10;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -61,16 +68,17 @@ public class ListenedActivity extends AppCompatActivity implements
     private int deletedIndex = -1;
     private Result deletedResult = null;
     private Snackbar snackbar;
-
     private boolean isSorting = false;
-
     private LRequestTool requestTool;
+
+    private PlayerService playerService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listened);
         ButterKnife.bind(this);
+        bindService(new Intent(this, PlayerService.class), this, Context.BIND_AUTO_CREATE);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -78,6 +86,27 @@ public class ListenedActivity extends AppCompatActivity implements
         }
         primarySwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark);
         primarySwipeRefreshLayout.setOnRefreshListener(this);
+        activityListenedRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (isLoading) {
+                    return;
+                }
+                int lastVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager())
+                        .findLastVisibleItemPosition();
+                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+
+
+                boolean isDivDPage = lastVisibleItem > totalItemCount - PAGE_SIZE / 2;
+                if (isDivDPage && hasMore) {
+                    isLoading = true;
+                    currentPage++;
+                    getData();
+                    isLoading = true;
+                }
+            }
+        });
 
         activityListenedRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -149,10 +178,11 @@ public class ListenedActivity extends AppCompatActivity implements
             case API_HISTORY:
                 List<Result> appendData = new Gson().fromJson(response.body, new TypeToken<List<Result>>() {
                 }.getType());
-                hasMore = appendData.size() == 10;
+                hasMore = appendData.size() == PAGE_SIZE;
                 if (currentPage == 1) {
                     results = appendData;
                     adapter = new ListenedAdapter(results, this);
+                    adapter.setPlayerService(playerService);
                     activityListenedRecyclerView.setAdapter(adapter);
                 } else {
                     results.addAll(appendData);
@@ -212,6 +242,18 @@ public class ListenedActivity extends AppCompatActivity implements
         intent.putExtra("result", results.get(position));
         startActivity(intent);
         hasDataChanged = true;
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        playerService = ((PlayerService.PlayerBinder) service).getService();
+        if (adapter != null && !adapter.getPlayerService().equals(playerService)) {
+            adapter.setPlayerService(playerService);
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
     }
 
     private class ItemTouchCallback extends ItemTouchHelper.SimpleCallback {

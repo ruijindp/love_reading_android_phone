@@ -103,7 +103,7 @@ public class RatedResultFragment extends Fragment
         if (playerService == null) {
             return;
         }
-        if (playerService.getPlayer().mediaPlayer.isPlaying()) {
+        if (playerService.isPlaying()) {
             playerService.getPlayer().pause();
             viewRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
         } else {
@@ -226,7 +226,7 @@ public class RatedResultFragment extends Fragment
                 playerService.setResult(result);
             }
         }
-        if (playerService.getPlayer().mediaPlayer.isPlaying()) {
+        if (playerService.isPlaying()) {
             viewRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
         } else {
             viewRatedResultImgPlay.setImageResource(R.mipmap.icon_play);

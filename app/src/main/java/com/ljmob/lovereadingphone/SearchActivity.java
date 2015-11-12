@@ -1,8 +1,11 @@
 package com.ljmob.lovereadingphone;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -16,6 +19,7 @@ import com.ljmob.lovereadingphone.adapter.RecommendAdapter;
 import com.ljmob.lovereadingphone.context.EasyLoadActivity;
 import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.entity.LResponse;
 
@@ -32,7 +36,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by london on 15/11/6.
  * 搜索
  */
-public class SearchActivity extends EasyLoadActivity {
+public class SearchActivity extends EasyLoadActivity implements ServiceConnection {
     @Bind(R.id.activity_search_cardSearch)
     CardView activitySearchCardSearch;
 
@@ -40,11 +44,14 @@ public class SearchActivity extends EasyLoadActivity {
     private RecommendAdapter recommendAdapter;
     private boolean isAppBarHided = true;
 
+    private PlayerService playerService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+        bindService(new Intent(this, PlayerService.class), this, Context.BIND_AUTO_CREATE);
 
         int startOffset = getResources().getDimensionPixelSize(R.dimen.subject_list_refresh_start_offset);
         int endOffset = getResources().getDimensionPixelSize(R.dimen.subject_list_refresh_end_offset);
@@ -65,6 +72,7 @@ public class SearchActivity extends EasyLoadActivity {
         if (currentPage == 1) {
             results = appendData;
             recommendAdapter = new RecommendAdapter(results);
+            recommendAdapter.setPlayerService(playerService);
             primaryListView.setAdapter(recommendAdapter);
         } else {
             results.addAll(appendData);
@@ -117,5 +125,18 @@ public class SearchActivity extends EasyLoadActivity {
         Intent intent = new Intent(this, ReadingActivity.class);
         intent.putExtra("result", results.get(position - 1));
         startActivity(intent);
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        playerService = ((PlayerService.PlayerBinder) service).getService();
+        if (recommendAdapter != null && recommendAdapter.getPlayerService() == null) {
+            recommendAdapter.setPlayerService(playerService);
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+
     }
 }

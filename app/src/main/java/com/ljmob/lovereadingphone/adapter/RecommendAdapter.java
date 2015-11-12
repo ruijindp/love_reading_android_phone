@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.londonx.lutil.adapter.LAdapter;
 import com.londonx.lutil.entity.LEntity;
@@ -17,15 +18,25 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by london on 15/10/26.
  * 推荐朗读
  */
 public class RecommendAdapter extends LAdapter {
+    private PlayerService playerService;
 
     public RecommendAdapter(List<? extends LEntity> lEntities) {
         super(lEntities);
+    }
+
+    public void setPlayerService(PlayerService playerService) {
+        this.playerService = playerService;
+    }
+
+    public PlayerService getPlayerService() {
+        return playerService;
     }
 
     @Override
@@ -45,11 +56,9 @@ public class RecommendAdapter extends LAdapter {
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
-    static class ViewHolder {
+    class ViewHolder {
         @Bind(R.id.item_recommend_imgCover)
         ImageView itemRecommendImgCover;
-        @Bind(R.id.item_recommend_imgPlay)
-        ImageView itemRecommendImgPlay;
         @Bind(R.id.item_recommend_tvTitle)
         TextView itemRecommendTvTitle;
         @Bind(R.id.item_recommend_rating)
@@ -80,6 +89,13 @@ public class RecommendAdapter extends LAdapter {
             itemRecommendTvUser.setText(result.user.name);
             itemRecommendTvSchool.setText(result.user.team_classes.get(0).school.name);
             itemRecommendTvPraiseCount.setText(String.format("%d", result.votes));
+        }
+
+        @OnClick(R.id.item_recommend_imgPlay)
+        protected void play() {
+            if (playerService != null) {
+                playerService.setResult(result);
+            }
         }
     }
 }

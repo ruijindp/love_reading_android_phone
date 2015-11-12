@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 
 import java.util.List;
@@ -25,6 +26,8 @@ import butterknife.OnClick;
 public class ListenedAdapter extends RecyclerView.Adapter {
     List<Result> results;
     OnResultClickListener onResultClickListener;
+
+    private PlayerService playerService;
 
     public ListenedAdapter(List<Result> results, OnResultClickListener onResultClickListener) {
         this.results = results;
@@ -68,6 +71,14 @@ public class ListenedAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public void setPlayerService(PlayerService playerService) {
+        this.playerService = playerService;
+    }
+
+    public PlayerService getPlayerService() {
+        return playerService;
+    }
+
     /**
      * This class contains all butterknife-injected Views & Layouts from layout file 'item_listened.xml'
      * for easy to all layout elements.
@@ -77,8 +88,6 @@ public class ListenedAdapter extends RecyclerView.Adapter {
     public class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.item_listened_imgCover)
         ImageView itemListenedImgCover;
-        @Bind(R.id.item_listened_imgPlay)
-        ImageView itemListenedImgPlay;
         @Bind(R.id.item_listened_tvTitle)
         TextView itemListenedTvTitle;
         @Bind(R.id.item_listened_rbRating)
@@ -87,8 +96,6 @@ public class ListenedAdapter extends RecyclerView.Adapter {
         TextView itemListenedTvUser;
         @Bind(R.id.item_listened_tvSchool)
         TextView itemListenedTvSchool;
-        @Bind(R.id.item_listened_imgLike)
-        ImageView itemListenedImgLike;
         @Bind(R.id.item_listened_tvLikeCount)
         TextView itemListenedTvLikeCount;
 
@@ -109,6 +116,13 @@ public class ListenedAdapter extends RecyclerView.Adapter {
                 return;
             }
             onResultClickListener.onResultClick(position);
+        }
+
+        @OnClick(R.id.item_listened_imgPlay)
+        protected void play() {
+            if (playerService != null) {
+                playerService.setResult(results.get(position));
+            }
         }
     }
 

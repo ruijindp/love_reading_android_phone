@@ -3,6 +3,7 @@ package com.ljmob.lovereadingphone.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -17,23 +18,44 @@ import com.londonx.lutil.util.LMediaPlayer;
  * 全局播放器
  */
 public class PlayerService extends Service {
-    private Result result;
-    @NonNull
-    private LMediaPlayer player = new LMediaPlayer(null, null);
+    public static final String ACTION_RESULT_CHANGED = "com.londonx.lutil.util.LMediaPlayer.ACTION_RESULT_CHANGED";
+    private static Result result;
+    private static LMediaPlayer player;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if (player == null) {
+            player = new LMediaPlayer(null, null);
+        }
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return new PlayerBinder();
+    }
 
     public void setResult(Result result) {
-        this.result = result;
-        if (this.result == null) {
-            if (player.mediaPlayer.isPlaying()) {
+        PlayerService.result = result;
+        if (PlayerService.result == null) {
+            if (isPlaying()) {
                 player.stop();
             }
             return;
         }
+        if (player.mediaPlayer == null) {
+            System.gc();
+            player.mediaPlayer = new MediaPlayer();
+        }
         if (player.mediaPlayer.isPlaying()) {
             player.stop();
         }
-        player.prepareUrl(NetConstant.ROOT_URL + result.file_url);
+        player.prepareUrl(NetConstant.ROOT_URL + PlayerService.result.file_url);
         player.play();
+        Intent playerIntent = new Intent(ACTION_RESULT_CHANGED);
+        playerIntent.putExtra("result", PlayerService.result);
+        sendBroadcast(playerIntent);
     }
 
     public Result getResult() {
@@ -45,11 +67,13 @@ public class PlayerService extends Service {
         return player;
     }
 
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return new PlayerBinder();
+    public boolean isPlaying() {
+        if (player.mediaPlayer == null) {
+            getPlayer().mediaPlayer = new MediaPlayer();
+            return false;
+        } else {
+            return getPlayer().mediaPlayer.isPlaying();
+        }
     }
 
     /**

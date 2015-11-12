@@ -145,7 +145,7 @@ public class NotRatedResultFragment extends Fragment implements
         playerService.getPlayer().setSkbProgress(viewNotRatedResultSbPlayer);
         playerService.getPlayer().setOnProgressChangeListener(this);
         startPlay();
-        if (playerService.getPlayer().mediaPlayer.isPlaying()) {
+        if (playerService.isPlaying()) {
             viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
         } else {
             viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
@@ -162,7 +162,7 @@ public class NotRatedResultFragment extends Fragment implements
         if (playerService == null) {
             return;
         }
-        if (playerService.getPlayer().mediaPlayer.isPlaying()) {
+        if (playerService.isPlaying()) {
             playerService.getPlayer().pause();
             viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
         } else {

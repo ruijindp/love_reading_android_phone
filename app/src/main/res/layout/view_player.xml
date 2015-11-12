@@ -28,7 +28,7 @@
         android:textColor="@color/textReadable"
         android:textSize="16sp" />
 
-    <!--icon_mini_stop-->
+    <!--icon_mini_play-->
     <ImageView
         android:id="@+id/view_player_imgPlay"
         android:layout_width="32dp"
@@ -37,7 +37,7 @@
         android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
         android:contentDescription="@string/dcd"
-        android:src="@mipmap/icon_mini_zanting" />
+        android:src="@mipmap/icon_mini_pause" />
 
     <ImageView
         android:id="@+id/view_player_imgClose"

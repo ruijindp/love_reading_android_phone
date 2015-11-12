@@ -1,8 +1,11 @@
 package com.ljmob.lovereadingphone;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +23,7 @@ import com.ljmob.lovereadingphone.fragment.IndexFragment;
 import com.ljmob.lovereadingphone.fragment.PlayerBarFragment;
 import com.ljmob.lovereadingphone.fragment.RankFragment;
 import com.ljmob.lovereadingphone.fragment.RecommendFragment;
+import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.soundcloud.android.crop.Crop;
 
@@ -30,7 +34,7 @@ import butterknife.OnPageChange;
 import de.hdodenhof.circleimageview.CircleImageView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ServiceConnection {
     private static final int PAGE_ARTICLE = 0;
     private static final int PAGE_RECOMMEND = 1;
     private static final int PAGE_RANK = 2;
@@ -59,11 +63,14 @@ public class MainActivity extends AppCompatActivity {
     boolean isAppBarHided;
     boolean isAvatarSet;
 
+    private PlayerService playerService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        bindService(new Intent(this, PlayerService.class), this, Context.BIND_AUTO_CREATE);
         playerBarFragment = (PlayerBarFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.activity_main_fragmentPlayer);
         drawerFragment = (DrawerFragment) getSupportFragmentManager()
@@ -116,10 +123,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        //TODO get playing from service
-        showPlayerBar();
+        if (playerService == null || playerService.getResult() == null) {
+            if (playerBarFragment != null) {
+                playerBarFragment.hideView(false);
+            }
+        } else {
+            showPlayerBar();
+        }
         if (MyApplication.currentUser != null) {
             if (!isAvatarSet) {
                 SimpleImageLoader.displayImage(MyApplication.currentUser.avatar.avatar.normal.url,
@@ -131,6 +149,16 @@ public class MainActivity extends AppCompatActivity {
                 toolbarMainImgHead.setImageResource(R.mipmap.icon_admin);
             }
         }
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        playerService = ((PlayerService.PlayerBinder) service).getService();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        playerService = null;
     }
 
     @OnClick(R.id.toolbar_main_imgHead)
@@ -205,27 +233,21 @@ public class MainActivity extends AppCompatActivity {
         if (!isAppBarHided) {
             toolbarMain.animate().translationY(-toolbarMain.getHeight())
                     .setInterpolator(new AccelerateInterpolator(2)).start();
-            closePlayerBar();
+            hidePlayerBar();
             isAppBarHided = true;
         }
     }
 
     public void showPlayerBar() {
-        View playBar = playerBarFragment.getView();
-        if (playBar == null) {
-            return;
+        if (playerService != null && playerService.getResult() != null) {
+            playerBarFragment.showView();
         }
-        playBar.animate().translationY(0)
-                .setInterpolator(new DecelerateInterpolator(2)).setStartDelay(100).start();
     }
 
-    public void closePlayerBar() {
-        View playBar = playerBarFragment.getView();
-        if (playBar == null) {
-            return;
+    public void hidePlayerBar() {
+        if (playerService != null && playerService.getResult() != null) {
+            playerBarFragment.hideView(true);
         }
-        playBar.animate().translationY(playBar.getHeight())
-                .setInterpolator(new AccelerateInterpolator(2)).start();
     }
 
     public void clearAvatar() {
