@@ -38,6 +38,8 @@ import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.ContentFormatter;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.ljmob.lovereadingphone.util.HeadSetTool;
+import com.ljmob.quicksharesdk.ShareTool;
+import com.ljmob.quicksharesdk.entity.Shareable;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
@@ -50,6 +52,11 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.tencent.qzone.QZone;
+import cn.sharesdk.wechat.friends.Wechat;
+import cn.sharesdk.wechat.moments.WechatMoments;
 import jp.wasabeef.blurry.Blurry;
 import pl.droidsonroids.gif.GifImageView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -115,6 +122,7 @@ public class ReadingActivity extends AppCompatActivity implements
     LRequestTool requestTool;
     private TextView dialogUploadTvProgress;
     private ProgressBar dialogUploadPbProgress;
+    private Shareable shareable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,10 +203,41 @@ public class ReadingActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        } else if (item.equals(shareMenuItem)) {
-            doShare();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.action_share:
+                if (result == null) {
+                    break;
+                }
+                doShare();
+
+                shareable = new Shareable();
+                shareable.content = result.user.team_classes.get(0).school.name
+                        + result.user.team_classes.get(0).grade.name;
+                if (result.feeling.length() != 0) {
+                    shareable.content += result.user.team_classes.get(0).name + "\n“"
+                            + result.feeling + "”";
+                }
+                shareable.imgFullUrl = NetConstant.ROOT_URL + result.article.cover_img.cover_img.url;
+                shareable.title = result.article.title + " - " + result.user.name;
+                break;
+            case R.id.action_share_wechat:
+                new ShareTool(new Wechat(this), shareable).share();
+                break;
+            case R.id.action_share_wechat_moment:
+                new ShareTool(new WechatMoments(this), shareable).share();
+                break;
+            case R.id.action_share_qq:
+                new ShareTool(new QQ(this), shareable).share();
+                break;
+            case R.id.action_share_qq_zone:
+                new ShareTool(new QZone(this), shareable).share();
+                break;
+            case R.id.action_share_sina_weibo:
+                new ShareTool(new SinaWeibo(this), shareable).share();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -209,14 +248,13 @@ public class ReadingActivity extends AppCompatActivity implements
     }
 
     private void doShare() {
-        //TODO shareSDk
         BottomSheet shareSheet = new BottomSheet.Builder(this)
                 .title(R.string.share_)
                 .sheet(R.menu.menu_share)
                 .listener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        ToastUtil.show(item.getTitle() + "");
+                        onOptionsItemSelected(item);
                         return false;
                     }
                 })
@@ -239,7 +277,7 @@ public class ReadingActivity extends AppCompatActivity implements
                 }
             });
             try {
-                Thread.sleep(26);
+                Thread.sleep(48);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

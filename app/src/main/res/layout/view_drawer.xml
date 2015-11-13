@@ -107,7 +107,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="24dp"
-                android:layout_height="24dp" />
+                android:layout_height="24dp"
+                android:src="@mipmap/icon_woailangdu_c" />
 
             <TextView
                 android:layout_width="0px"
@@ -142,7 +143,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="24dp"
-                android:layout_height="24dp" />
+                android:layout_height="24dp"
+                android:src="@mipmap/icon_woailangdu_c" />
 
             <TextView
                 android:layout_width="0px"
@@ -245,7 +247,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="24dp"
-                android:layout_height="24dp" />
+                android:layout_height="24dp"
+                android:src="@mipmap/icon_yitinglishi" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -278,7 +281,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="24dp"
-                android:layout_height="24dp" />
+                android:layout_height="24dp"
+                android:src="@mipmap/icon_huancun" />
 
             <TextView
                 android:layout_width="0px"
@@ -314,7 +318,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="24dp"
-                android:layout_height="24dp" />
+                android:layout_height="24dp"
+                android:src="@mipmap/icon_fankui" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -348,7 +353,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="24dp"
-                android:layout_height="24dp" />
+                android:layout_height="24dp"
+                android:src="@mipmap/icon_mima" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -374,7 +380,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="24dp"
-                android:layout_height="24dp" />
+                android:layout_height="24dp"
+                android:src="@mipmap/icon_tuichu" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -52,7 +52,7 @@ public class SoundMixer {
                 throw new IOException("accompanyFile or originalFile is 0B");
             }
             mix = new FileOutputStream(mixedFile);
-            int readLength = 1024;
+            int readLength = 10240;
             byte[] accompanyReader = new byte[(int) (readLength * magnification)];
             byte[] originalReader = new byte[readLength];
             short[] accompanyShorts = new short[(int) (readLength / 2 * magnification)];

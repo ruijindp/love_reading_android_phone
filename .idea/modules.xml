@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/lmp3recorder/lmp3recorder.iml" filepath="$PROJECT_DIR$/lmp3recorder/lmp3recorder.iml" />
       <module fileurl="file://$PROJECT_DIR$/lutil/lutil.iml" filepath="$PROJECT_DIR$/lutil/lutil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/quicksharesdk/quicksharesdk.iml" filepath="$PROJECT_DIR$/quicksharesdk/quicksharesdk.iml" />
     </modules>
   </component>
 </project>

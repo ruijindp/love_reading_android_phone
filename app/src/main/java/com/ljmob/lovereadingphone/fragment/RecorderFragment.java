@@ -184,6 +184,9 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    Log.i("LondonX", "decode finish in :" + (System.currentTimeMillis() - mixStart) + "ms");
+                    mixStart = System.currentTimeMillis();
+
                     new SoundMixer(musicWav, recordedFile, uploadFile).syncMixWav();
 
                     Log.i("LondonX", "mix finish in :" + (System.currentTimeMillis() - mixStart) + "ms");

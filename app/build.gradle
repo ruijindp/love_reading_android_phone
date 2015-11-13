@@ -40,10 +40,11 @@ dependencies {
 
     compile project(':lutil')
     compile project(':lmp3recorder')
+    compile project(':quicksharesdk')
 
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:design:23.1.0'
-    compile 'com.android.support:cardview-v7:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
 
     compile 'de.hdodenhof:circleimageview:2.0.0'//圆形图片
     compile 'com.jakewharton:butterknife:7.0.1'//View injector

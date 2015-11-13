@@ -22,7 +22,7 @@
         android:title="@string/action_share_qq_zone"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_share"
+        android:id="@+id/action_share_sina_weibo"
         android:icon="@mipmap/icon_weibo"
         android:title="@string/action_share_weibo"
         app:showAsAction="always" />

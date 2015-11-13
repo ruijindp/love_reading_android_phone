@@ -15,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
+import cn.sharesdk.framework.ShareSDK;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -65,5 +66,7 @@ public class MyApplication extends Application {
                         .fromJson(userString, User.class);
             }
         }
+
+        ShareSDK.initSDK(this);
     }
 }

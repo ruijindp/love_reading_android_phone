@@ -40,9 +40,7 @@ public class Mp3Decoder {
                     break;
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (BitstreamException | DecoderException e) {
+        } catch (IOException | BitstreamException | DecoderException e) {
             e.printStackTrace();
         } finally {
             if (fis != null) {
@@ -76,7 +74,7 @@ public class Mp3Decoder {
             Bitstream bitstream = new Bitstream(fis);
             Decoder decoder = new Decoder();
 
-            byte[] bufferData = new byte[1024 * 8];
+            byte[] bufferData = new byte[20480];
 
             long readTime = 0;
             while (true) {
@@ -109,7 +107,7 @@ public class Mp3Decoder {
                     fos.flush();
                 }
                 bitstream.closeFrame();
-                readTime += 26;
+                readTime += frameHeader.ms_per_frame();
             }
         } catch (BitstreamException | DecoderException e) {
             e.printStackTrace();

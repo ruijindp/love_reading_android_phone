@@ -1,11 +1,14 @@
 package com.ljmob.lovereadingphone;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +28,7 @@ import com.ljmob.lovereadingphone.entity.Article;
 import com.ljmob.lovereadingphone.entity.Music;
 import com.ljmob.lovereadingphone.entity.MusicType;
 import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.ljmob.lovereadingphone.view.SimpleStringPopup;
 import com.londonx.lutil.entity.LResponse;
@@ -49,7 +53,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * 音乐选择
  */
 public class MusicActivity extends AppCompatActivity implements
-        LRequestTool.OnResponseListener, LRequestTool.OnDownloadListener {
+        LRequestTool.OnResponseListener, LRequestTool.OnDownloadListener, ServiceConnection {
     private static final int API_MUSICS = 1;
     private static final int API_MUSIC_TYPES = 2;
     private static final int DOWNLOAD_FILE = 3;
@@ -86,6 +90,8 @@ public class MusicActivity extends AppCompatActivity implements
     private boolean isDownloaded;
     private Dialog downloadDialog;
 
+    private PlayerService playerService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +104,7 @@ public class MusicActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_music);
         ButterKnife.bind(this);
+        bindService(new Intent(this, PlayerService.class), this, Context.BIND_AUTO_CREATE);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -131,6 +138,9 @@ public class MusicActivity extends AppCompatActivity implements
 
     @OnItemClick(R.id.primaryAbsListView)
     protected void selectAndPlay(View item, final int position) {
+        if (playerService.isPlaying()) {
+            playerService.getPlayer().pause();
+        }
         MusicAdapter.ViewHolder holder = (MusicAdapter.ViewHolder) item.getTag();
         adapter.setSelectedIndex(position);
         adapter.setPlayingIndex(-1);
@@ -354,5 +364,15 @@ public class MusicActivity extends AppCompatActivity implements
         }
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        playerService = ((PlayerService.PlayerBinder) service).getService();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        playerService = null;
     }
 }
