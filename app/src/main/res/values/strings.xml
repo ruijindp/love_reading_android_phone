@@ -63,7 +63,10 @@
     <string name="rank_week">周排行</string>
     <string name="rank_month">月排行</string>
     <string name="my_school">本校</string>
-
+    <string name="_ago_year">年前</string>
+    <string name="update_now_">是否现在升级？</string>
+    <string name="update">升级</string>
+    <string name="next_time">下次</string>
 
     <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>
     <string name="toast_music_err">选择一首音乐吧</string>
@@ -81,6 +84,7 @@
     <string name="dialog_feeling">说点什么吧!</string>
     <string name="dialog_feeling_confirm">上传</string>
     <string name="dialog_clean_cache">是否清除所有缓存</string>
+    <string name="dialog_update">发现新版本</string>
 
     <string name="hint_feeling">在上传之前说说你的感想吧</string>
     <string name="hint_feedback">有什么想对我们说的？</string>

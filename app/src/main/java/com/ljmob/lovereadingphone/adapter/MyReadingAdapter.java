@@ -15,6 +15,7 @@ import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.entity.User;
 import com.ljmob.lovereadingphone.fragment.MyReadingFragment;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
+import com.ljmob.lovereadingphone.util.TimeFormat;
 import com.londonx.lutil.adapter.LAdapter;
 import com.londonx.lutil.entity.LEntity;
 
@@ -59,16 +60,14 @@ public class MyReadingAdapter extends LAdapter {
                     holder.itemMyReadingLnTeacher.setVisibility(View.GONE);
                     holder.itemMyReadingLnStudent.setVisibility(View.VISIBLE);
                     holder.itemMyRbRating.setVisibility(View.INVISIBLE);
-                    holder.itemMyReadingTvTime.setText(DateFormat.format("HH:mm",
-                            result.created_at * 1000l));
+                    holder.itemMyReadingTvTime.setText(TimeFormat.format(result.created_at * 1000l));
                 } else {//教师未评分
                     holder.itemMyReadingLnTeacher.setVisibility(View.VISIBLE);
                     holder.itemMyReadingLnStudent.setVisibility(View.GONE);
                     holder.itemMyReadingViewAnchorRated.setVisibility(View.GONE);
                     holder.itemMyReadingViewAnchorNotRated.setVisibility(View.VISIBLE);
                     holder.itemMyRbRatingTeacher.setVisibility(View.GONE);
-                    holder.itemMyReadingTvTimeTeacher.setText(DateFormat.format("HH:mm",
-                            result.created_at * 1000l));
+                    holder.itemMyReadingTvTimeTeacher.setText(TimeFormat.format(result.created_at * 1000l));
                 }
                 break;
             case rated:
@@ -76,8 +75,7 @@ public class MyReadingAdapter extends LAdapter {
                     holder.itemMyReadingLnTeacher.setVisibility(View.GONE);
                     holder.itemMyReadingLnStudent.setVisibility(View.VISIBLE);
                     holder.itemMyRbRating.setVisibility(View.VISIBLE);
-                    holder.itemMyReadingTvTime.setText(DateFormat.format("HH:mm",
-                            result.created_at * 1000l));
+                    holder.itemMyReadingTvTime.setText(TimeFormat.format(result.created_at * 1000l));
                     holder.itemMyRbRating.setRating(result.score.get(0).score);
                 } else {//教师已评分
                     holder.itemMyReadingLnTeacher.setVisibility(View.VISIBLE);
@@ -85,8 +83,7 @@ public class MyReadingAdapter extends LAdapter {
                     holder.itemMyReadingViewAnchorRated.setVisibility(View.VISIBLE);
                     holder.itemMyReadingViewAnchorNotRated.setVisibility(View.GONE);
                     holder.itemMyRbRatingTeacher.setVisibility(View.VISIBLE);
-                    holder.itemMyReadingTvTimeTeacher.setText(DateFormat.format("HH:mm",
-                            result.created_at * 1000l));
+                    holder.itemMyReadingTvTimeTeacher.setText(TimeFormat.format(result.created_at * 1000l));
                     holder.itemMyRbRatingTeacher.setRating(result.score.get(0).score);
                 }
                 break;

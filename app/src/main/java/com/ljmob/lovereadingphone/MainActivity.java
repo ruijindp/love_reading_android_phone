@@ -4,8 +4,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,12 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.MaterialDialog.SingleButtonCallback;
+import com.afollestad.materialdialogs.Theme;
+import com.ljmob.firimupdate.FirimUpdate;
+import com.ljmob.firimupdate.entity.Update;
 import com.ljmob.lovereadingphone.adapter.MainPagerAdapter;
 import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.fragment.DrawerFragment;
@@ -34,7 +42,7 @@ import butterknife.OnPageChange;
 import de.hdodenhof.circleimageview.CircleImageView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements ServiceConnection {
+public class MainActivity extends AppCompatActivity implements ServiceConnection, FirimUpdate.OnUpdateListener {
     private static final int PAGE_ARTICLE = 0;
     private static final int PAGE_RECOMMEND = 1;
     private static final int PAGE_RANK = 2;
@@ -77,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
                 .findFragmentById(R.id.activity_main_fragmentDrawer);
 
         primaryViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+
+        new FirimUpdate(this).check(this, "564484db748aac4b76000008", "e9400a3620552593c1851beecb8431a0");
     }
 
     @Override
@@ -159,6 +169,28 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     @Override
     public void onServiceDisconnected(ComponentName name) {
         playerService = null;
+    }
+
+    @Override
+    public void onUpdateFound(final Update newUpdate) {
+        new MaterialDialog.Builder(this)
+                .theme(Theme.LIGHT)
+                .title(R.string.dialog_update)
+                .content(newUpdate.changelog + "\n" + getString(R.string.update_now_))
+                .positiveText(R.string.update)
+                .negativeText(R.string.next_time)
+                .onPositive(new SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog,
+                                        @NonNull DialogAction dialogAction) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        Uri content_url = Uri.parse(newUpdate.installUrl);
+                        intent.setData(content_url);
+                        startActivity(intent);
+                    }
+                })
+                .show();
     }
 
     @OnClick(R.id.toolbar_main_imgHead)

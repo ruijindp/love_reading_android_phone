@@ -1,1 +1,1 @@
-include ':app', ':lutil', ':lmp3recorder', ':quicksharesdk'
+include ':app', ':lutil', ':lmp3recorder', ':quicksharesdk', ':firimupdate'

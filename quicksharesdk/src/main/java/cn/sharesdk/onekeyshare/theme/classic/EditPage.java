@@ -351,7 +351,6 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 			public void onFinish(ArrayList<ImageInfo> results) {
 				if(results == null || results.size() == 0)
 					return;
-				//TODO: 支持多图
 				imgInfo = results.get(0);
 				image = imgInfo.bitmap;
 				rlThumb.setVisibility(View.VISIBLE);

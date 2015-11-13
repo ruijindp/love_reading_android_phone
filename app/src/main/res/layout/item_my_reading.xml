@@ -13,9 +13,10 @@
 
     <TextView
         android:id="@+id/item_my_reading_tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="72dp"
+        android:layout_marginLeft="56dp"
+        android:singleLine="true"
         android:text="@string/test_title_author"
         android:textColor="@color/textReadable"
         android:textSize="16sp" />
@@ -25,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginLeft="72dp"
+        android:layout_marginLeft="56dp"
         android:orientation="horizontal">
 
         <TextView
@@ -52,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginLeft="72dp"
+        android:layout_marginLeft="56dp"
         android:gravity="bottom"
         android:orientation="horizontal"
         android:visibility="gone">

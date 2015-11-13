@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/firimupdate" />
             <option value="$PROJECT_DIR$/lmp3recorder" />
             <option value="$PROJECT_DIR$/lutil" />
             <option value="$PROJECT_DIR$/quicksharesdk" />

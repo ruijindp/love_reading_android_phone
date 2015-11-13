@@ -41,6 +41,7 @@ dependencies {
     compile project(':lutil')
     compile project(':lmp3recorder')
     compile project(':quicksharesdk')
+    compile project(':firimupdate')
 
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
