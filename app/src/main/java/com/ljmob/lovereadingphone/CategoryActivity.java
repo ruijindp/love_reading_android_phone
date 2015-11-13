@@ -36,7 +36,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by london on 15/10/26.
  * 分类
  */
-public class CategoryActivity extends AppCompatActivity implements LRequestTool.OnResponseListener {
+public class CategoryActivity extends AppCompatActivity implements
+        LRequestTool.OnResponseListener {
     private static final int API_SUBJECTS = 1;
     private static final int API_GRADES = 2;
     private static final int API_ARTICLE_TYPES = 3;
@@ -66,6 +67,7 @@ public class CategoryActivity extends AppCompatActivity implements LRequestTool.
         }
         View headView = getLayoutInflater()
                 .inflate(R.layout.head_category, primaryAbsListView, false);
+        primaryAbsListView.addHeaderView(headView);
         headHolder = new HeadHolder(headView);
         initData();
     }
@@ -155,7 +157,10 @@ public class CategoryActivity extends AppCompatActivity implements LRequestTool.
 
         @OnClick(R.id.head_category_tvAll)
         protected void selectAll() {
-            setResult(Activity.RESULT_OK);
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("subject", new Subject());
+            resultIntent.putExtra("grade", new Grade());
+            setResult(Activity.RESULT_OK, resultIntent);
             finish();
         }
     }

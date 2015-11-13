@@ -102,7 +102,8 @@ public class IndexFragment extends Fragment implements
         }
 
         DefaultParam param = new DefaultParam();
-        if (selectedGrade != null && selectedSubject != null) {
+        if (selectedGrade != null && selectedSubject != null
+                && selectedGrade.id != 0 && selectedSubject.id != 0) {
             param.put("subject_id", selectedSubject.id);
             param.put("grade_id", selectedGrade.id);
             requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_ARTICLE_UNITS, param, API_ARTICLE_UNITS);
@@ -172,7 +173,7 @@ public class IndexFragment extends Fragment implements
                 hasMore = appendData.size() == PAGE_SIZE;
                 if (currentPage == 1) {
                     articles = appendData;
-                    adapter = new IndexAdapter(getActivity(), ArticleShelfWrapper.wrap(articles),
+                    adapter = new IndexAdapter(ArticleShelfWrapper.wrap(articles),
                             (selectedGrade != null && selectedSubject != null));
                     primaryAbsListView.setAdapter(adapter);
                 } else {
@@ -208,7 +209,8 @@ public class IndexFragment extends Fragment implements
         if (isLoading || view.getCount() == 0) {
             return;
         }
-        if (selectedSubject != null && selectedGrade != null) {
+        if (selectedSubject != null && selectedGrade != null
+                && selectedSubject.id != 0 && selectedGrade.id != 0) {
             return;
         }
         //Load more when scrolling over last PAGE_SIZE / 2 items;
@@ -232,10 +234,14 @@ public class IndexFragment extends Fragment implements
         }
         selectedGrade = (Grade) data.getSerializableExtra("grade");
         selectedSubject = (Subject) data.getSerializableExtra("subject");
-        headHolder.headMainTvCurrentCate.setText(String.format("%s%s",
-                selectedGrade.name, selectedSubject.name));
-
+        if (selectedGrade.id == 0 && selectedSubject.id == 0) {
+            headHolder.headMainTvCurrentCate.setText(R.string.all);
+        } else {
+            headHolder.headMainTvCurrentCate.setText(String.format("%s%s",
+                    selectedGrade.name, selectedSubject.name));
+        }
         currentPage = 1;
+        hasMore = true;
         getData();
     }
 

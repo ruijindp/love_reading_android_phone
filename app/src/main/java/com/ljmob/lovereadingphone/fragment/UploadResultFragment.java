@@ -64,6 +64,16 @@ public class UploadResultFragment extends Fragment implements LMediaPlayer.OnPro
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void progressChanged(int position, int duration) {
+        if (duration - position <= 100) {
+            viewUploadResultImgPlay.setImageResource(R.mipmap.icon_play);
+        }
+        if (viewUploadResultTvTimerCurrent != null) {
+            viewUploadResultTvTimerCurrent.setText(DateFormat.format("mm:ss", position));
+        }
+    }
+
     @OnClick(R.id.view_upload_result_imgPlay)
     protected void playOrPause() {
         if (player == null) {
@@ -74,6 +84,7 @@ public class UploadResultFragment extends Fragment implements LMediaPlayer.OnPro
             viewUploadResultImgPlay.setImageResource(R.mipmap.icon_play);
         } else {
             player.play();
+            ((ReadingActivity) getActivity()).startScrolling();
             viewUploadResultImgPlay.setImageResource(R.mipmap.icon_pause);
         }
     }
@@ -121,13 +132,10 @@ public class UploadResultFragment extends Fragment implements LMediaPlayer.OnPro
         }
     }
 
-    @Override
-    public void progressChanged(int position, int duration) {
-        if (duration - position <= 100) {
-            viewUploadResultImgPlay.setImageResource(R.mipmap.icon_play);
+    public boolean isPlaying() {
+        if (player == null || player.mediaPlayer == null) {
+            return false;
         }
-        if (viewUploadResultTvTimerCurrent!=null) {
-            viewUploadResultTvTimerCurrent.setText(DateFormat.format("mm:ss", position));
-        }
+        return player.mediaPlayer.isPlaying();
     }
 }

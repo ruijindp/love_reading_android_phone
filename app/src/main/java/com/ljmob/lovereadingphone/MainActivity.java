@@ -245,7 +245,13 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     @OnClick(R.id.toolbar_imgRight)
     protected void rightButtonClicked() {
         if (primaryViewPager.getCurrentItem() != PAGE_RANK) {
-            startActivity(new Intent(this, SearchActivity.class));
+            Intent intent = new Intent(this, SearchActivity.class);
+            if (primaryViewPager.getCurrentItem() == PAGE_ARTICLE) {
+                intent.putExtra("article", true);
+            } else if (primaryViewPager.getCurrentItem() == PAGE_RECOMMEND) {
+                intent.putExtra("article", false);
+            }
+            startActivity(intent);
             return;
         }
         Intent filter = new Intent(this, FilterActivity.class);

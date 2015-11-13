@@ -58,7 +58,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/div_primary" />
+            android:background="?colorPrimary" />
 
         <ListView
             android:id="@id/primaryAbsListView"
@@ -72,7 +72,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/div_primary" />
+            android:background="?colorPrimary" />
 
         <TextView
             android:id="@+id/activity_music_tvStart"

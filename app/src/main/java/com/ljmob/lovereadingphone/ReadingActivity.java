@@ -1,11 +1,14 @@
 package com.ljmob.lovereadingphone;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -35,6 +38,7 @@ import com.ljmob.lovereadingphone.fragment.RatedResultFragment;
 import com.ljmob.lovereadingphone.fragment.RecorderFragment;
 import com.ljmob.lovereadingphone.fragment.UploadResultFragment;
 import com.ljmob.lovereadingphone.net.NetConstant;
+import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.ContentFormatter;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.ljmob.lovereadingphone.util.HeadSetTool;
@@ -67,7 +71,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class ReadingActivity extends AppCompatActivity implements
         Runnable, LRequestTool.OnResponseListener
-        , LRequestTool.OnUploadListener {
+        , LRequestTool.OnUploadListener, ServiceConnection {
 
     private static final int API_RESULTS_UPLOAD = 1;
     private static final int API_HISTORY = 2;
@@ -123,6 +127,7 @@ public class ReadingActivity extends AppCompatActivity implements
     private TextView dialogUploadTvProgress;
     private ProgressBar dialogUploadPbProgress;
     private Shareable shareable;
+    private PlayerService playerService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +167,7 @@ public class ReadingActivity extends AppCompatActivity implements
         }
         setContentView(R.layout.activity_reading);
         ButterKnife.bind(this);
+        bindService(new Intent(this, PlayerService.class), this, Context.BIND_AUTO_CREATE);
         setSupportActionBar(toolbarTrans);
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -269,7 +275,11 @@ public class ReadingActivity extends AppCompatActivity implements
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        while (recorderFragment.isRecording()) {
+        long sleep = (long) (128 * (1 / getResources().getDimension(R.dimen.auto_scroll_speed)));
+        while (recorderFragment.isRecording() ||//正在录制
+                uploadResultFragment.isPlaying() ||//正在回放
+                (playerService != null && playerService.isPlaying())//正在播放
+                ) {
             activityReadingScContent.post(new Runnable() {
                 @Override
                 public void run() {
@@ -277,7 +287,7 @@ public class ReadingActivity extends AppCompatActivity implements
                 }
             });
             try {
-                Thread.sleep(48);
+                Thread.sleep(sleep);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -556,6 +566,15 @@ public class ReadingActivity extends AppCompatActivity implements
         ratedResultFragment.setResult(result);
         currentStatus = Status.ratedResult;
         makeViewByStatus();
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        playerService = ((PlayerService.PlayerBinder) service).getService();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
     }
 
     public enum Status {

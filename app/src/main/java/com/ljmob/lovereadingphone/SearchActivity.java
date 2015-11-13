@@ -11,16 +11,21 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.ljmob.lovereadingphone.adapter.IndexAdapter;
 import com.ljmob.lovereadingphone.adapter.RecommendAdapter;
 import com.ljmob.lovereadingphone.context.EasyLoadActivity;
+import com.ljmob.lovereadingphone.entity.Article;
 import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.service.PlayerService;
+import com.ljmob.lovereadingphone.util.ArticleShelfWrapper;
 import com.ljmob.lovereadingphone.util.DefaultParam;
+import com.londonx.lutil.adapter.LAdapter;
 import com.londonx.lutil.entity.LResponse;
 
 import java.util.List;
@@ -39,17 +44,22 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class SearchActivity extends EasyLoadActivity implements ServiceConnection {
     @Bind(R.id.activity_search_cardSearch)
     CardView activitySearchCardSearch;
+    @Bind(R.id.activity_search_etKeyWord)
+    EditText activitySearchEtKeyWord;
 
     private List<Result> results;
-    private RecommendAdapter recommendAdapter;
+    private List<Article> articles;
+    private LAdapter adapter;
     private boolean isAppBarHided = true;
 
     private PlayerService playerService;
+    private boolean isArticles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        isArticles = getIntent().getBooleanExtra("article", false);
         ButterKnife.bind(this);
         bindService(new Intent(this, PlayerService.class), this, Context.BIND_AUTO_CREATE);
 
@@ -58,6 +68,10 @@ public class SearchActivity extends EasyLoadActivity implements ServiceConnectio
         primarySwipeRefreshLayout.setProgressViewOffset(false, startOffset, endOffset);
         View headEmpty = getLayoutInflater().inflate(R.layout.head_search, primaryListView, false);
         ((ListView) primaryListView).addHeaderView(headEmpty);
+        if (isArticles) {
+            activitySearchEtKeyWord.setHint(R.string.hint_search_article);
+            ((ListView) primaryListView).setDividerHeight(0);
+        }
     }
 
     @Override
@@ -67,16 +81,29 @@ public class SearchActivity extends EasyLoadActivity implements ServiceConnectio
 
     @Override
     public void responseData(LResponse response) {
-        List<Result> appendData = new Gson().fromJson(response.body, new TypeToken<List<Result>>() {
-        }.getType());
-        if (currentPage == 1) {
-            results = appendData;
-            recommendAdapter = new RecommendAdapter(results);
-            recommendAdapter.setPlayerService(playerService);
-            primaryListView.setAdapter(recommendAdapter);
+        if (isArticles) {
+            List<Article> appendData = new Gson().fromJson(response.body, new TypeToken<List<Article>>() {
+            }.getType());
+            if (currentPage == 1) {
+                articles = appendData;
+                adapter = new IndexAdapter(ArticleShelfWrapper.wrap(articles), false);
+                primaryListView.setAdapter(adapter);
+            } else {
+                articles.addAll(appendData);
+                adapter.setNewData(ArticleShelfWrapper.wrap(articles));
+            }
         } else {
-            results.addAll(appendData);
-            recommendAdapter.setNewData(results);
+            List<Result> appendData = new Gson().fromJson(response.body, new TypeToken<List<Result>>() {
+            }.getType());
+            if (currentPage == 1) {
+                results = appendData;
+                adapter = new RecommendAdapter(results);
+                ((RecommendAdapter) adapter).setPlayerService(playerService);
+                primaryListView.setAdapter(adapter);
+            } else {
+                results.addAll(appendData);
+                adapter.setNewData(results);
+            }
         }
     }
 
@@ -111,17 +138,24 @@ public class SearchActivity extends EasyLoadActivity implements ServiceConnectio
 
     @OnTextChanged(R.id.activity_search_etKeyWord)
     protected void makeSearch(CharSequence text) {
-//        if (text.length() == 0) {
-//            return;
-//        }
+        if (text.length() == 0) {
+            return;
+        }
         currentPage = 1;
         DefaultParam param = new DefaultParam();
         param.put("parameter", text.toString());
-        initData(NetConstant.API_SEARCH, param);
+        if (isArticles) {
+            initData(NetConstant.API_SEARCH_ARTICLES, param);
+        } else {
+            initData(NetConstant.API_SEARCH_RESULTS, param);
+        }
     }
 
     @OnItemClick(R.id.primaryAbsListView)
     protected void selectResult(int position) {
+        if (isArticles) {
+            return;
+        }
         Intent intent = new Intent(this, ReadingActivity.class);
         intent.putExtra("result", results.get(position - 1));
         startActivity(intent);
@@ -129,9 +163,12 @@ public class SearchActivity extends EasyLoadActivity implements ServiceConnectio
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
+        if (isArticles) {
+            return;
+        }
         playerService = ((PlayerService.PlayerBinder) service).getService();
-        if (recommendAdapter != null && recommendAdapter.getPlayerService() == null) {
-            recommendAdapter.setPlayerService(playerService);
+        if (adapter != null && ((RecommendAdapter) adapter).getPlayerService() == null) {
+            ((RecommendAdapter) adapter).setPlayerService(playerService);
         }
     }
 

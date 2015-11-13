@@ -17,7 +17,7 @@
         android:layout_marginRight="8dp"
         android:gravity="center"
         android:text="@string/test_num"
-        android:textColor="@color/textRank"
+        android:textColor="?colorPrimary"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -68,21 +68,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/test_user"
-                android:textColor="@color/textRank" />
+                android:textColor="?colorPrimary" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:background="@color/textRank" />
+                android:background="?colorPrimary" />
 
             <TextView
                 android:id="@+id/item_rank_tvSchool"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/test_school_name"
-                android:textColor="@color/textRank" />
+                android:textColor="?colorPrimary" />
         </LinearLayout>
     </LinearLayout>
 

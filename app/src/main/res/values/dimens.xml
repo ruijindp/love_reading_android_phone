@@ -10,4 +10,5 @@
     <dimen name="subject_list_refresh_end_offset_tab">136dp</dimen>
 
     <dimen name="toolbar_h">56dp</dimen>
+    <dimen name="auto_scroll_speed">1dp</dimen>
 </resources>

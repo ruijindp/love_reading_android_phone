@@ -24,6 +24,7 @@ import com.afollestad.materialdialogs.Theme;
 import com.ljmob.lovereadingphone.LoginActivity;
 import com.ljmob.lovereadingphone.MusicActivity;
 import com.ljmob.lovereadingphone.R;
+import com.ljmob.lovereadingphone.ReadingActivity;
 import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.entity.User;
@@ -108,6 +109,7 @@ public class RatedResultFragment extends Fragment
             viewRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
         } else {
             playerService.getPlayer().play();
+            ((ReadingActivity) getActivity()).startScrolling();
             viewRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
         }
     }
@@ -178,8 +180,8 @@ public class RatedResultFragment extends Fragment
         }
         this.result = result;
         if (result.score.size() != 0) {
-            Activity activity=getActivity();
-            if (activity!=null) {
+            Activity activity = getActivity();
+            if (activity != null) {
                 activity.bindService(new Intent(activity, PlayerService.class),
                         this, Context.BIND_AUTO_CREATE);
             }
@@ -188,9 +190,11 @@ public class RatedResultFragment extends Fragment
             if (playerService.getResult() != null) {
                 if (this.result.id != playerService.getResult().id) {
                     playerService.setResult(this.result);
+                    ((ReadingActivity) getActivity()).startScrolling();
                 }
             } else {
                 playerService.setResult(this.result);
+                ((ReadingActivity) getActivity()).startScrolling();
             }
         }
     }
@@ -221,13 +225,16 @@ public class RatedResultFragment extends Fragment
             if (playerService.getResult() != null) {
                 if (result.id != playerService.getResult().id) {
                     playerService.setResult(result);
+                    ((ReadingActivity) getActivity()).startScrolling();
                 }
             } else {
                 playerService.setResult(result);
+                ((ReadingActivity) getActivity()).startScrolling();
             }
         }
         if (playerService.isPlaying()) {
             viewRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
+            ((ReadingActivity) getActivity()).startScrolling();
         } else {
             viewRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
         }

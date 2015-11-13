@@ -147,6 +147,7 @@ public class NotRatedResultFragment extends Fragment implements
         startPlay();
         if (playerService.isPlaying()) {
             viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
+            ((ReadingActivity) getActivity()).startScrolling();
         } else {
             viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
         }
@@ -167,6 +168,7 @@ public class NotRatedResultFragment extends Fragment implements
             viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
         } else {
             playerService.getPlayer().play();
+            ((ReadingActivity) getActivity()).startScrolling();
             viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
         }
     }
@@ -211,8 +213,10 @@ public class NotRatedResultFragment extends Fragment implements
         }
         if (playerService.getResult() == null) {
             playerService.setResult(result);
+            ((ReadingActivity) getActivity()).startScrolling();
         } else if (playerService.getResult().id != result.id) {
             playerService.setResult(result);
+            ((ReadingActivity) getActivity()).startScrolling();
         }
     }
 

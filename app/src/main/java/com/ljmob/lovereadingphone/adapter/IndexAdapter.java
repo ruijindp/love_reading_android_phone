@@ -1,6 +1,5 @@
 package com.ljmob.lovereadingphone.adapter;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,12 +26,10 @@ import butterknife.ButterKnife;
  * 首页书架
  */
 public class IndexAdapter extends LAdapter {
-    Activity activity;
     int pictureW;
 
-    public IndexAdapter(Activity activity, List<? extends LEntity> lEntities, boolean showUnit) {
+    public IndexAdapter(List<? extends LEntity> lEntities, boolean showUnit) {
         super(lEntities);
-        this.activity = activity;
     }
 
     @Override
@@ -127,20 +124,7 @@ public class IndexAdapter extends LAdapter {
             public void onClick(View v) {
                 Intent detailIntent = new Intent(v.getContext(), DetailActivity.class);
                 detailIntent.putExtra("article", article);
-                View view;
-                switch (index) {
-                    case 0:
-                        view = itemIndexImgCover0;
-                        break;
-                    case 1:
-                        view = itemIndexImgCover1;
-                        break;
-                    default:
-                        view = itemIndexImgCover0;
-                        break;
-                }
-//                ActivityTool.start(activity, detailIntent, view);
-                activity.startActivity(detailIntent);
+                v.getContext().startActivity(detailIntent);
             }
         }
     }

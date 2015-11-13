@@ -53,7 +53,7 @@ public class MyApplication extends Application {
                 .showImageOnLoading(0);
 
         builder.diskCacheFileCount(1000)
-                .threadPoolSize(6)
+                .threadPoolSize(10)
                 .memoryCache(new WeakMemoryCache())
                 .defaultDisplayImageOptions(imageOptions.build());
         ImageLoader.getInstance().init(builder.build());
