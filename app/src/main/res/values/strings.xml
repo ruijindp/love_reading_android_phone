@@ -18,7 +18,7 @@
     <string name="like_">喜欢(%1$d)</string>
     <string name="feeling">读者感想</string>
     <string name="feeling_my">感想</string>
-    <string name="let_me_try">我也要读</string>
+    <string name="let_me_try">我要读</string>
     <string name="share_">分享到:</string>
     <string name="city">城市</string>
     <string name="area">区域</string>
@@ -67,6 +67,8 @@
     <string name="update_now_">是否现在升级？</string>
     <string name="update">升级</string>
     <string name="next_time">下次</string>
+    <string name="content_permission_denied">您禁用了录音权限\n请在“设置>应用>欢乐诵>权限”中开启“麦克风”权限</string>
+    <string name="goto_settings">去设置</string>
 
     <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>
     <string name="toast_music_err">选择一首音乐吧</string>
@@ -85,6 +87,7 @@
     <string name="dialog_feeling_confirm">上传</string>
     <string name="dialog_clean_cache">是否清除所有缓存</string>
     <string name="dialog_update">发现新版本</string>
+    <string name="dialog_permission_denied">权限不足</string>
 
     <string name="hint_feeling">在上传之前说说你的感想吧</string>
     <string name="hint_feedback">有什么想对我们说的？</string>

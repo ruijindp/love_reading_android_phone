@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ import com.ljmob.lovereadingphone.entity.Article;
 import com.ljmob.lovereadingphone.entity.Music;
 import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.entity.Section;
+import com.ljmob.lovereadingphone.fragment.CountDownFragment;
 import com.ljmob.lovereadingphone.fragment.MyReadingFragment;
 import com.ljmob.lovereadingphone.fragment.NotRatedResultFragment;
 import com.ljmob.lovereadingphone.fragment.RatedResultFragment;
@@ -62,7 +64,6 @@ import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 import jp.wasabeef.blurry.Blurry;
-import pl.droidsonroids.gif.GifImageView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -100,8 +101,6 @@ public class ReadingActivity extends AppCompatActivity implements
     ViewPager activityReadingPagerStatus;
     @Bind(R.id.activity_reading_lnContent)
     LinearLayout activityReadingLnContent;
-    @Bind(R.id.activity_reading_imgCountDown)
-    GifImageView activityReadingImgCountDown;
 
     @Bind(R.id.activity_reading_tvReader)
     TextView activityReadingTvReader;
@@ -116,6 +115,9 @@ public class ReadingActivity extends AppCompatActivity implements
     Result result;
     ImageLoader imageLoader = ImageLoader.getInstance();
     Status currentStatus = Status.record;
+
+    private CountDownFragment countDownFragment;
+
     private RecorderFragment recorderFragment;
     private UploadResultFragment uploadResultFragment;
     private NotRatedResultFragment notRatedResultFragment;
@@ -159,7 +161,6 @@ public class ReadingActivity extends AppCompatActivity implements
                 finish();
                 return;
             }
-
             if (!HeadSetTool.isHeadSetConnected(this)) {
                 ToastUtil.show(R.string.toast_headset);
             }
@@ -550,11 +551,27 @@ public class ReadingActivity extends AppCompatActivity implements
     }
 
     public void startCountDown() {
-        activityReadingImgCountDown.setVisibility(View.VISIBLE);
+        if (countDownFragment == null) {
+            countDownFragment = (CountDownFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.activity_reading_fragmentCountDown);
+        }
+        if (!countDownFragment.isVisible()) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.show(countDownFragment);
+            transaction.commit();
+        }
     }
 
     public void stopCountDown() {
-        activityReadingImgCountDown.setVisibility(View.INVISIBLE);
+        if (countDownFragment == null) {
+            countDownFragment = (CountDownFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.activity_reading_fragmentCountDown);
+        }
+        if (countDownFragment.isVisible()) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.hide(countDownFragment);
+            transaction.commit();
+        }
     }
 
 

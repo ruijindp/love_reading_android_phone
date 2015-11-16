@@ -131,6 +131,11 @@ public class RatedResultFragment extends Fragment
 
     @OnClick(R.id.view_rated_result_imgLetMeTry)
     protected void letMeTry() {
+        if (MyApplication.currentUser == null) {
+            ToastUtil.show(R.string.toast_login_timeout);
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            return;
+        }
         Intent intent = new Intent(getContext(), MusicActivity.class);
         intent.putExtra("article", result.article);
         startActivity(intent);

@@ -317,6 +317,13 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
             viewDrawerLnChangePassword.setVisibility(View.INVISIBLE);
             viewDrawerLnExit.setVisibility(View.INVISIBLE);
         } else {
+            if (MyApplication.currentUser.role == User.Role.student) {
+                viewDrawerLnMyReading.setVisibility(View.VISIBLE);
+                viewDrawerLnStudentReading.setVisibility(View.GONE);
+            } else {
+                viewDrawerLnMyReading.setVisibility(View.GONE);
+                viewDrawerLnStudentReading.setVisibility(View.VISIBLE);
+            }
             viewDrawerDiv.setVisibility(View.VISIBLE);
             viewDrawerLnChangePassword.setVisibility(View.VISIBLE);
             viewDrawerLnExit.setVisibility(View.VISIBLE);
@@ -343,7 +350,7 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
             viewDrawerTvUserName.setText(MyApplication.currentUser.name);
 
             List<TeamClass> teamClasses = MyApplication.currentUser.team_classes;
-            String schoolClass = null;
+            String schoolClass;
             if (teamClasses.size() != 0 && teamClasses.size() < 2) {//学生
                 TeamClass teamClass = teamClasses.get(0);
                 schoolClass = String.format("%s - %s%s", teamClass.school.name, teamClass.grade.name, teamClass.name);
@@ -384,14 +391,6 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
                         break;
                 }
             }
-        }
-        if (MyApplication.currentUser != null &&
-                MyApplication.currentUser.role == User.Role.student) {//学生无“学生朗读”
-            viewDrawerLnMyReading.setVisibility(View.VISIBLE);
-            viewDrawerLnStudentReading.setVisibility(View.GONE);
-        } else {//教师无“我的朗读”
-            viewDrawerLnMyReading.setVisibility(View.GONE);
-            viewDrawerLnStudentReading.setVisibility(View.VISIBLE);
         }
         cacheSize = FileUtil.getCacheSize();
         viewDrawerTvCacheTotalSize.setText(String.format("%s%s",

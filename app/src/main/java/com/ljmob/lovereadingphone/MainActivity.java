@@ -32,6 +32,7 @@ import com.ljmob.lovereadingphone.fragment.PlayerBarFragment;
 import com.ljmob.lovereadingphone.fragment.RankFragment;
 import com.ljmob.lovereadingphone.fragment.RecommendFragment;
 import com.ljmob.lovereadingphone.service.PlayerService;
+import com.ljmob.lovereadingphone.util.PermissionUtil;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.soundcloud.android.crop.Crop;
 
@@ -87,6 +88,10 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         primaryViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
 
         new FirimUpdate(this).check(this, "564484db748aac4b76000008", "e9400a3620552593c1851beecb8431a0");
+
+        if (!PermissionUtil.isAllPermissionAllowed()) {
+            PermissionUtil.request(this);
+        }
     }
 
     @Override

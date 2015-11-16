@@ -58,6 +58,7 @@
 
             <RatingBar
                 android:id="@+id/item_listened_rbRating"
+                style="@android:style/Widget.RatingBar"
                 android:layout_width="100dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical"

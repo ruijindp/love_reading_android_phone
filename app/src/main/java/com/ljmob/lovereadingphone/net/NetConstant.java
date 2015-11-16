@@ -6,6 +6,7 @@ package com.ljmob.lovereadingphone.net;
  */
 public class NetConstant {
     public static final String ROOT_URL = "http://192.168.31.148:3106";
+//    public static final String ROOT_URL = "http://huanlesong.xyz";
 
     public static final String API_ARTICLES = "/api/v1/articles";
     public static final String API_MUSICS = "/api/v1/musics";

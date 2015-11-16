@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +22,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ljmob.lovereadingphone.adapter.MusicAdapter;
@@ -30,6 +35,7 @@ import com.ljmob.lovereadingphone.entity.MusicType;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.DefaultParam;
+import com.ljmob.lovereadingphone.util.PermissionUtil;
 import com.ljmob.lovereadingphone.view.SimpleStringPopup;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LMediaPlayer;
@@ -183,6 +189,26 @@ public class MusicActivity extends AppCompatActivity implements
         }
         mediaPlayer.stop();
         selectedMusic = musics.get(position);
+
+        if (!PermissionUtil.isAllPermissionAllowed()) {
+            new MaterialDialog.Builder(this)
+                    .theme(Theme.LIGHT)
+                    .title(R.string.dialog_permission_denied)
+                    .content(R.string.content_permission_denied)
+                    .positiveText(R.string.goto_settings)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog materialDialog
+                                , @NonNull DialogAction dialogAction) {
+                            materialDialog.dismiss();
+                            startActivity(new Intent(Settings.ACTION_APPLICATION_SETTINGS));
+                        }
+                    })
+                    .show();
+            return;
+        }
+
         requestTool.setOnDownloadListener(this);
         requestTool.download(NetConstant.ROOT_URL + selectedMusic.file_url, DOWNLOAD_FILE);
 

@@ -8,8 +8,8 @@ android {
         applicationId "com.ljmob.lovereadingphone"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 1
-        versionName "2015-10-29 19:14:15-Nightly"
+        versionCode 2
+        versionName "2015-11-16 13:01:39-Nightly"
 
         renderscriptTargetApi 23
         renderscriptSupportModeEnabled true

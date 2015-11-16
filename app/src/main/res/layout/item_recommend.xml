@@ -45,13 +45,13 @@
             android:textColor="@color/textReadable"
             android:textSize="16sp" />
 
-        <RatingBar
+        <android.widget.RatingBar
             android:id="@+id/item_recommend_rating"
+            style="@android:style/Widget.RatingBar"
             android:layout_width="100dp"
             android:layout_height="22dp"
             android:isIndicator="true"
-            android:progressDrawable="@drawable/layer_rating_s_orange"
-            android:rating="5" />
+            android:progressDrawable="@drawable/layer_rating_s_orange" />
 
         <LinearLayout
             android:layout_width="wrap_content"

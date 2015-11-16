@@ -8,7 +8,7 @@
         <item name="colorControlNormal">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textViewStyle">@style/DefaultTextView</item>
-        <item name="android:src">@color/test</item>
+        <!--<item name="android:src">@color/test</item>-->
         <item name="android:windowBackground">@color/colorWindowBg</item>
     </style>
 

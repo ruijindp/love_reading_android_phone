@@ -1,5 +1,6 @@
 package com.ljmob.lovereadingphone.context;
 
+import android.Manifest;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.util.Base64;
 import com.google.gson.Gson;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.entity.User;
+import com.ljmob.lovereadingphone.util.PermissionUtil;
 import com.londonx.lutil.Lutil;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -68,5 +70,7 @@ public class MyApplication extends Application {
         }
 
         ShareSDK.initSDK(this);
+
+        PermissionUtil.init(this, new String[]{Manifest.permission.RECORD_AUDIO});
     }
 }
