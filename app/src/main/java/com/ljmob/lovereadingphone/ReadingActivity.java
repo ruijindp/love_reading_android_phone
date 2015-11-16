@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -125,11 +124,12 @@ public class ReadingActivity extends AppCompatActivity implements
 
     private Dialog uploadDialog;
     private Dialog mixDialog;
-    LRequestTool requestTool;
+    private LRequestTool requestTool;
     private TextView dialogUploadTvProgress;
     private ProgressBar dialogUploadPbProgress;
     private Shareable shareable;
     private PlayerService playerService;
+    private boolean isRetry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +190,9 @@ public class ReadingActivity extends AppCompatActivity implements
                             makeBlurry();
                         }
                     });
+        }
+        if (currentStatus != Status.record) {
+            hideCountDown();
         }
         makeViewByStatus();
     }
@@ -555,10 +558,12 @@ public class ReadingActivity extends AppCompatActivity implements
             countDownFragment = (CountDownFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.activity_reading_fragmentCountDown);
         }
-        if (!countDownFragment.isVisible()) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.show(countDownFragment);
-            transaction.commit();
+        countDownFragment.setVisible(true);
+        if (isRetry) {
+            countDownFragment.resetAnim();
+        } else {
+            isRetry = true;//第二次startCountDown一定是重读
+            countDownFragment.startAnim();
         }
     }
 
@@ -567,13 +572,16 @@ public class ReadingActivity extends AppCompatActivity implements
             countDownFragment = (CountDownFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.activity_reading_fragmentCountDown);
         }
-        if (countDownFragment.isVisible()) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.hide(countDownFragment);
-            transaction.commit();
-        }
+        countDownFragment.setVisible(false);
     }
 
+    public void hideCountDown() {
+        if (countDownFragment == null) {
+            countDownFragment = (CountDownFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.activity_reading_fragmentCountDown);
+        }
+        countDownFragment.setVisible(false);
+    }
 
     public void setRatedResult(@NonNull Result result) {
         if (result.score.size() == 0) {

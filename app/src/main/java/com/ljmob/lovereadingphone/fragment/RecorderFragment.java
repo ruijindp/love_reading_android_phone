@@ -59,6 +59,8 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
     private boolean isRunning;
     private long recTime;
 
+    private boolean isRetry;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,9 +68,6 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
             rootView = inflater.inflate(R.layout.view_recorder, container, false);
         }
         ButterKnife.bind(this, rootView);
-//        if (player==null) {
-//            player = new LMediaPlayer(null, null);
-//        }
         countDown();
         return rootView;
     }
@@ -269,11 +268,12 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
                 if (activity == null) {
                     return;
                 }
+                isRetry = true;//再次startCountDown一定是重读
                 ((ReadingActivity) activity).stopCountDown();
                 currentStatus = Status.ready;
                 recordOrPause();
             }
-        }, 3200);
+        }, isRetry ? 3500 : 3000);
     }
 
     public enum Status {

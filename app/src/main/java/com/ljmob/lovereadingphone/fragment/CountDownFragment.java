@@ -30,6 +30,8 @@ public class CountDownFragment extends Fragment {
     @Bind(R.id.activity_count_down_viewCleaner)
     View activityCountDownViewCleaner;
 
+    private boolean isVisible = true;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class CountDownFragment extends Fragment {
             rootView = inflater.inflate(R.layout.view_count_down, container, false);
         }
         ButterKnife.bind(this, rootView);
-        startAnim();
+        setVisible(isVisible);
         return rootView;
     }
 
@@ -47,7 +49,52 @@ public class CountDownFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    private void startAnim() {
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+        if (rootView != null) {
+            if (isVisible && rootView.getVisibility() != View.VISIBLE) {
+                rootView.setVisibility(View.VISIBLE);
+            } else if (rootView.getVisibility() != View.INVISIBLE) {
+                rootView.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+    public void resetAnim() {
+        //文字
+        viewCountTvTime1.setAlpha(0);
+        viewCountTvTime1.setScaleX(1);
+        viewCountTvTime1.setScaleY(1);
+        viewCountTvTime3.setAlpha(1);
+
+        //圈
+        activityCountDownViewCleaner.post(new Runnable() {
+            @Override
+            public void run() {
+                activityCountDownViewCleaner.animate().scaleX(1).scaleY(1)
+                        .setDuration(500)
+                        .setInterpolator(new DecelerateInterpolator())
+                        .start();
+            }
+        });
+
+        rootView.post(new Runnable() {
+            @Override
+            public void run() {
+                rootView.animate().alpha(1).setDuration(500)
+                        .setInterpolator(new DecelerateInterpolator())
+                        .start();
+            }
+        });
+        rootView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startAnim();
+            }
+        }, 501);
+    }
+
+    public void startAnim() {
         //文字动画
         viewCountTvTime3.post(new Runnable() {
             @Override
