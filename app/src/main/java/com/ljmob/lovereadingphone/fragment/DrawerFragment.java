@@ -262,6 +262,9 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
                                             @Override
                                             public void run() {
                                                 ToastUtil.show(R.string.toast_clean_ok);
+                                                cacheSize = 0;
+                                                viewDrawerTvCacheTotalSize.setText(String.format("%s%s",
+                                                        getString(R.string.total_), formatFileSize(cacheSize)));
                                             }
                                         });
                                     } else {
