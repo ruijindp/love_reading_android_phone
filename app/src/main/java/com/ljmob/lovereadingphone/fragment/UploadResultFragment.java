@@ -115,6 +115,7 @@ public class UploadResultFragment extends Fragment implements LMediaPlayer.OnPro
 
     @OnClick(R.id.view_upload_result_imgRetry)
     protected void retry() {
+        player.stop();
         ((ReadingActivity) getActivity()).setCurrentStatus(ReadingActivity.Status.record);
     }
 

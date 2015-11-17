@@ -12,7 +12,6 @@ import com.londonx.lmp3recorder.util.WaveHeader;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -167,14 +166,13 @@ public class LRecorder {
     // make RAW(pcm) file to WAV file
     private void encodeWaveFile() {
         FileInputStream in;
-        FileOutputStream out;
+        RandomAccessFile out;
         long byteRate = 16 * SAMPLE_RATE * NUM_CHANNELS / 8;
         try {
             in = new FileInputStream(rawFile);
-            out = new FileOutputStream(encodedFile);
+            out = new RandomAccessFile(encodedFile, "rw");
             long totalAudioLen = in.getChannel().size();
-            long totalDataLen = totalAudioLen + 36;
-            WaveHeader.writeWaveFileHeader(out, totalAudioLen, totalDataLen,
+            WaveHeader.writeWaveFileHeader(out, totalAudioLen,
                     SAMPLE_RATE, NUM_CHANNELS, byteRate);
             byte[] buffer = new byte[minBufferSize * 2];
             while (true) {

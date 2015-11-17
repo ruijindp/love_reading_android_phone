@@ -1,20 +1,39 @@
 package com.londonx.lmp3recorder.util;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /**
  * Created by london on 15/10/14.
  * RIFF/WAVE head
  */
 public class WaveHeader {
+    private static long SAMPLE_RATE;
+    private static int channels;
+    private static long byteRate;
 
     /**
      * insert RIFF/WAVE file header
      */
-    public static void writeWaveFileHeader(FileOutputStream out, long totalAudioLen,
-                                           long totalDataLen, long SAMPLE_RATE, int channels, long byteRate)
+    public static void writeWaveFileHeader(RandomAccessFile raf, long totalAudioLen,
+                                           long SAMPLE_RATE, int channels, long byteRate)
             throws IOException {
+        long totalDataLen = totalAudioLen + 36;
+        if (SAMPLE_RATE == -1) {
+            SAMPLE_RATE = WaveHeader.SAMPLE_RATE;
+        } else {
+            WaveHeader.SAMPLE_RATE = SAMPLE_RATE;
+        }
+        if (channels == -1) {
+            channels = WaveHeader.channels;
+        } else {
+            WaveHeader.channels = channels;
+        }
+        if (byteRate == -1) {
+            byteRate = WaveHeader.byteRate;
+        } else {
+            WaveHeader.byteRate = byteRate;
+        }
         byte[] header = new byte[44];
         header[0] = 'R'; // RIFF/WAVE header
         header[1] = 'I';
@@ -60,7 +79,16 @@ public class WaveHeader {
         header[41] = (byte) ((totalAudioLen >> 8) & 0xff);
         header[42] = (byte) ((totalAudioLen >> 16) & 0xff);
         header[43] = (byte) ((totalAudioLen >> 24) & 0xff);
-        out.write(header, 0, 44);
+        raf.write(header, 0, 44);
+    }
+
+    public static void changeLength(RandomAccessFile raf, long totalAudioLen) {
+        try {
+            raf.seek(0);
+            writeWaveFileHeader(raf, totalAudioLen, -1, -1, -1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static int getSampleRate(byte[] headData) {

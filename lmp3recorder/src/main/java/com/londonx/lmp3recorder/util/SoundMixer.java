@@ -5,8 +5,8 @@ import com.londonx.lmp3recorder.listener.AsyncSoundMixerListener;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /**
  * Created by london on 15/10/14.
@@ -31,7 +31,7 @@ public class SoundMixer {
     public void syncMixWav() {
         FileInputStream accompany = null;
         FileInputStream original = null;
-        FileOutputStream mix = null;
+        RandomAccessFile mix = null;
         try {
             accompany = new FileInputStream(accompanyFile);
             original = new FileInputStream(originalFile);
@@ -51,7 +51,7 @@ public class SoundMixer {
             if (readAccompany == 0 || readOriginal == 0) {
                 throw new IOException("accompanyFile or originalFile is 0B");
             }
-            mix = new FileOutputStream(mixedFile);
+            mix = new RandomAccessFile(mixedFile, "rw");
             int readLength = 10240;
             byte[] accompanyReader = new byte[(int) (readLength * magnification)];
             byte[] originalReader = new byte[readLength];
@@ -63,7 +63,7 @@ public class SoundMixer {
             //RIFF/WAVE header
             long totalLen = original.getChannel().size() - 44;
             long byteRate = 16 * LRecorder.SAMPLE_RATE * LRecorder.NUM_CHANNELS / 8;
-            WaveHeader.writeWaveFileHeader(mix, totalLen, totalLen + 36,
+            WaveHeader.writeWaveFileHeader(mix, totalLen,
                     LRecorder.SAMPLE_RATE, LRecorder.NUM_CHANNELS, byteRate);
             while (true) {
                 int accompanyReadSize = accompany.read(accompanyReader, 0, accompanyReader.length);
@@ -89,7 +89,6 @@ public class SoundMixer {
                 mixVoice(accompanyShorts, originalShorts, magnification, mixedShort);
                 ByteConverter.shorts2bytes(mixedShort, outData);
                 mix.write(outData, 0, originalReadSize);
-                mix.flush();
             }
             mix.close();
             if (asyncSoundMixerListener != null) {

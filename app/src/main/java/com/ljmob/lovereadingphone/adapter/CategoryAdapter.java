@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.CategoryActivity;
 import com.ljmob.lovereadingphone.R;
-import com.ljmob.lovereadingphone.entity.Category;
+import com.ljmob.lovereadingphone.entity.Subject;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.ljmob.lovereadingphone.view.UnScrollableGridView;
 import com.londonx.lutil.adapter.LAdapter;
@@ -42,7 +42,7 @@ public class CategoryAdapter extends LAdapter {
             convertView.setTag(new ViewHolder(convertView));
         }
         ViewHolder holder = (ViewHolder) convertView.getTag();
-        holder.setCategory((Category) lEntities.get(position));
+        holder.setCategory((Subject) lEntities.get(position));
         return convertView;
     }
 
@@ -60,25 +60,25 @@ public class CategoryAdapter extends LAdapter {
         @Bind(R.id.item_category_gridSubCate)
         UnScrollableGridView itemCategoryGridSubCate;
 
-        Category category;
+        Subject subject;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
 
-        public void setCategory(Category category) {
-            this.category = category;
-            SimpleImageLoader.displayImage(category.subject.img_url.img_url.normal.url,
+        public void setCategory(Subject subject) {
+            this.subject = subject;
+            SimpleImageLoader.displayImage(subject.img_url.img_url.normal.url,
                     itemCategoryImgCategory);
-            itemCategoryTvCategory.setText(category.subject.name);
-            itemCategoryGridSubCate.setAdapter(new SubCateAdapter(category.grades));
+            itemCategoryTvCategory.setText(subject.name);
+            itemCategoryGridSubCate.setAdapter(new SubCateAdapter(subject.grades));
         }
 
         @OnItemClick(R.id.item_category_gridSubCate)
         protected void onGradeSelected(int position) {
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("subject", category.subject);
-            resultIntent.putExtra("grade", category.grades.get(position));
+            resultIntent.putExtra("subject", subject);
+            resultIntent.putExtra("grade", subject.grades.get(position));
             categoryActivity.setResult(Activity.RESULT_OK, resultIntent);
             categoryActivity.finish();
         }

@@ -5,7 +5,7 @@ package com.londonx.lmp3recorder.util;
  * tools for handle byte[]
  */
 public class ByteConverter {
-    public static double shorts2bytes(short[] shortData, byte[] bytes) {
+    public static int shorts2bytes(short[] shortData, byte[] bytes) {
         int shortArraySize = shortData.length;
         double sum = 0;
         for (int i = 0; i < shortArraySize; i++) {
@@ -14,7 +14,7 @@ public class ByteConverter {
 
             sum += Math.abs(shortData[i]);
         }
-        return Math.sqrt(sum / shortData.length);
+        return shortArraySize*2;
     }
 
     public static void bytes2shorts(byte[] bytes, short[] shortData) {

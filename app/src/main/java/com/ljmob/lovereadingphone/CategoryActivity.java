@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ljmob.lovereadingphone.adapter.CategoryAdapter;
 import com.ljmob.lovereadingphone.entity.ArticleType;
-import com.ljmob.lovereadingphone.entity.Category;
 import com.ljmob.lovereadingphone.entity.Grade;
 import com.ljmob.lovereadingphone.entity.Subject;
 import com.ljmob.lovereadingphone.net.NetConstant;
@@ -24,7 +23,6 @@ import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -50,9 +48,7 @@ public class CategoryActivity extends AppCompatActivity implements
     HeadHolder headHolder;
 
     List<Subject> subjects;
-    List<Grade> grades;
     List<ArticleType> articleTypes;
-    List<Category> categories;
     LRequestTool requestTool;
 
     @Override
@@ -90,7 +86,6 @@ public class CategoryActivity extends AppCompatActivity implements
             requestTool = new LRequestTool(this);
         }
         requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_ARTICLE_TYPES, new DefaultParam(), API_ARTICLE_TYPES);
-        requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_GRADES, new DefaultParam(), API_GRADES);
         requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_SUBJECTS, new DefaultParam(), API_SUBJECTS);
     }
 
@@ -111,21 +106,14 @@ public class CategoryActivity extends AppCompatActivity implements
             case API_ARTICLE_TYPES:
                 articleTypes = new Gson().fromJson(response.body, new TypeToken<List<ArticleType>>() {
                 }.getType());
-                if (subjects != null && grades != null) {
-                    showData();
-                }
-                break;
-            case API_GRADES:
-                grades = new Gson().fromJson(response.body, new TypeToken<List<Grade>>() {
-                }.getType());
-                if (subjects != null && articleTypes != null) {
+                if (articleTypes != null && subjects != null) {
                     showData();
                 }
                 break;
             case API_SUBJECTS:
                 subjects = new Gson().fromJson(response.body, new TypeToken<List<Subject>>() {
                 }.getType());
-                if (grades != null && articleTypes != null) {
+                if (articleTypes != null && subjects != null) {
                     showData();
                 }
                 break;
@@ -134,14 +122,7 @@ public class CategoryActivity extends AppCompatActivity implements
 
     private void showData() {
 //        articleTypes is Header
-        categories = new ArrayList<>();
-        for (Subject s : subjects) {
-            Category category = new Category();
-            category.grades = grades;
-            category.subject = s;
-            categories.add(category);
-        }
-        primaryAbsListView.setAdapter(new CategoryAdapter(categories, this));
+        primaryAbsListView.setAdapter(new CategoryAdapter(subjects, this));
     }
 
     /**

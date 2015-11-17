@@ -284,6 +284,9 @@ public class ReadingActivity extends AppCompatActivity implements
                 uploadResultFragment.isPlaying() ||//正在回放
                 (playerService != null && playerService.isPlaying())//正在播放
                 ) {
+            if (activityReadingScContent == null) {
+                break;
+            }
             activityReadingScContent.post(new Runnable() {
                 @Override
                 public void run() {

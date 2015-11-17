@@ -8,6 +8,7 @@ import java.util.List;
  * Created by london on 15/11/2.
  * 分类
  */
+@Deprecated
 public class Category extends LEntity {
     public Subject subject;
     public List<Grade> grades;
