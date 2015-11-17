@@ -144,6 +144,7 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
                 new Thread(new Runnable() {//decode thread
                     @Override
                     public void run() {
+                        isRunning = true;
                         while (isRunning) {
                             long time = decoder.nextStep();
                             if (time > 988) {
@@ -192,9 +193,10 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    long mixStart = System.currentTimeMillis();
                     uploadFile = new File(recordedFile.getAbsolutePath().replace(".wav", "_mix.wav"));
-                    decoder.nextStep();
+                    if (!decoder.isDecoding()) {
+                        decoder.nextStep();
+                    }
                     while (decoder.isDecoding()) {
                         try {
                             Thread.sleep(16);
@@ -202,10 +204,7 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
                             e.printStackTrace();
                         }
                     }
-                    Log.i("LondonX", "decode finish in :" + (System.currentTimeMillis() - mixStart) + "ms");
-                    mixStart = System.currentTimeMillis();
                     new SoundMixer(wavMusicFile, recordedFile, uploadFile).syncMixWav();
-                    Log.i("LondonX", "mix finish in :" + (System.currentTimeMillis() - mixStart) + "ms");
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -252,9 +251,10 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
                 Log.e("LondonX", "old recFile cannot be deleted. RecorderFragment");
             }
         }
-        if (decoder == null) {
-            decoder = new Mp3Decoder2(musicFile);
+        if (decoder != null) {
+            decoder.close();
         }
+        decoder = new Mp3Decoder2(musicFile);
         wavMusicFile = decoder.getWavFile();
         countDown();
     }

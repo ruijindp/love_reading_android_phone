@@ -137,6 +137,12 @@ public class UploadResultFragment extends Fragment implements LMediaPlayer.OnPro
         if (player == null || player.mediaPlayer == null) {
             return false;
         }
-        return player.mediaPlayer.isPlaying();
+        boolean isPlaying = false;
+        try {
+            isPlaying = player.mediaPlayer.isPlaying();
+        } catch (IllegalStateException ignore) {
+
+        }
+        return isPlaying;
     }
 }

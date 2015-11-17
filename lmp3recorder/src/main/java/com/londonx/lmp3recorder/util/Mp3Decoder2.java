@@ -20,6 +20,7 @@ import javazoom.jl.decoder.SampleBuffer;
 public class Mp3Decoder2 {
     private File wavFile;
 
+    private byte[] bufferData = new byte[20480];
     private FileInputStream fis;
     private Bitstream bitstream;
     private RandomAccessFile raf;
@@ -28,8 +29,9 @@ public class Mp3Decoder2 {
     private long currentFrame;
     private int audioLength;
 
-    private boolean isDecoding;
-    private long stepDuration = 1000;
+    private boolean isDecoding = false;
+    private long stepDuration = 2000;
+
 
     public Mp3Decoder2(File mp3File) {
         wavFile = new File(mp3File.getAbsolutePath() + ".wav");
@@ -89,10 +91,6 @@ public class Mp3Decoder2 {
         isDecoding = true;
         int readTime = 0;
         boolean seeking = true;
-        byte[] bufferData = new byte[20480];
-//        if (currentFrame != 0) {
-//            WaveHeader.changeLength(raf, audioLength + 1000);
-//        }
         if (raf != null) {
             try {
                 raf.seek(wavFile.length());
