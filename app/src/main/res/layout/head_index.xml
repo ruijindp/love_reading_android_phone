@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="46dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingBottom="7dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="15dp">
+    android:paddingLeft="8dp">
 
     <View
         android:layout_width="4dp"
         android:layout_height="18dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
         android:background="@color/textSecondary" />
 
     <TextView
-        fontPath="@string/font_bold"
         android:id="@+id/head_main_tvCurrentCate"
+        fontPath="@string/font_bold"
         android:layout_width="0px"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:layout_weight="1"
         android:text="@string/test_cate"
         android:textColor="@color/textSecondary"
@@ -27,10 +26,15 @@
 
     <TextView
         android:id="@+id/head_main_tvCate"
-        android:layout_width="48dp"
-        android:layout_height="24dp"
-        android:background="@drawable/selector_cate_stroke"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
+        android:background="?selectableItemBackground"
         android:gravity="center"
+        android:paddingBottom="7dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingTop="7dp"
         android:text="@string/cate"
         android:textColor="@color/textSecondary"
         android:textSize="16sp" />

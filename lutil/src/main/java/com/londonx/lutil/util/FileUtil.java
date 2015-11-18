@@ -121,7 +121,7 @@ public class FileUtil {
             } else {
                 cachePath = Lutil.context.getCacheDir().getAbsolutePath();
             }
-            cachePath += File.separator + ".LCache" + File.separator;
+            //error in some devices cachePath += File.separator + ".LCache" + File.separator;
         }
         cacheFolder = new File(cachePath);
         return cacheFolder;

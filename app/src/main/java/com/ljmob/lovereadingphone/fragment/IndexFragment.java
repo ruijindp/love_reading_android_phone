@@ -173,8 +173,7 @@ public class IndexFragment extends Fragment implements
                 hasMore = appendData.size() == PAGE_SIZE;
                 if (currentPage == 1) {
                     articles = appendData;
-                    adapter = new IndexAdapter(ArticleShelfWrapper.wrap(articles),
-                            (selectedGrade != null && selectedSubject != null));
+                    adapter = new IndexAdapter(ArticleShelfWrapper.wrap(articles));
                     primaryAbsListView.setAdapter(adapter);
                 } else {
                     articles.addAll(appendData);

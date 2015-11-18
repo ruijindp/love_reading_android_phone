@@ -71,6 +71,7 @@ public class MyApplication extends Application {
 
         ShareSDK.initSDK(this);
 
-        PermissionUtil.init(this, new String[]{Manifest.permission.RECORD_AUDIO});
+        PermissionUtil.init(this, new String[]{Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE});
     }
 }

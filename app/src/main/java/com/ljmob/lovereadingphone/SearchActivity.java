@@ -86,7 +86,7 @@ public class SearchActivity extends EasyLoadActivity implements ServiceConnectio
             }.getType());
             if (currentPage == 1) {
                 articles = appendData;
-                adapter = new IndexAdapter(ArticleShelfWrapper.wrap(articles), false);
+                adapter = new IndexAdapter(ArticleShelfWrapper.wrap(articles));
                 primaryListView.setAdapter(adapter);
             } else {
                 articles.addAll(appendData);

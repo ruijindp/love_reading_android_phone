@@ -38,7 +38,12 @@ public class IndexUnitAdapter extends BaseAdapter {
         for (Unit u : units) {
             for (int i = 0; i < u.articles.size(); i += 2) {
                 ArticleShelf articleShelf = new ArticleShelf();
-                articleShelf.unitName = u.name;
+                if (lastUnit.equals(u.name)) {
+                    articleShelf.unitName = "";
+                } else {
+                    articleShelf.unitName = u.name;
+                    lastUnit = u.name;
+                }
                 articleShelf.articles[0] = u.articles.get(i);
                 if (u.articles.size() > i + 1) {
                     articleShelf.articles[1] = u.articles.get(i + 1);
@@ -112,7 +117,7 @@ public class IndexUnitAdapter extends BaseAdapter {
         }
 
         public void setArticleShelf(ArticleShelf shelf) {
-            if (lastUnit.equals(shelf.unitName)) {
+            if (shelf.unitName.length() == 0) {
                 if (itemIndexTvUnit.getVisibility() != View.GONE) {
                     itemIndexTvUnit.setVisibility(View.GONE);
                 }
@@ -126,7 +131,11 @@ public class IndexUnitAdapter extends BaseAdapter {
             SimpleImageLoader
                     .displayImage(shelf.articles[0].cover_img.cover_img.normal.url, itemIndexImgCover0);
             itemIndexTvTitle0.setText(shelf.articles[0].title);
-            itemIndexTvAuthor0.setText(shelf.articles[0].author);
+            if (shelf.articles[0].author.length() == 0) {
+                itemIndexTvAuthor0.setVisibility(View.GONE);
+            } else {
+                itemIndexTvAuthor0.setText(shelf.articles[0].author);
+            }
             itemIndexTvReadCount0.setText(String.format("%d", shelf.articles[0].count));
 
             ArticleClickListener listener0 = new ArticleClickListener(shelf.articles[0], 0);
@@ -136,7 +145,11 @@ public class IndexUnitAdapter extends BaseAdapter {
                 SimpleImageLoader
                         .displayImage(shelf.articles[1].cover_img.cover_img.normal.url, itemIndexImgCover1);
                 itemIndexTvTitle1.setText(shelf.articles[1].title);
-                itemIndexTvAuthor1.setText(shelf.articles[1].author);
+                if (shelf.articles[1].author.length() == 0) {
+                    itemIndexTvAuthor1.setVisibility(View.GONE);
+                } else {
+                    itemIndexTvAuthor1.setText(shelf.articles[1].author);
+                }
                 itemIndexTvReadCount1.setText(String.format("%d", shelf.articles[1].count));
 
                 ArticleClickListener listener1 = new ArticleClickListener(shelf.articles[1], 1);

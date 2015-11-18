@@ -267,7 +267,8 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
             player.stop();
         }
         if (recorder != null) {
-            if (recorder.isRecording()) {
+            if (recorder.isRecording() ||
+                    recorder.isPaused()) {
                 recorder.stop();
             }
         }

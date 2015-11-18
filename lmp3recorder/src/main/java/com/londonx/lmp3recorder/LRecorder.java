@@ -19,6 +19,7 @@ public class LRecorder {
 
     private AudioRecord recorder;
     private boolean isRecording = false;
+    private boolean isPaused = false;
     private File rawFile;
     private File encodedFile;
     private int minBufferSize;
@@ -32,6 +33,10 @@ public class LRecorder {
 
     public boolean isRecording() {
         return isRecording;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 
     public void setAmplitudeListener(AmplitudeListener amplitudeListener) {
@@ -51,6 +56,7 @@ public class LRecorder {
             throw new IllegalStateException("the recorder is recording");
         }
         isRecording = true;
+        isPaused = false;
         String rawPath = recFile.getAbsolutePath() + ".pcm";
         rawFile = new File(rawPath);
 //        if (rawFile.exists()) {
@@ -74,6 +80,7 @@ public class LRecorder {
      */
     public void pause() {
         isRecording = false;
+        isPaused = true;
         recorder.stop();
     }
 
@@ -82,6 +89,7 @@ public class LRecorder {
             throw new IllegalStateException("the recorder is recording");
         }
         isRecording = true;
+        isPaused = false;
         startWriting();
     }
 
@@ -92,6 +100,7 @@ public class LRecorder {
      */
     public File stop() {
         isRecording = false;
+        isPaused = false;
         recorder.stop();
         encodeWaveFile();
         return encodedFile;
