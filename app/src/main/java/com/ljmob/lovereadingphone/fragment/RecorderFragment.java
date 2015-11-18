@@ -78,9 +78,7 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (recorder != null && recorder.isRecording()) {
-            release();
-        }
+        release();
         if (decoder != null) {
             decoder.close();
         }
@@ -186,7 +184,7 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
     protected void finishRecording() {
         release();
         currentStatus = Status.finished;
-        recorder.stop();
+//        recorder.stop();
 
         if (HeadSetTool.isHeadSetConnected(getContext())) {// 耳机才做混音
             ((ReadingActivity) getActivity()).showMixDialog();
@@ -267,6 +265,11 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
         isRunning = false;
         if (player != null) {
             player.stop();
+        }
+        if (recorder != null) {
+            if (recorder.isRecording()) {
+                recorder.stop();
+            }
         }
     }
 

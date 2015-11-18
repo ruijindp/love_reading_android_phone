@@ -91,16 +91,9 @@ public class Mp3Decoder2 {
         isDecoding = true;
         int readTime = 0;
         boolean seeking = true;
-        if (raf != null) {
-            try {
-                raf.seek(wavFile.length());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
         try {
             long startTime = System.currentTimeMillis();
-            while (readTime < stepDuration) {
+            while (readTime < stepDuration && isDecoding()) {
                 Header frameHeader = bitstream.readFrame();
                 if (frameHeader == null) {
                     break;
@@ -108,7 +101,7 @@ public class Mp3Decoder2 {
                 if (audioLength >= 0) {
                     seeking = false;
                 }
-                if (!seeking) {
+                if (!seeking && isDecoding()) {
                     SampleBuffer output = (SampleBuffer) decoder.decodeFrame(frameHeader, bitstream);
                     if (currentFrame == 0) {
                         int numChannel = output.getChannelCount();

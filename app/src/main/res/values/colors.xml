@@ -24,6 +24,7 @@
     <color name="textRed">#EA0000</color>
     <!--50%-->
     <color name="dialog">#7F000000</color>
+    <color name="firstRunBg">#f1EADD</color>
 
     <color name="test">#44000000</color>
 </resources>

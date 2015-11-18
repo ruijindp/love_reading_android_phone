@@ -1,9 +1,7 @@
 package com.londonx.lmp3recorder;
 
 import android.media.AudioFormat;
-import android.media.AudioManager;
 import android.media.AudioRecord;
-import android.media.AudioTrack;
 import android.media.MediaRecorder;
 
 import com.londonx.lmp3recorder.listener.AmplitudeListener;
@@ -18,9 +16,7 @@ import java.io.RandomAccessFile;
 public class LRecorder {
     public static int SAMPLE_RATE = 11025;
     public static final int NUM_CHANNELS = 1;
-    public boolean isEchoEnabled;
 
-    private AudioTrack echoPlayer;
     private AudioRecord recorder;
     private boolean isRecording = false;
     private File rawFile;
@@ -29,7 +25,6 @@ public class LRecorder {
 
     private long lastReportTime;
     private AmplitudeListener amplitudeListener;
-    private double amplitude;
 
     public LRecorder() {
         initRecorder();
@@ -58,6 +53,18 @@ public class LRecorder {
         isRecording = true;
         String rawPath = recFile.getAbsolutePath() + ".pcm";
         rawFile = new File(rawPath);
+//        if (rawFile.exists()) {
+//            if (rawFile.delete()) {
+//                System.out.println("rawFile deleted !!!");
+//            }
+//            try {
+//                if (rawFile.createNewFile()) {
+//                    System.out.println("new rawFile created !!!");
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
         encodedFile = recFile;
         startWriting();
     }
@@ -67,7 +74,6 @@ public class LRecorder {
      */
     public void pause() {
         isRecording = false;
-        echoPlayer.stop();
         recorder.stop();
     }
 
@@ -86,7 +92,6 @@ public class LRecorder {
      */
     public File stop() {
         isRecording = false;
-        echoPlayer.stop();
         recorder.stop();
         encodeWaveFile();
         return encodedFile;
@@ -94,7 +99,6 @@ public class LRecorder {
 
     public void destroy() {
         recorder.release();
-        echoPlayer.release();
         recorder = null;
     }
 
@@ -103,20 +107,12 @@ public class LRecorder {
                 AudioFormat.ENCODING_PCM_16BIT);
         recorder = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, SAMPLE_RATE, NUM_CHANNELS,
                 AudioFormat.ENCODING_PCM_16BIT, minBufferSize);
-
-        echoPlayer = new AudioTrack(AudioManager.STREAM_MUSIC,
-                recorder.getSampleRate(),
-                recorder.getChannelCount(),
-                AudioFormat.ENCODING_PCM_16BIT,
-                minBufferSize,
-                AudioTrack.MODE_STREAM);
     }
 
     private void startWriting() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-//                DataOutputStream output = null;
                 RandomAccessFile randomAccessFile = null;
                 try {
                     randomAccessFile = new RandomAccessFile(rawFile, "rw");
@@ -135,17 +131,12 @@ public class LRecorder {
                         if (readSize <= 0) {
                             break;
                         }
-                        if (isEchoEnabled) {
-                            if (echoPlayer.getState() != AudioTrack.PLAYSTATE_PLAYING) {
-                                echoPlayer.play();
-                            }
-                            echoPlayer.write(buffer, 0, readSize);
-                        }
                         if (System.currentTimeMillis() - lastReportTime > 16) {
-                            amplitudeListener.onAmplitude(((float) amplitude) / 100f);
+                            float amplitude = ByteConverter.getAmplitude(buffer);
+                            amplitudeListener.onAmplitude(amplitude / 100f);
                             lastReportTime = System.currentTimeMillis();
                         }
-                        amplitude = ByteConverter.shorts2bytes(buffer, bytes);
+                        ByteConverter.shorts2bytes(buffer, bytes);
                         randomAccessFile.write(bytes, 0, readSize * 2);
                     }
                 } catch (IOException e) {
@@ -165,6 +156,9 @@ public class LRecorder {
 
     // make RAW(pcm) file to WAV file
     private void encodeWaveFile() {
+        if (!rawFile.exists()) {
+            return;
+        }
         FileInputStream in;
         RandomAccessFile out;
         long byteRate = 16 * SAMPLE_RATE * NUM_CHANNELS / 8;
@@ -184,10 +178,7 @@ public class LRecorder {
             }
             in.close();
             out.close();
-            boolean isDeleted = rawFile.delete();
-            if (!isDeleted) {
-                throw new IOException("raw file cannot be deleted");
-            }
+            rawFile.deleteOnExit();
         } catch (IOException e) {
             e.printStackTrace();
         }

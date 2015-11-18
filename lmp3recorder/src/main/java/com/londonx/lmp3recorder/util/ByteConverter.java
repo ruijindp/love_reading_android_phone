@@ -14,7 +14,15 @@ public class ByteConverter {
 
             sum += Math.abs(shortData[i]);
         }
-        return shortArraySize*2;
+        return shortArraySize * 2;
+    }
+
+    public static float getAmplitude(short[] shortData) {
+        double sum = 0;
+        for (short aShortData : shortData) {
+            sum += Math.abs(aShortData);
+        }
+        return (float) Math.sqrt(sum / shortData.length);
     }
 
     public static void bytes2shorts(byte[] bytes, short[] shortData) {

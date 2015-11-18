@@ -1,11 +1,16 @@
 package com.ljmob.quicksharesdk;
 
+import android.content.pm.PackageManager;
+
 import com.ljmob.quicksharesdk.entity.Shareable;
+import com.londonx.lutil.Lutil;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
 
 import cn.sharesdk.framework.Platform;
+import cn.sharesdk.wechat.friends.Wechat;
+import cn.sharesdk.wechat.moments.WechatMoments;
 
 /**
  * Created by london on 15/7/29.
@@ -26,6 +31,16 @@ public class ShareTool implements
     }
 
     public void share() {
+        if (platform.getName().equals(Wechat.NAME) ||
+                platform.getName().equals(WechatMoments.NAME)) {
+            try {
+                Lutil.context.getPackageManager().getPackageInfo("com.tencent.mm", 0);
+            } catch (PackageManager.NameNotFoundException ignore) {
+                ToastUtil.show(R.string.quick_share_no_wechat);
+                return;
+            }
+        }
+        ToastUtil.show(R.string.quick_share_prepare);
         if (shareable.imgFullUrl == null || shareable.imgFullUrl.length() == 0) {
             onDownloaded(new LResponse());
         } else {
@@ -57,7 +72,5 @@ public class ShareTool implements
         shareParams.setUrl(shareable.url);
         shareParams.setTitleUrl(shareable.url);
         platform.share(shareParams);
-
-        ToastUtil.show(R.string.quick_share_ok);
     }
 }

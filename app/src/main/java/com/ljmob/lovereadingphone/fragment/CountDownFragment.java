@@ -71,6 +71,9 @@ public class CountDownFragment extends Fragment {
         activityCountDownViewCleaner.post(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 activityCountDownViewCleaner.animate().scaleX(1).scaleY(1)
                         .setDuration(500)
                         .setInterpolator(new DecelerateInterpolator())
@@ -81,6 +84,9 @@ public class CountDownFragment extends Fragment {
         rootView.post(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 rootView.animate().alpha(1).setDuration(500)
                         .setInterpolator(new DecelerateInterpolator())
                         .start();
@@ -89,6 +95,9 @@ public class CountDownFragment extends Fragment {
         rootView.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 startAnim();
             }
         }, 501);
@@ -99,6 +108,9 @@ public class CountDownFragment extends Fragment {
         viewCountTvTime3.post(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 viewCountTvTime3.animate().scaleY(1.4f).scaleX(1.4f)
                         .setDuration(500)
                         .setInterpolator(new AccelerateInterpolator())
@@ -108,6 +120,9 @@ public class CountDownFragment extends Fragment {
         viewCountTvTime3.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 viewCountTvTime3.animate().scaleY(1.0f).scaleX(1.0f)
                         .setDuration(500)
                         .alpha(0)
@@ -119,6 +134,9 @@ public class CountDownFragment extends Fragment {
         viewCountTvTime2.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 viewCountTvTime2.animate().scaleY(1.6f).scaleX(1.6f)
                         .setDuration(500)
                         .alpha(1.0f)
@@ -129,6 +147,9 @@ public class CountDownFragment extends Fragment {
         viewCountTvTime2.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 viewCountTvTime2.animate().scaleY(1.0f).scaleX(1.0f)
                         .setDuration(500)
                         .alpha(0)
@@ -140,6 +161,9 @@ public class CountDownFragment extends Fragment {
         viewCountTvTime1.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 viewCountTvTime1.animate().scaleY(1.8f).scaleX(1.8f)
                         .setDuration(300)
                         .setInterpolator(new AccelerateInterpolator())
@@ -156,6 +180,9 @@ public class CountDownFragment extends Fragment {
         activityCountDownViewCleaner.post(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 activityCountDownViewCleaner.animate().scaleY(1.5f).scaleX(1.5f)
                         .setDuration(500)
                         .setInterpolator(new AccelerateInterpolator())
@@ -165,6 +192,9 @@ public class CountDownFragment extends Fragment {
         activityCountDownViewCleaner.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 activityCountDownViewCleaner.animate().scaleY(1.0f).scaleX(1.0f)
                         .setDuration(500)
                         .setInterpolator(new DecelerateInterpolator())
@@ -175,6 +205,9 @@ public class CountDownFragment extends Fragment {
         activityCountDownViewCleaner.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 activityCountDownViewCleaner.animate().scaleY(1.8f).scaleX(1.8f)
                         .setDuration(500)
                         .setInterpolator(new AccelerateInterpolator())
@@ -184,6 +217,9 @@ public class CountDownFragment extends Fragment {
         activityCountDownViewCleaner.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 activityCountDownViewCleaner.animate().scaleY(1.0f).scaleX(1.0f)
                         .setDuration(500)
                         .setInterpolator(new DecelerateInterpolator())
@@ -193,6 +229,9 @@ public class CountDownFragment extends Fragment {
         activityCountDownViewCleaner.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 activityCountDownViewCleaner.animate().scaleX(10).scaleY(10)
                         .setDuration(300)
                         .setInterpolator(new AccelerateInterpolator())
@@ -203,6 +242,9 @@ public class CountDownFragment extends Fragment {
         rootView.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (activityCountDownViewCleaner == null) {
+                    return;
+                }
                 rootView.animate().alpha(0)
                         .setDuration(500)
                         .start();
