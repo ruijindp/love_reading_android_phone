@@ -272,8 +272,13 @@ public class IndexFragment extends Fragment implements
 
         @OnClick(R.id.head_main_tvCate)
         protected void openCateActivity() {
-            IndexFragment.this.startActivityForResult(
-                    new Intent(getActivity(), CategoryActivity.class), ACTION_CATEGORY);
+            Intent cateIntent = new Intent(getActivity(), CategoryActivity.class);
+            if (selectedSubject != null && selectedGrade != null
+                    && selectedSubject.id != 0 && selectedGrade.id != 0) {
+                cateIntent.putExtra("selectedSubject",selectedSubject);
+                cateIntent.putExtra("selectedGrade",selectedGrade);
+            }
+            IndexFragment.this.startActivityForResult(cateIntent, ACTION_CATEGORY);
         }
     }
 }

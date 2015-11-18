@@ -1,5 +1,6 @@
 package com.ljmob.lovereadingphone.adapter;
 
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,11 @@ import butterknife.ButterKnife;
  * 子类型（语文类的一年级等）
  */
 public class SubCateAdapter extends LAdapter {
-    public SubCateAdapter(List<? extends LEntity> lEntities) {
+    Grade selectedGrade;
+
+    public SubCateAdapter(List<? extends LEntity> lEntities, Grade selectedGrade) {
         super(lEntities);
+        this.selectedGrade = selectedGrade;
     }
 
     @Override
@@ -33,6 +37,15 @@ public class SubCateAdapter extends LAdapter {
         }
         ViewHolder holder = (ViewHolder) convertView.getTag();
         holder.itemSubCateTvCate.setText(((Grade) getItem(position)).name);
+        if (((Grade) getItem(position)).id == selectedGrade.id) {
+            holder.itemSubCateTvCate.setBackgroundResource(R.drawable.selector_btn_primary_corner);
+            holder.itemSubCateTvCate.setTextColor(
+                    ContextCompat.getColor(parent.getContext(), android.R.color.white));
+        } else {
+            holder.itemSubCateTvCate.setBackgroundResource(R.drawable.selector_cate_stroke);
+            holder.itemSubCateTvCate.setTextColor(
+                    ContextCompat.getColor(parent.getContext(), R.color.textSecondary));
+        }
         return convertView;
     }
 

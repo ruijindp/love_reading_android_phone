@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -51,9 +53,22 @@ public class CategoryActivity extends AppCompatActivity implements
     List<ArticleType> articleTypes;
     LRequestTool requestTool;
 
+    public Subject selectedSubject;
+    public Grade selectedGrade;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        selectedSubject = (Subject) getIntent().getSerializableExtra("selectedSubject");
+        selectedGrade = (Grade) getIntent().getSerializableExtra("selectedGrade");
+        if (selectedSubject == null) {
+            selectedSubject = new Subject();
+        }
+        if (selectedGrade == null) {
+            selectedGrade = new Grade();
+        }
+
         setContentView(R.layout.activity_category);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
@@ -63,8 +78,9 @@ public class CategoryActivity extends AppCompatActivity implements
         }
         View headView = getLayoutInflater()
                 .inflate(R.layout.head_category, primaryAbsListView, false);
-        primaryAbsListView.addHeaderView(headView);
         headHolder = new HeadHolder(headView);
+
+        primaryAbsListView.addHeaderView(headView);
         initData();
     }
 
@@ -132,8 +148,22 @@ public class CategoryActivity extends AppCompatActivity implements
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
     class HeadHolder {
+        @Bind(R.id.head_category_tvAll)
+        public TextView headCategoryTvAll;
+
         HeadHolder(View view) {
             ButterKnife.bind(this, view);
+
+            if (selectedSubject != null && selectedGrade != null
+                    && selectedSubject.id != 0 && selectedGrade.id != 0) {
+                headCategoryTvAll.setBackgroundResource(R.drawable.selector_cate_stroke);
+                headCategoryTvAll.setTextColor(
+                        ContextCompat.getColor(CategoryActivity.this, R.color.textSecondary));
+            } else {
+                headCategoryTvAll.setBackgroundResource(R.drawable.selector_btn_primary_corner);
+                headCategoryTvAll.setTextColor(
+                        ContextCompat.getColor(CategoryActivity.this, android.R.color.white));
+            }
         }
 
         @OnClick(R.id.head_category_tvAll)

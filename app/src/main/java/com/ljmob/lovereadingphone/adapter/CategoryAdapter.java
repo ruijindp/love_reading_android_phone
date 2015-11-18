@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.CategoryActivity;
 import com.ljmob.lovereadingphone.R;
+import com.ljmob.lovereadingphone.entity.Grade;
 import com.ljmob.lovereadingphone.entity.Subject;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.ljmob.lovereadingphone.view.UnScrollableGridView;
@@ -71,7 +72,13 @@ public class CategoryAdapter extends LAdapter {
             SimpleImageLoader.displayImage(subject.img_url.img_url.normal.url,
                     itemCategoryImgCategory);
             itemCategoryTvCategory.setText(subject.name);
-            itemCategoryGridSubCate.setAdapter(new SubCateAdapter(subject.grades));
+            if (categoryActivity.selectedSubject.id == subject.id) {
+                itemCategoryGridSubCate.setAdapter(
+                        new SubCateAdapter(subject.grades, categoryActivity.selectedGrade));
+            } else {
+                itemCategoryGridSubCate.setAdapter(
+                        new SubCateAdapter(subject.grades, new Grade()));
+            }
         }
 
         @OnItemClick(R.id.item_category_gridSubCate)
