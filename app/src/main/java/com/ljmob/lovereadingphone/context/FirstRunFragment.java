@@ -86,6 +86,6 @@ public class FirstRunFragment extends Fragment {
                 viewFirstRunBtn.setVisibility(View.VISIBLE);
                 viewFirstRunBtn.animate().alpha(1.0f).setDuration(2000).start();
             }
-        }, 1000);
+        }, 800);
     }
 }

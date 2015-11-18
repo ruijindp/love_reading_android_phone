@@ -79,18 +79,12 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
     LinearLayout viewDrawerLnMyReading;
     @Bind(R.id.view_drawer_lnStudentReading)
     LinearLayout viewDrawerLnStudentReading;
-    @Bind(R.id.view_drawer_lnListened)
-    LinearLayout viewDrawerLnListened;
     @Bind(R.id.view_drawer_lnCleanCache)
     LinearLayout viewDrawerLnCleanCache;
-    @Bind(R.id.view_drawer_lnFeedBack)
-    LinearLayout viewDrawerLnFeedBack;
     @Bind(R.id.view_drawer_lnChangePassword)
     LinearLayout viewDrawerLnChangePassword;
     @Bind(R.id.view_drawer_lnExit)
     LinearLayout viewDrawerLnExit;
-    @Bind(R.id.view_drawer_imgDrawerBg)
-    ImageView viewDrawerImgDrawerBg;
     @Bind(R.id.view_drawer_frameUser)
     FrameLayout viewDrawerFrameUser;
     @Bind(R.id.view_drawer_tvLogin)
@@ -242,8 +236,6 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
             cacheDialog = new MaterialDialog.Builder(getActivity())
                     .theme(Theme.LIGHT)
                     .title(R.string.dialog_clean_cache)
-                    .content(String.format("%s%s",
-                            getString(R.string.total_), formatFileSize(cacheSize)))
                     .negativeText(android.R.string.cancel)
                     .positiveText(android.R.string.ok)
                     .negativeColorRes(R.color.colorPrimary)
@@ -281,6 +273,8 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
                     })
                     .build();
         }
+        cacheDialog.setContent(String.format("%s%s",
+                getString(R.string.total_), formatFileSize(cacheSize)));
         cacheDialog.show();
     }
 
@@ -306,7 +300,8 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
         requestTool.doPost(NetConstant.ROOT_URL + NetConstant.USER_SIGN_OUT,
                 new DefaultParam(), USER_SIGN_OUT);
         MyApplication.currentUser = null;
-        Lutil.preferences.edit().clear().apply();
+//        Lutil.preferences.edit().clear().apply();
+        Lutil.preferences.edit().remove("UB64").apply();
         ((MainActivity) getActivity()).clearAvatar();
         initDrawerViews();
     }
