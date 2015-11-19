@@ -76,12 +76,12 @@ public class DetailActivity extends AppCompatActivity {
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        if (MyApplication.blurryBg != null &&
+        if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled() &&
                 MyApplication.blurryName.equals(article.cover_img.cover_img.small.url)) {
             activityDetailImgBackground.setImageBitmap(MyApplication.blurryBg);
             activity_detail_mask.setAlpha(0.4f);
         } else {
-            if (MyApplication.blurryBg != null) {
+            if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled()) {
                 MyApplication.blurryBg.recycle();
                 MyApplication.blurryBg = null;
                 System.gc();
@@ -173,7 +173,7 @@ public class DetailActivity extends AppCompatActivity {
                         .color(0x33FFFFFF)
                         .capture(activityDetailImgBackground)
                         .into(activityDetailImgBackground);
-                if (MyApplication.blurryBg != null) {
+                if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled()) {
                     MyApplication.blurryBg.recycle();
                 }
                 MyApplication.blurryBg = ((BitmapDrawable) activityDetailImgBackground

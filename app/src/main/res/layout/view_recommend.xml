@@ -15,6 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipChildren="false"
+            android:divider="@drawable/inset_divider_72"
+            android:dividerHeight="0.5dp"
             tools:listheader="@layout/head_recommend"
             tools:listitem="@layout/item_recommend" />
 
@@ -24,5 +26,6 @@
         android:id="@+id/view_recommend_frameTabs"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginTop="?actionBarSize" />
+        android:layout_marginTop="?actionBarSize"
+        android:background="@color/colorWindowBg" />
 </FrameLayout>

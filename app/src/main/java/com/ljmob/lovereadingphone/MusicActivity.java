@@ -116,7 +116,7 @@ public class MusicActivity extends AppCompatActivity implements
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
-        if (MyApplication.blurryBg != null &&
+        if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled() &&
                 article.cover_img.cover_img.small.url.equals(MyApplication.blurryName)) {
             activityMusicImgBackground.setImageBitmap(MyApplication.blurryBg);
             activityMusicMask.setAlpha(0.4f);
@@ -265,7 +265,7 @@ public class MusicActivity extends AppCompatActivity implements
                         .color(0x33FFFFFF)
                         .capture(activityMusicImgBackground)
                         .into(activityMusicImgBackground);
-                if (MyApplication.blurryBg != null) {
+                if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled()) {
                     MyApplication.blurryBg.recycle();
                 }
                 MyApplication.blurryBg = ((BitmapDrawable) activityMusicImgBackground

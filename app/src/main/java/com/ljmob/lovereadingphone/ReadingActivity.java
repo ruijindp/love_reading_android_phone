@@ -177,7 +177,7 @@ public class ReadingActivity extends AppCompatActivity implements
         }
         initData();
 
-        if (MyApplication.blurryBg != null
+        if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled()
                 && MyApplication.blurryName.equals(article.cover_img.cover_img.small.url)) {
             activityReadingImgBackground.setImageBitmap(MyApplication.blurryBg);
             activityReadingMask.setAlpha(0.4f);
@@ -395,7 +395,7 @@ public class ReadingActivity extends AppCompatActivity implements
                         .color(0x33FFFFFF)
                         .capture(activityReadingImgBackground)
                         .into(activityReadingImgBackground);
-                if (MyApplication.blurryBg != null) {
+                if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled()) {
                     MyApplication.blurryBg.recycle();
                 }
                 MyApplication.blurryBg = ((BitmapDrawable) activityReadingImgBackground

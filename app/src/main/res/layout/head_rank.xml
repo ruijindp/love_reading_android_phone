@@ -2,13 +2,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="wrap_content"
+    android:background="@color/head_filter_bg"
     android:clickable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="48dp"
         android:layout_gravity="bottom"
+        android:layout_marginTop="104dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
@@ -21,17 +23,12 @@
             android:background="?colorPrimary" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/data_source" />
-
-        <TextView
             android:id="@+id/head_rank_tvDataSource"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/test_data_source"
-            android:textColor="?colorPrimary" />
+            android:textColor="@color/textReadable" />
 
         <info.hoang8f.android.segmented.SegmentedGroup
             android:id="@+id/head_rank_segGroup"

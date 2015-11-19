@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="12dp">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/item_index_tvUnit"
@@ -83,7 +82,7 @@
                 android:id="@+id/item_index_tvAuthor0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="@string/test_author" />
@@ -149,7 +148,7 @@
                 android:id="@+id/item_index_tvAuthor1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="@string/test_author" />

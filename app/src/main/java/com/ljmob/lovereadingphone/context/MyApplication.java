@@ -35,7 +35,7 @@ public class MyApplication extends Application {
         Lutil.init(this);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/default-Regular.ttf")
+//                        .setDefaultFontPath("fonts/default-Regular.ttf")
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );

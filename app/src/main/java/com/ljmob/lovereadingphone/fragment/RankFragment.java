@@ -27,9 +27,11 @@ import com.ljmob.lovereadingphone.context.EasyLoadFragment;
 import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.City;
 import com.ljmob.lovereadingphone.entity.District;
+import com.ljmob.lovereadingphone.entity.Grade;
 import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.entity.School;
 import com.ljmob.lovereadingphone.entity.Subject;
+import com.ljmob.lovereadingphone.entity.TeamClass;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.entity.LResponse;
@@ -60,13 +62,15 @@ public class RankFragment extends EasyLoadFragment {
     HeadHolder headHolder;
     private RankAdapter rankAdapter;
     String currentApi = NetConstant.API_RANKS_WEEK;
-    private TextView itemWeek;
-    private TextView itemMonth;
+    private View itemWeek;
+    private View itemMonth;
     private boolean isShowingAppBar = true;
 
     private City selectedCity;
     private District selectedDistrict;
     private School selectedSchool;
+    private Grade selectedGrade;
+    private TeamClass selectedTeamClass;
     private Subject selectedSubject;
 
     @Nullable
@@ -172,6 +176,8 @@ public class RankFragment extends EasyLoadFragment {
         selectedCity = (City) data.getSerializableExtra("selectedCity");
         selectedDistrict = (District) data.getSerializableExtra("selectedDistrict");
         selectedSchool = (School) data.getSerializableExtra("selectedSchool");
+        selectedGrade = (Grade) data.getSerializableExtra("selectedGrade");
+        selectedTeamClass = (TeamClass) data.getSerializableExtra("selectedTeamClass");
 
         currentPage = 1;
         initData(currentApi, wrapParams());
@@ -192,13 +198,13 @@ public class RankFragment extends EasyLoadFragment {
             param.put("city_id", selectedCity.id);
             if (headHolder != null) {
                 if (selectedCity.id == 0) {
-                    headHolder.headRankTvDataSource.setText(selectedCity.name);
-                } else {
                     if (MyApplication.currentUser == null) {
                         headHolder.headRankTvDataSource.setText(R.string.all);
                     } else {
                         headHolder.headRankTvDataSource.setText(R.string.my_school);
                     }
+                } else {
+                    headHolder.headRankTvDataSource.setText(selectedCity.name);
                 }
             }
         }
@@ -218,6 +224,24 @@ public class RankFragment extends EasyLoadFragment {
                 headHolder.headRankTvDataSource.setText(selectedSchool.name);
             }
         }
+        if (selectedGrade == null) {
+            param.put("grade_id", 0);
+        } else {
+            param.put("grade_id", selectedGrade.id);
+            if (headHolder != null && selectedGrade.id != 0) {
+                headHolder.headRankTvDataSource.setText(
+                        String.format("%s%s", selectedSchool.name, selectedGrade.name));
+            }
+        }
+        if (selectedTeamClass == null) {
+            param.put("team_class_id", 0);
+        } else {
+            param.put("team_class_id", selectedTeamClass.id);
+            if (headHolder != null && selectedTeamClass.id != 0) {
+                headHolder.headRankTvDataSource.setText(String.format("%s%s%s",
+                        selectedSchool.name, selectedGrade.name, selectedTeamClass.name));
+            }
+        }
         if (selectedSubject != null) {
             param.put("subject_id", selectedSubject.id);
         }
@@ -234,16 +258,20 @@ public class RankFragment extends EasyLoadFragment {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         layoutParams.weight = 1;
-        itemWeek = (TextView) inflater.inflate(R.layout.view_tab_item, tabLinear, false);
-        itemWeek.setText(R.string.rank_week);
+        itemWeek = inflater.inflate(R.layout.view_tab_item, tabLinear, false);
+        ((TextView) itemWeek.findViewById(R.id.tvTab)).setText(R.string.rank_week);
         itemWeek.setOnClickListener(new TabItemClickListener(NetConstant.API_RANKS_WEEK));
         itemWeek.setLayoutParams(layoutParams);
-        itemMonth = (TextView) inflater.inflate(R.layout.view_tab_item, tabLinear, false);
-        itemMonth.setText(R.string.rank_month);
+        itemMonth = inflater.inflate(R.layout.view_tab_item, tabLinear, false);
+        ((TextView) itemMonth.findViewById(R.id.tvTab)).setText(R.string.rank_month);
         itemMonth.setOnClickListener(new TabItemClickListener(NetConstant.API_RANKS_MONTH));
         itemMonth.setLayoutParams(layoutParams);
 
-        itemWeek.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        ((TextView) itemWeek.findViewById(R.id.tvTab))
+                .setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        itemWeek.findViewById(R.id.viewTabIndicator)
+                .animate().alpha(1.0f).setDuration(200).start();
+
 
         tabLinear.addView(itemWeek);
         tabLinear.addView(itemMonth);
@@ -307,11 +335,25 @@ public class RankFragment extends EasyLoadFragment {
         public void onClick(View v) {
             currentApi = api;
             if (currentApi.equals(NetConstant.API_RANKS_WEEK)) {
-                itemWeek.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-                itemMonth.setTextColor(ContextCompat.getColor(getContext(), R.color.div_tab));
+                ((TextView) itemWeek.findViewById(R.id.tvTab))
+                        .setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                ((TextView) itemMonth.findViewById(R.id.tvTab))
+                        .setTextColor(ContextCompat.getColor(getContext(), R.color.div_tab));
+
+                itemWeek.findViewById(R.id.viewTabIndicator)
+                        .animate().alpha(1.0f).setDuration(200).start();
+                itemMonth.findViewById(R.id.viewTabIndicator)
+                        .animate().alpha(0.0f).setDuration(200).start();
             } else {
-                itemWeek.setTextColor(ContextCompat.getColor(getContext(), R.color.div_tab));
-                itemMonth.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                ((TextView) itemWeek.findViewById(R.id.tvTab))
+                        .setTextColor(ContextCompat.getColor(getContext(), R.color.div_tab));
+                ((TextView) itemMonth.findViewById(R.id.tvTab))
+                        .setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+
+                itemWeek.findViewById(R.id.viewTabIndicator)
+                        .animate().alpha(0.0f).setDuration(200).start();
+                itemMonth.findViewById(R.id.viewTabIndicator)
+                        .animate().alpha(1.0f).setDuration(200).start();
             }
             refreshDataWithSubject();
         }

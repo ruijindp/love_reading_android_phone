@@ -120,7 +120,6 @@ public class IndexFragment extends Fragment implements
         primarySwipeRefreshLayout.setProgressViewOffset(false, startOffset, endOffset);
 
         if (primaryAbsListView.getHeaderViewsCount() == 0) {
-            View headEmpty = inflater.inflate(R.layout.toolbar_trans, primaryAbsListView, false);
             View headMain = inflater.inflate(R.layout.head_index, primaryAbsListView, false);
             headHolder = new HeadHolder(headMain);
             if (selectedSubject != null && selectedGrade != null) {
@@ -129,7 +128,6 @@ public class IndexFragment extends Fragment implements
             } else {
                 headHolder.headMainTvCurrentCate.setText(R.string.all);
             }
-            primaryAbsListView.addHeaderView(headEmpty);
             primaryAbsListView.addHeaderView(headMain);
         }
 
@@ -270,13 +268,13 @@ public class IndexFragment extends Fragment implements
             ButterKnife.bind(this, view);
         }
 
-        @OnClick(R.id.head_main_tvCate)
+        @OnClick(R.id.head_index_lnFilter)
         protected void openCateActivity() {
             Intent cateIntent = new Intent(getActivity(), CategoryActivity.class);
             if (selectedSubject != null && selectedGrade != null
                     && selectedSubject.id != 0 && selectedGrade.id != 0) {
-                cateIntent.putExtra("selectedSubject",selectedSubject);
-                cateIntent.putExtra("selectedGrade",selectedGrade);
+                cateIntent.putExtra("selectedSubject", selectedSubject);
+                cateIntent.putExtra("selectedGrade", selectedGrade);
             }
             IndexFragment.this.startActivityForResult(cateIntent, ACTION_CATEGORY);
         }

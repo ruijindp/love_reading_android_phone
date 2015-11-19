@@ -2,7 +2,6 @@ package com.ljmob.lovereadingphone;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -42,8 +41,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class MyReadingActivity extends AppCompatActivity implements LRequestTool.OnResponseListener {
     private static final int API_SUBJECTS = 1;
-    private static final int API_MY_RESULTS = 2;
-    private static final int API_STUDENT_RESULTS = 3;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -53,12 +50,7 @@ public class MyReadingActivity extends AppCompatActivity implements LRequestTool
     ViewPager activityMyReadingPager;
 
     LinearLayout tabLinear;
-    List<TextView> itemViews;
-
-    @ColorInt
-    int colorAccent;
-    @ColorInt
-    int colorDiv;
+    List<View> itemViews;
 
     private boolean isAppBarHided;
     private boolean isRated;
@@ -88,8 +80,6 @@ public class MyReadingActivity extends AppCompatActivity implements LRequestTool
             }
         }
         requestTool = new LRequestTool(this);
-        colorAccent = ContextCompat.getColor(this, R.color.colorAccent);
-        colorDiv = ContextCompat.getColor(this, R.color.div_tab);
         initData();
     }
 
@@ -127,11 +117,20 @@ public class MyReadingActivity extends AppCompatActivity implements LRequestTool
             activityMyReadingPager.setCurrentItem(index);
         }
         if (itemViews.size() >= index) {
-            for (TextView tv : itemViews) {
-                tv.setTextColor(colorDiv);
+            for (View v : itemViews) {
+                if (itemViews.indexOf(v) == index) {
+                    ((TextView) v.findViewById(R.id.tvTab))
+                            .setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    v.findViewById(R.id.viewTabIndicator)
+                            .animate().alpha(1).setDuration(200).start();
+
+                } else {
+                    ((TextView) v.findViewById(R.id.tvTab))
+                            .setTextColor(ContextCompat.getColor(this, R.color.div_tab));
+                    v.findViewById(R.id.viewTabIndicator)
+                            .animate().alpha(0).setDuration(200).start();
+                }
             }
-            TextView itemView = itemViews.get(index);
-            itemView.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
         }
     }
 
@@ -181,17 +180,16 @@ public class MyReadingActivity extends AppCompatActivity implements LRequestTool
         layoutParams.weight = 1;
         itemViews = new ArrayList<>();
         for (Subject s : subjects) {
-            TextView tabItem;
+            View tabItem;
             if (subjects.size() < 5) {
-                tabItem = (TextView) getLayoutInflater()
+                tabItem = getLayoutInflater()
                         .inflate(R.layout.view_tab_item, tabLinear, false);
-                tabItem.setText(s.name);
                 tabItem.setLayoutParams(layoutParams);
             } else {
-                tabItem = (TextView) getLayoutInflater()
+                tabItem = getLayoutInflater()
                         .inflate(R.layout.view_tab_item_scrollable, tabLinear, false);
-                tabItem.setText(s.name);
             }
+            ((TextView) tabItem.findViewById(R.id.tvTab)).setText(s.name);
             tabLinear.addView(tabItem);
             itemViews.add(tabItem);
             tabItem.setOnClickListener(new TabClickListener(subjects.indexOf(s)));

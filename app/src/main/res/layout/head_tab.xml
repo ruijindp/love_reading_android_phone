@@ -3,8 +3,5 @@
     android:id="@+id/head_tab_ln"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@android:color/white"
     android:baselineAligned="false"
-    android:divider="@drawable/inset_divider_tab"
-    android:orientation="horizontal"
-    android:showDividers="middle" />
+    android:orientation="horizontal" />

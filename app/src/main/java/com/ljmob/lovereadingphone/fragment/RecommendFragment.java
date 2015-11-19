@@ -61,7 +61,7 @@ public class RecommendFragment extends EasyLoadFragment implements ServiceConnec
     LayoutInflater inflater;
     View rootView;
     List<Result> results;
-    List<TextView> itemViews;
+    List<View> itemViews;
 
     private HeadHolder headHolder;
     private List<Subject> subjects;
@@ -250,17 +250,16 @@ public class RecommendFragment extends EasyLoadFragment implements ServiceConnec
         layoutParams.weight = 1;
         itemViews = new ArrayList<>();
         for (Subject s : subjects) {
-            TextView tabItem;
+            View tabItem;
             if (subjects.size() < 5) {
-                tabItem = (TextView) inflater
+                tabItem = inflater
                         .inflate(R.layout.view_tab_item, tabLinear, false);
-                tabItem.setText(s.name);
                 tabItem.setLayoutParams(layoutParams);
             } else {
-                tabItem = (TextView) inflater
+                tabItem = inflater
                         .inflate(R.layout.view_tab_item_scrollable, tabLinear, false);
-                tabItem.setText(s.name);
             }
+            ((TextView) tabItem.findViewById(R.id.tvTab)).setText(s.name);
             tabLinear.addView(tabItem);
             itemViews.add(tabItem);
             tabItem.setOnClickListener(new TabClickListener(subjects.indexOf(s)));
@@ -269,11 +268,15 @@ public class RecommendFragment extends EasyLoadFragment implements ServiceConnec
     }
 
     private void selectSubject(int index) {
-        for (TextView tv : itemViews) {
-            if (itemViews.indexOf(tv) == index) {
-                tv.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        for (View v : itemViews) {
+            if (itemViews.indexOf(v) == index) {
+                ((TextView) v.findViewById(R.id.tvTab))
+                        .setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                v.findViewById(R.id.viewTabIndicator).animate().alpha(1.0f).setDuration(200).start();
             } else {
-                tv.setTextColor(ContextCompat.getColor(getContext(), R.color.div_tab));
+                ((TextView) v.findViewById(R.id.tvTab))
+                        .setTextColor(ContextCompat.getColor(getContext(), R.color.div_tab));
+                v.findViewById(R.id.viewTabIndicator).animate().alpha(0.0f).setDuration(200).start();
             }
         }
         selectedSubject = subjects.get(index);

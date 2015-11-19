@@ -1,41 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="46dp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingLeft="8dp">
+    android:layout_height="wrap_content"
+    android:background="@color/head_filter_bg">
 
-    <View
-        android:layout_width="4dp"
-        android:layout_height="18dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="4dp"
-        android:background="@color/textSecondary" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="56dp"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp">
 
-    <TextView
-        android:id="@+id/head_main_tvCurrentCate"
-        fontPath="@string/font_bold"
-        android:layout_width="0px"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_weight="1"
-        android:text="@string/test_cate"
-        android:textColor="@color/textSecondary"
-        android:textSize="16sp" />
+        <View
+            android:layout_width="4dp"
+            android:layout_height="18dp"
+            android:layout_marginRight="8dp"
+            android:background="?colorPrimary" />
 
-    <TextView
-        android:id="@+id/head_main_tvCate"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="4dp"
-        android:background="?selectableItemBackground"
-        android:gravity="center"
-        android:paddingBottom="7dp"
-        android:paddingLeft="14dp"
-        android:paddingRight="14dp"
-        android:paddingTop="7dp"
-        android:text="@string/cate"
-        android:textColor="@color/textSecondary"
-        android:textSize="16sp" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/head_main_tvCurrentCate"
+            fontPath="@string/font_bold"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/test_cate"
+            android:textColor="@color/textReadable" />
+
+        <LinearLayout
+            android:id="@+id/head_index_lnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cate"
+                android:textColor="@color/head_filter_tv" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="16dp"
+                android:layout_marginLeft="2dp"
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_shaixuan_right" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

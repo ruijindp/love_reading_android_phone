@@ -132,7 +132,7 @@ public class IndexUnitAdapter extends BaseAdapter {
                     .displayImage(shelf.articles[0].cover_img.cover_img.normal.url, itemIndexImgCover0);
             itemIndexTvTitle0.setText(shelf.articles[0].title);
             if (shelf.articles[0].author.length() == 0) {
-                itemIndexTvAuthor0.setVisibility(View.GONE);
+                itemIndexTvAuthor0.setVisibility(View.INVISIBLE);
             } else {
                 itemIndexTvAuthor0.setText(shelf.articles[0].author);
             }
@@ -146,8 +146,9 @@ public class IndexUnitAdapter extends BaseAdapter {
                         .displayImage(shelf.articles[1].cover_img.cover_img.normal.url, itemIndexImgCover1);
                 itemIndexTvTitle1.setText(shelf.articles[1].title);
                 if (shelf.articles[1].author.length() == 0) {
-                    itemIndexTvAuthor1.setVisibility(View.GONE);
+                    itemIndexTvAuthor1.setVisibility(View.INVISIBLE);
                 } else {
+                    itemIndexTvAuthor1.setVisibility(View.VISIBLE);
                     itemIndexTvAuthor1.setText(shelf.articles[1].author);
                 }
                 itemIndexTvReadCount1.setText(String.format("%d", shelf.articles[1].count));

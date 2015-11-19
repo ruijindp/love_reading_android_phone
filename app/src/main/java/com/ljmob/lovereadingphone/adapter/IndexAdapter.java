@@ -26,6 +26,8 @@ import butterknife.ButterKnife;
  * 首页书架
  */
 public class IndexAdapter extends LAdapter {
+    private long lastStartTime;
+
     public IndexAdapter(List<? extends LEntity> lEntities) {
         super(lEntities);
     }
@@ -84,7 +86,7 @@ public class IndexAdapter extends LAdapter {
                     .displayImage(shelf.articles[0].cover_img.cover_img.normal.url, itemIndexImgCover0);
             itemIndexTvTitle0.setText(shelf.articles[0].title);
             if (shelf.articles[0].author.length() == 0) {
-                itemIndexTvAuthor0.setVisibility(View.GONE);
+                itemIndexTvAuthor0.setVisibility(View.INVISIBLE);
             } else {
                 itemIndexTvAuthor0.setText(shelf.articles[0].author);
             }
@@ -98,8 +100,9 @@ public class IndexAdapter extends LAdapter {
                         .displayImage(shelf.articles[1].cover_img.cover_img.normal.url, itemIndexImgCover1);
                 itemIndexTvTitle1.setText(shelf.articles[1].title);
                 if (shelf.articles[1].author.length() == 0) {
-                    itemIndexTvAuthor1.setVisibility(View.GONE);
+                    itemIndexTvAuthor1.setVisibility(View.INVISIBLE);
                 } else {
+                    itemIndexTvAuthor1.setVisibility(View.VISIBLE);
                     itemIndexTvAuthor1.setText(shelf.articles[1].author);
                 }
                 itemIndexTvReadCount1.setText(String.format("%d", shelf.articles[1].count));
@@ -130,6 +133,10 @@ public class IndexAdapter extends LAdapter {
             public void onClick(View v) {
                 Intent detailIntent = new Intent(v.getContext(), DetailActivity.class);
                 detailIntent.putExtra("article", article);
+                if (System.currentTimeMillis() - lastStartTime < 500) {//防止重复点击
+                    return;
+                }
+                lastStartTime = System.currentTimeMillis();
                 v.getContext().startActivity(detailIntent);
             }
         }
