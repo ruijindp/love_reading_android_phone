@@ -70,10 +70,11 @@
     <string name="content_permission_denied">您禁用了录音权限\n请在“设置>应用>欢乐诵>权限”中开启“麦克风”权限</string>
     <string name="goto_settings">去设置</string>
     <string name="version_">V%1$s</string>
-    <string name="first_run1">让孩子更有兴趣更专注地朗读</string>
-    <string name="first_run2">保留孩子童年的纯真声音</string>
-    <string name="first_run3">更始学习的好帮手</string>
+    <string name="first_run1">更好玩的朗读方式</string>
+    <string name="first_run2">听小伙伴们独一无二的声音</string>
+    <string name="first_run3">重新感受语言和文化的魅力</string>
     <string name="start_taste">开始体验</string>
+    <string name="slogan">“听  另一个世界”</string>
 
     <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>
     <string name="toast_music_err">选择一首音乐吧</string>

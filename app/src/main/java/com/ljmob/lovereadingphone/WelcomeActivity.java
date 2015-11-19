@@ -48,7 +48,6 @@ public class WelcomeActivity extends AppCompatActivity {
         if (currentVersion == null || currentVersion.length() == 0) {
             activityWelcomeTvVersion.setVisibility(View.GONE);
         } else {
-            activityWelcomeTvVersion.setVisibility(View.VISIBLE);
             activityWelcomeTvVersion.setText(getString(R.string.version_, currentVersion));
         }
 
