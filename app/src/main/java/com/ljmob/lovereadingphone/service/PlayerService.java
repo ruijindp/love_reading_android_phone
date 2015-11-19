@@ -72,7 +72,13 @@ public class PlayerService extends Service {
             getPlayer().mediaPlayer = new MediaPlayer();
             return false;
         } else {
-            return getPlayer().mediaPlayer.isPlaying();
+            boolean isMediaPlaying;
+            try {
+                isMediaPlaying = getPlayer().mediaPlayer.isPlaying();
+            } catch (IllegalStateException ignore) {
+                isMediaPlaying = false;
+            }
+            return isMediaPlaying;
         }
     }
 
