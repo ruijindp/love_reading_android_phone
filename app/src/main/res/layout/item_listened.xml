@@ -77,22 +77,26 @@
                     android:id="@+id/item_listened_tvUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
                     android:text="@string/test_user"
-                    android:textColor="@color/textReadable" />
+                    android:textColor="?colorAccent" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="2dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@color/textReadable" />
+                    android:layout_marginTop="2dp"
+                    android:background="?colorAccent" />
 
                 <TextView
                     android:id="@+id/item_listened_tvSchool"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
                     android:text="@string/test_school_name"
-                    android:textColor="@color/textReadable" />
+                    android:textColor="?colorAccent" />
             </LinearLayout>
         </FrameLayout>
 

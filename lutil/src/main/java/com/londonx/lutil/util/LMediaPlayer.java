@@ -4,6 +4,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.SeekBar;
@@ -25,6 +26,7 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
     private SurfaceHolder surfaceHolder;
     private SeekBar skbProgress;
     private OnProgressChangeListener onProgressChangeListener;
+    private MediaPlayer.OnPreparedListener onPreparedListener;
 
     /**
      * Media player
@@ -32,7 +34,9 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
      * @param surfaceView null if you want to play Audio
      * @param skbProgress show play and buffering progress
      */
-    public LMediaPlayer(SurfaceView surfaceView, SeekBar skbProgress) {
+    public LMediaPlayer(SurfaceView surfaceView, SeekBar skbProgress,
+                        MediaPlayer.OnPreparedListener onPreparedListener) {
+        this.onPreparedListener = onPreparedListener;
         if (skbProgress != null) {
             this.skbProgress = skbProgress;
             skbProgress.setOnSeekBarChangeListener(this);
@@ -42,6 +46,9 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
             surfaceHolder.addCallback(this);
         }
         mediaPlayer = new MediaPlayer();
+        if (onPreparedListener != null) {
+            mediaPlayer.setOnPreparedListener(onPreparedListener);
+        }
         Timer mTimer = new Timer();
         mTimer.schedule(mTimerTask, 0, 26);
     }
@@ -101,11 +108,14 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
     public void prepareUrl(String videoUrl) {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
+            if (onPreparedListener != null) {
+                mediaPlayer.setOnPreparedListener(onPreparedListener);
+            }
         }
         try {
             mediaPlayer.reset();
             mediaPlayer.setDataSource(videoUrl);
-            mediaPlayer.prepare();//prepare之后自动播放
+            mediaPlayer.prepare();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,13 +127,40 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
      * @param videoUrl media(video and mp3) url
      */
     public void playUrl(String videoUrl) {
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+            if (onPreparedListener != null) {
+                mediaPlayer.setOnPreparedListener(onPreparedListener);
+            }
+        }
         try {
             mediaPlayer.reset();
             mediaPlayer.setDataSource(videoUrl);
             mediaPlayer.prepareAsync();//prepare之后自动播放
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                rescue(videoUrl);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    public void rescue(String url) throws IOException {
+        Log.i("LondonX", "rescue");
+        try {
+            Thread.sleep(160);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        mediaPlayer = new MediaPlayer();
+        if (onPreparedListener != null) {
+            mediaPlayer.setOnPreparedListener(onPreparedListener);
+        }
+        mediaPlayer.reset();
+        mediaPlayer.setDataSource(url);
+        mediaPlayer.prepareAsync();
     }
 
     /**

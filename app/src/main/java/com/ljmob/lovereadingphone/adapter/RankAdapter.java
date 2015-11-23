@@ -1,5 +1,6 @@
 package com.ljmob.lovereadingphone.adapter;
 
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,13 @@ public class RankAdapter extends LAdapter {
         ViewHolder holder = (ViewHolder) convertView.getTag();
         holder.itemRankTvRank.setText(String.format("%d", position + 1));
         holder.setResult((Result) lEntities.get(position));
+        if (position < 3) {
+            holder.itemRankTvRank.setTextColor(
+                    ContextCompat.getColor(convertView.getContext(), R.color.colorPrimary));
+        } else {
+            holder.itemRankTvRank.setTextColor(
+                    ContextCompat.getColor(convertView.getContext(), R.color.div_tab));
+        }
         return convertView;
     }
 

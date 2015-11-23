@@ -103,8 +103,16 @@ public class ChangePasswordActivity extends AppCompatActivity implements LReques
             activityChangePasswordTvErr.setText(R.string.change_pwd_new_too_short);
             return;
         }
+        if (response.responseCode == 0) {
+            ToastUtil.show(R.string.toast_server_err_0);
+            return;
+        }
         if (response.responseCode != 200 && response.responseCode != 201) {
             ToastUtil.serverErr(response);
+            return;
+        }
+        if (!response.body.startsWith("[") && !response.body.startsWith("{")) {
+            ToastUtil.show(R.string.toast_server_err_1);
             return;
         }
         switch (response.requestCode) {

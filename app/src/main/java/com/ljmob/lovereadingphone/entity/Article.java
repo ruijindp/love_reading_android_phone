@@ -17,6 +17,7 @@ public class Article extends LEntity {
     public Subject subject;
     public Unit unit;
     public List<Section> sections;
+    public boolean is_valid = true;
     public int count;
 
     /**

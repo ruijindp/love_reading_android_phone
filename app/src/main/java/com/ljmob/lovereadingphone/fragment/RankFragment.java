@@ -8,13 +8,10 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -34,20 +31,22 @@ import com.ljmob.lovereadingphone.entity.Subject;
 import com.ljmob.lovereadingphone.entity.TeamClass;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.DefaultParam;
+import com.ljmob.lovereadingphone.view.SimpleStringPopup;
 import com.londonx.lutil.entity.LResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnItemClick;
-import info.hoang8f.android.segmented.SegmentedGroup;
 
 /**
  * Created by london on 15/10/26.
  * 排行榜
  */
-public class RankFragment extends EasyLoadFragment {
+public class RankFragment extends EasyLoadFragment implements SimpleStringPopup.SimpleStringListener {
     public static final int ACTION_RANK_FILTER = 0xACAF;
     public static boolean hasDataChanged = false;
     private static final int API_SUBJECTS = 1;
@@ -56,6 +55,7 @@ public class RankFragment extends EasyLoadFragment {
     FrameLayout viewRecommendFrameTabs;
 
     LayoutInflater inflater;
+    ViewGroup container;
     View rootView;
     List<Result> results;
 
@@ -65,6 +65,8 @@ public class RankFragment extends EasyLoadFragment {
     private View itemWeek;
     private View itemMonth;
     private boolean isShowingAppBar = true;
+    private List<Subject> subjects;
+    private SimpleStringPopup subjectsPopup;
 
     private City selectedCity;
     private District selectedDistrict;
@@ -72,11 +74,13 @@ public class RankFragment extends EasyLoadFragment {
     private Grade selectedGrade;
     private TeamClass selectedTeamClass;
     private Subject selectedSubject;
+    private List<String> subjectStrings;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.inflater = inflater;
+        this.container = container;
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.view_rank, container, false);
             setContentView(rootView);
@@ -108,21 +112,17 @@ public class RankFragment extends EasyLoadFragment {
     public void responseData(LResponse response) {
         switch (response.requestCode) {
             case API_SUBJECTS:
-                List<Subject> subjects = new Gson().fromJson(response.body, new TypeToken<List<Subject>>() {
+                subjects = new Gson().fromJson(response.body, new TypeToken<List<Subject>>() {
                 }.getType());
+                subjectStrings = new ArrayList<>();
                 for (Subject s : subjects) {
-                    RadioButton rb = (RadioButton) inflater
-                            .inflate(R.layout.item_segment, headHolder.headRankSegGroup, false);
-                    rb.setOnCheckedChangeListener(new SegmentCheckListener(s));
-                    rb.setText(s.name);
-                    headHolder.headRankSegGroup.addView(rb);
+                    subjectStrings.add(s.name);
                 }
-                if (headHolder.headRankSegGroup.getChildCount() == 0) {
-                    break;
-                }
-                RadioButton rb = (RadioButton) headHolder.headRankSegGroup.getChildAt(0);
-                rb.setChecked(true);
-                headHolder.headRankSegGroup.setTintColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                subjectsPopup = new SimpleStringPopup(getContext(), container);
+                subjectsPopup.setSimpleStringListener(this);
+
+                selectedSubject = subjects.get(0);
+                refreshDataWithSubject();
                 break;
             case GET_DATA:
                 List<Result> appendData = new Gson().fromJson(response.body, new TypeToken<List<Result>>() {
@@ -157,7 +157,7 @@ public class RankFragment extends EasyLoadFragment {
             isShowingAppBar = false;
             ((MainActivity) getActivity()).hideAppBar();
             viewRecommendFrameTabs.animate().translationY(-getResources().getDimension(R.dimen.toolbar_h))
-                    .setInterpolator(new AccelerateInterpolator(2)).start();
+                    .setInterpolator(new DecelerateInterpolator(2)).start();
         }
     }
 
@@ -181,6 +181,13 @@ public class RankFragment extends EasyLoadFragment {
 
         currentPage = 1;
         initData(currentApi, wrapParams());
+    }
+
+    @Override
+    public void selectStringAt(SimpleStringPopup popup, int index) {
+        selectedSubject = subjects.get(index);
+        headHolder.headRankTvSelectedSubject.setText(selectedSubject.name);
+        refreshDataWithSubject();
     }
 
     @OnItemClick(R.id.primaryAbsListView)
@@ -272,7 +279,6 @@ public class RankFragment extends EasyLoadFragment {
         itemWeek.findViewById(R.id.viewTabIndicator)
                 .animate().alpha(1.0f).setDuration(200).start();
 
-
         tabLinear.addView(itemWeek);
         tabLinear.addView(itemMonth);
     }
@@ -294,8 +300,10 @@ public class RankFragment extends EasyLoadFragment {
     class HeadHolder {
         @Bind(R.id.head_rank_tvDataSource)
         TextView headRankTvDataSource;
-        @Bind(R.id.head_rank_segGroup)
-        SegmentedGroup headRankSegGroup;
+        @Bind(R.id.head_rank_tvSelectedSubject)
+        TextView headRankTvSelectedSubject;
+        @Bind(R.id.head_rank_lnSubject)
+        LinearLayout headRankLnSubject;
 
         HeadHolder(View view) {
             ButterKnife.bind(this, view);
@@ -305,22 +313,14 @@ public class RankFragment extends EasyLoadFragment {
                 headRankTvDataSource.setText(R.string.my_school);
             }
         }
-    }
 
-    private class SegmentCheckListener implements RadioButton.OnCheckedChangeListener {
-        Subject subject;
-
-        public SegmentCheckListener(Subject subject) {
-            this.subject = subject;
-        }
-
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (!isChecked) {
+        @OnClick(R.id.head_rank_lnSubject)
+        protected void showSubjects() {
+            if (subjectsPopup == null) {
                 return;
             }
-            selectedSubject = subject;
-            refreshDataWithSubject();
+            subjectsPopup.setStrings(subjectStrings);
+            subjectsPopup.showAsDropDown(headRankLnSubject);
         }
     }
 

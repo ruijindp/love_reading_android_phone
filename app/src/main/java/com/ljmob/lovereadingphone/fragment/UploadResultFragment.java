@@ -52,7 +52,7 @@ public class UploadResultFragment extends Fragment implements LMediaPlayer.OnPro
             rootView = inflater.inflate(R.layout.view_upload_result, container, false);
         }
         ButterKnife.bind(this, rootView);
-        player = new LMediaPlayer(null, viewUploadResultSbPlayer);
+        player = new LMediaPlayer(null, viewUploadResultSbPlayer, null);
         player.setOnProgressChangeListener(this);
         return rootView;
     }

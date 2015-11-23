@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
@@ -161,7 +160,7 @@ public class PlayerBarFragment extends Fragment
                 @Override
                 public void run() {
                     rootView.animate().translationY(rootView.getHeight())
-                            .setInterpolator(new AccelerateInterpolator(2)).start();
+                            .setInterpolator(new DecelerateInterpolator(2)).start();
                 }
             });
         } else {

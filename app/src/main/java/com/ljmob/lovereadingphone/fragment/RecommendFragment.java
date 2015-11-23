@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -181,7 +180,7 @@ public class RecommendFragment extends EasyLoadFragment implements ServiceConnec
             isShowingAppBar = false;
             ((MainActivity) getActivity()).hideAppBar();
             viewRecommendFrameTabs.animate().translationY(-getResources().getDimension(R.dimen.toolbar_h))
-                    .setInterpolator(new AccelerateInterpolator(2)).start();
+                    .setInterpolator(new DecelerateInterpolator(2)).start();
         }
     }
 

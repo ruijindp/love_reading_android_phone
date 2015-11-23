@@ -2,13 +2,13 @@
 <resources>
     <color name="colorPrimary">#FFCC1919</color>
     <color name="colorPrimaryDark">#FFB60E0E</color>
-    <color name="colorAccent">#00A581</color>
+    <color name="colorAccent">#664435</color>
     <color name="colorWindowBg">#FCFCFC</color>
     <color name="colorPlayerBg">#F2d9d9d9</color>
     <color name="colorHeaderGray">#F2F2F2</color>
 
     <color name="pressed">#11000000</color>
-    <color name="pressedColorAccent">#019172</color>
+    <color name="pressedColorAccent">#4d3327</color>
 
     <color name="div_detail">#65FFFFFF</color>
     <!-- 54%-->
@@ -26,7 +26,6 @@
     <color name="dialog">#7F000000</color>
     <color name="first_run_bg">#f1EADD</color>
     <color name="head_filter_bg">#F5F5F5</color>
-    <color name="head_filter_tv">#664435</color>
 
     <color name="test">#44000000</color>
 </resources>

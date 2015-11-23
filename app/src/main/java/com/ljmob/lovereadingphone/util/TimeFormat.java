@@ -26,7 +26,7 @@ public class TimeFormat {
                 - calendar.get(Calendar.DAY_OF_YEAR);
         if (deltaDay > 365) {//一年前
             dateDime = (deltaDay % 365) + ago;
-        } else if (deltaDay > 1) {
+        } else if (deltaDay >= 1) {
             dateDime = DateFormat.format("MM/dd HH:mm", millisecond).toString();
         } else {
             dateDime = DateFormat.format("HH:mm", millisecond).toString();

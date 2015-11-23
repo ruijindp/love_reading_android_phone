@@ -116,12 +116,27 @@ public class RatedResultFragment extends Fragment
 
     @Override
     public void onResponse(LResponse response) {
+        if (response.responseCode == 400) {
+            Intent loginIntent = new Intent(getContext(), LoginActivity.class);
+            startActivity(loginIntent);
+            return;
+        }
         if (response.responseCode == 401) {
-            startActivity(new Intent(getContext(), LoginActivity.class));
+            Intent loginIntent = new Intent(getContext(), LoginActivity.class);
+            loginIntent.putExtra("isReLogin", true);
+            startActivity(loginIntent);
+            return;
+        }
+        if (response.responseCode == 0) {
+            ToastUtil.show(R.string.toast_server_err_0);
             return;
         }
         if (response.responseCode != 201) {
             ToastUtil.serverErr(response);
+            return;
+        }
+        if (!response.body.startsWith("[") && !response.body.startsWith("{")) {
+            ToastUtil.show(R.string.toast_server_err_1);
             return;
         }
         MyReadingFragment.hasDataChanged = true;
@@ -134,6 +149,10 @@ public class RatedResultFragment extends Fragment
         if (MyApplication.currentUser == null) {
             ToastUtil.show(R.string.toast_login_timeout);
             startActivity(new Intent(getContext(), LoginActivity.class));
+            return;
+        }
+        if (!result.article.is_valid) {
+            ToastUtil.show(R.string.toast_article_invalid);
             return;
         }
         Intent intent = new Intent(getContext(), MusicActivity.class);
@@ -154,6 +173,10 @@ public class RatedResultFragment extends Fragment
 
     @OnClick(R.id.view_rated_result_imgLike)
     protected void like() {
+        if (MyApplication.currentUser == null) {
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            return;
+        }
         if (result.is_vote) {
             result.votes--;
             result.is_vote = false;

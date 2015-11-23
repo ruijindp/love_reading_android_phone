@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.widget.CardView;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -120,7 +119,7 @@ public class SearchActivity extends EasyLoadActivity implements ServiceConnectio
     public void hideAppBar() {
         if (!isAppBarHided) {
             activitySearchCardSearch.animate().translationY(-activitySearchCardSearch.getBottom())
-                    .setInterpolator(new AccelerateInterpolator(2)).start();
+                    .setInterpolator(new DecelerateInterpolator(2)).start();
             isAppBarHided = true;
         }
     }

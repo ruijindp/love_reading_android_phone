@@ -156,18 +156,24 @@ public abstract class EasyLoadFragment extends Fragment implements
                 }
             }).start();
         }
+        if (response.responseCode == 0) {
+            ToastUtil.show(R.string.toast_server_err_0);
+            return;
+        }
         if (response.responseCode == 401) {
             Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
             loginIntent.putExtra("isReLogin", true);
             startActivity(loginIntent);
             return;
         }
-
         if (response.responseCode != 200) {
             ToastUtil.serverErr(response);
             return;
         }
-
+        if (!response.body.startsWith("[") && !response.body.startsWith("{")) {
+            ToastUtil.show(R.string.toast_server_err_1);
+            return;
+        }
         if (response.requestCode == GET_DATA) {
             if (response.body.startsWith("[")) {
                 try {

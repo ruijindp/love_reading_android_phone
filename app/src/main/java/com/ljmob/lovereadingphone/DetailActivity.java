@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.ljmob.lovereadingphone.context.ActivityTool;
 import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.Article;
@@ -23,6 +28,7 @@ import com.ljmob.lovereadingphone.entity.User;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.ContentFormatter;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
+import com.londonx.lutil.util.ConnectionChecker;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -105,13 +111,17 @@ public class DetailActivity extends AppCompatActivity {
                     activityDetailLnContent, false);
             SectionHolder holder = new SectionHolder(sectionView);
             ContentFormatter.formatSection(article.article_type,
-                    holder.primaryChapterTitle, holder.primaryChapterContent);
+                    holder.primarySectionTitle, holder.primarySectionContent);
             if (article.sections.size() == 1) {
-                holder.primaryChapterTitle.setVisibility(View.GONE);
+                holder.primarySectionTitle.setVisibility(View.GONE);
             } else {
-                holder.primaryChapterTitle.setText(s.title);
+                if (s.author == null || s.author.length() == 0) {
+                    holder.primarySectionTitle.setText(String.format("%s", s.title));
+                } else {
+                    holder.primarySectionTitle.setText(String.format("%s（%s）", s.title, s.author));
+                }
             }
-            holder.primaryChapterContent.setText(s.content);
+            holder.primarySectionContent.setText(s.content);
             activityDetailLnContent.addView(sectionView);
         }
     }
@@ -156,6 +166,33 @@ public class DetailActivity extends AppCompatActivity {
         if (MyApplication.currentUser == null) {
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
+            return;
+        }
+        if (ConnectionChecker.getNetworkType() != ConnectionChecker.NetworkStatus.WiFi) {
+            new MaterialDialog.Builder(this)
+                    .theme(Theme.LIGHT)
+                    .title(R.string.dialog_wifi)
+                    .content(R.string.no_wifi)
+                    .positiveText(R.string.return_no_wifi)
+                    .negativeText(R.string.continue_no_wifi)
+                    .neutralText(R.string.goto_settings)
+                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog materialDialog,
+                                            @NonNull DialogAction dialogAction) {
+                            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog materialDialog,
+                                            @NonNull DialogAction dialogAction) {
+                            Intent musicIntent = new Intent(DetailActivity.this, MusicActivity.class);
+                            musicIntent.putExtra("article", article);
+                            startActivity(musicIntent);
+                        }
+                    })
+                    .show();
             return;
         }
         Intent musicIntent = new Intent(this, MusicActivity.class);
@@ -218,9 +255,9 @@ public class DetailActivity extends AppCompatActivity {
      */
     static class SectionHolder {
         @Bind(R.id.primarySectionTitle)
-        TextView primaryChapterTitle;
+        TextView primarySectionTitle;
         @Bind(R.id.primarySectionContent)
-        TextView primaryChapterContent;
+        TextView primarySectionContent;
 
         SectionHolder(View view) {
             ButterKnife.bind(this, view);

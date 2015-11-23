@@ -155,7 +155,7 @@ public class MusicActivity extends AppCompatActivity implements
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         } else {
-            mediaPlayer = new LMediaPlayer(null, null);
+            mediaPlayer = new LMediaPlayer(null, null, null);
         }
         if (downloadDialog != null) {
             return;
@@ -318,8 +318,22 @@ public class MusicActivity extends AppCompatActivity implements
 
     @Override
     public void onResponse(LResponse response) {
+        if (response.responseCode == 401) {
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            loginIntent.putExtra("isReLogin", true);
+            startActivity(loginIntent);
+            return;
+        }
+        if (response.responseCode == 0) {
+            ToastUtil.show(R.string.toast_server_err_0);
+            return;
+        }
         if (response.responseCode != 200) {
             ToastUtil.serverErr(response);
+            return;
+        }
+        if (!response.body.startsWith("[") && !response.body.startsWith("{")) {
+            ToastUtil.show(R.string.toast_server_err_1);
             return;
         }
         switch (response.requestCode) {

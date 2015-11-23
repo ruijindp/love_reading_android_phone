@@ -38,13 +38,13 @@ public class SubCateAdapter extends LAdapter {
         ViewHolder holder = (ViewHolder) convertView.getTag();
         holder.itemSubCateTvCate.setText(((Grade) getItem(position)).name);
         if (((Grade) getItem(position)).id == selectedGrade.id) {
-            holder.itemSubCateTvCate.setBackgroundResource(R.drawable.selector_btn_primary_corner);
+            holder.itemSubCateTvCate.setBackgroundResource(R.drawable.selector_btn_primary);
             holder.itemSubCateTvCate.setTextColor(
                     ContextCompat.getColor(parent.getContext(), android.R.color.white));
         } else {
             holder.itemSubCateTvCate.setBackgroundResource(R.drawable.selector_cate_stroke);
             holder.itemSubCateTvCate.setTextColor(
-                    ContextCompat.getColor(parent.getContext(), R.color.textSecondary));
+                    ContextCompat.getColor(parent.getContext(), R.color.colorAccent));
         }
         return convertView;
     }

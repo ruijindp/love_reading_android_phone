@@ -127,6 +127,14 @@ public class NotRatedResultFragment extends Fragment implements
             startActivity(new Intent(getContext(), LoginActivity.class));
             return;
         }
+        if (response.responseCode == 0) {
+            ToastUtil.show(R.string.toast_server_err_0);
+            return;
+        }
+        if (!response.body.startsWith("[") && !response.body.startsWith("{")) {
+            ToastUtil.show(R.string.toast_server_err_1);
+            return;
+        }
         switch (response.requestCode) {
             case API_SCORE:
                 ToastUtil.show(R.string.committed);
@@ -145,12 +153,20 @@ public class NotRatedResultFragment extends Fragment implements
         playerService.getPlayer().setSkbProgress(viewNotRatedResultSbPlayer);
         playerService.getPlayer().setOnProgressChangeListener(this);
         startPlay();
-        if (playerService.isPlaying()) {
-            viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
-            ((ReadingActivity) getActivity()).startScrolling();
-        } else {
-            viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
+        if (viewNotRatedResultImgPlay == null) {
+            return;
         }
+        viewNotRatedResultImgPlay.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (playerService.isPlaying()) {
+                    viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
+                    ((ReadingActivity) getActivity()).startScrolling();
+                } else {
+                    viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
+                }
+            }
+        }, 26);
     }
 
     @Override
@@ -211,6 +227,7 @@ public class NotRatedResultFragment extends Fragment implements
         if (playerService == null || result == null) {
             return;
         }
+        viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
         if (playerService.getResult() == null) {
             playerService.setResult(result);
             ((ReadingActivity) getActivity()).startScrolling();
@@ -262,7 +279,6 @@ public class NotRatedResultFragment extends Fragment implements
                         RatingBar ratingBar = ((RatingBar) rootView
                                 .findViewById(R.id.view_dialog_rating_rb));
                         float rating = ratingBar.getRating();
-                        ToastUtil.show("rating:" + rating);
                         ratingBar.setIsIndicator(true);
                         uploadScore(rating);
                     }

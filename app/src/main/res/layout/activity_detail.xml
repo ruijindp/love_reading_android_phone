@@ -84,8 +84,7 @@
                     android:layout_height="16dp"
                     android:layout_marginRight="8dp"
                     android:contentDescription="@string/dcd"
-                    android:src="@mipmap/icon_listen"
-                    android:tint="@color/textThird" />
+                    android:src="@mipmap/icon_listen" />
 
                 <TextView
                     android:id="@+id/activity_detail_tvReadCount"
@@ -113,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
-        android:src="@mipmap/icon_recording"
+        android:src="@mipmap/icon_recording01"
         app:elevation="0px" />
 
     <include layout="@layout/toolbar" />

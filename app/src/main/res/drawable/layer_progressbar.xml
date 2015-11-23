@@ -7,7 +7,7 @@
         <scale android:scaleWidth="100%">
             <selector>
                 <item android:state_enabled="false">
-                    <color android:color="@color/colorAccent" />
+                    <color android:color="@color/colorPrimary" />
                 </item>
             </selector>
         </scale>

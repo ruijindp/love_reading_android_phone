@@ -56,7 +56,8 @@
                         android:layout_height="16dp"
                         android:layout_marginRight="8dp"
                         android:contentDescription="@string/dcd"
-                        android:src="@mipmap/icon_listen" />
+                        android:src="@mipmap/icon_listen"
+                        android:tint="@android:color/white" />
 
                     <TextView
                         android:id="@+id/item_index_tvReadCount0"
@@ -123,7 +124,8 @@
                         android:layout_height="16dp"
                         android:layout_marginRight="8dp"
                         android:contentDescription="@string/dcd"
-                        android:src="@mipmap/icon_listen" />
+                        android:src="@mipmap/icon_listen"
+                        android:tint="@android:color/white" />
 
                     <TextView
                         android:id="@+id/item_index_tvReadCount1"

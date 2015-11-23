@@ -1,6 +1,7 @@
 package com.ljmob.lovereadingphone;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -9,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -98,8 +98,22 @@ public class MyReadingActivity extends AppCompatActivity implements LRequestTool
 
     @Override
     public void onResponse(LResponse response) {
+        if (response.responseCode == 401) {
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            loginIntent.putExtra("isReLogin", true);
+            startActivity(loginIntent);
+            return;
+        }
+        if (response.responseCode == 0) {
+            ToastUtil.show(R.string.toast_server_err_0);
+            return;
+        }
         if (response.responseCode != 200) {
             ToastUtil.serverErr(response);
+        }
+        if (!response.body.startsWith("[") && !response.body.startsWith("{")) {
+            ToastUtil.show(R.string.toast_server_err_1);
+            return;
         }
         switch (response.requestCode) {
             case API_SUBJECTS:
@@ -147,9 +161,9 @@ public class MyReadingActivity extends AppCompatActivity implements LRequestTool
     public void hideAppBar() {
         if (!isAppBarHided) {
             toolbar.animate().translationY(-toolbar.getHeight())
-                    .setInterpolator(new AccelerateInterpolator(2)).start();
+                    .setInterpolator(new DecelerateInterpolator(2)).start();
             activityMyReadingFrameTabs.animate().translationY(-toolbar.getHeight())
-                    .setInterpolator(new AccelerateInterpolator(2)).start();
+                    .setInterpolator(new DecelerateInterpolator(2)).start();
             isAppBarHided = true;
         }
     }

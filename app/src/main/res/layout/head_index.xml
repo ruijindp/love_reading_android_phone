@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/test_cate"
-            android:textColor="@color/textReadable" />
+            android:textColor="?colorAccent" />
 
         <LinearLayout
             android:id="@+id/head_index_lnFilter"
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cate"
-                android:textColor="@color/head_filter_tv" />
+                android:textColor="?colorAccent" />
 
             <ImageView
                 android:layout_width="12dp"

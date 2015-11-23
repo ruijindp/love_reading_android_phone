@@ -10,7 +10,7 @@
     <ShareSDK AppKey="c41f62fea82a" AppSecret="e1b69086168a67f4475cc58d275863e0" />
 
     <SinaWeibo AppKey="541466248" AppSecret="06389f88240d466a014f585d2f47f2d2" Enable="true" Id="1"
-        RedirectUrl="http://disact.ljmob.com" ShareByAppClient="true" SortId="1" />
+        RedirectUrl="http://happysong.com.cn" ShareByAppClient="true" SortId="1" />
 
     <Wechat AppId="wx292db2130afd47a0" AppSecret="d4624c36b6795d1d99dcf0547af5443d"
         BypassApproval="false" Enable="true" Id="4" SortId="4" />

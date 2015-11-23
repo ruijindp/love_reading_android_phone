@@ -225,9 +225,9 @@ public class ReadingActivity extends AppCompatActivity implements
 
                 shareable = new Shareable();
                 shareable.content = result.user.team_classes.get(0).school.name
-                        + result.user.team_classes.get(0).grade.name;
+                        + result.user.team_classes.get(0).grade.name + result.user.team_classes.get(0).name;
                 if (result.feeling.length() != 0) {
-                    shareable.content += result.user.team_classes.get(0).name + "\n“"
+                    shareable.content += "\n“"
                             + result.feeling + "”";
                 }
                 shareable.imgFullUrl = NetConstant.ROOT_URL + result.article.cover_img.cover_img.url;
@@ -307,12 +307,21 @@ public class ReadingActivity extends AppCompatActivity implements
             uploadDialog.dismiss();
         }
         if (response.responseCode == 401) {
-            startActivity(new Intent(this, LoginActivity.class));
-            ToastUtil.show(R.string.toast_login_timeout);
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            loginIntent.putExtra("isReLogin", true);
+            startActivity(loginIntent);
+            return;
+        }
+        if (response.responseCode == 0) {
+            ToastUtil.show(R.string.toast_server_err_0);
             return;
         }
         if (response.responseCode != 200 && response.responseCode != 201) {
             ToastUtil.serverErr(response);
+            return;
+        }
+        if (!response.body.startsWith("[") && !response.body.startsWith("{")) {
+            ToastUtil.show(R.string.toast_server_err_1);
             return;
         }
         switch (response.requestCode) {
@@ -378,7 +387,11 @@ public class ReadingActivity extends AppCompatActivity implements
             if (article.sections.size() == 1) {
                 holder.primarySectionTitle.setVisibility(View.GONE);
             } else {
-                holder.primarySectionTitle.setText(s.title);
+                if (s.author == null || s.author.length() == 0) {
+                    holder.primarySectionTitle.setText(String.format("%s", s.title));
+                } else {
+                    holder.primarySectionTitle.setText(String.format("%s（%s）", s.title, s.author));
+                }
             }
             holder.primarySectionContent.setText(s.content);
             activityReadingLnContent.addView(sectionView);

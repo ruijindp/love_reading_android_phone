@@ -64,6 +64,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:contentDescription="@string/dcd"
+            android:padding="11dp"
             android:src="@mipmap/icon_search" />
     </LinearLayout>
 

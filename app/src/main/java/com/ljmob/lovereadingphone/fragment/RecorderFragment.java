@@ -233,7 +233,7 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
         }
         recordedFile = RecorderFileUtil.getDefaultRecorderFile(MyApplication.currentUser, this.music, this.article);
         if (player == null) {
-            player = new LMediaPlayer(null, null);
+            player = new LMediaPlayer(null, null, null);
         }
         if (recorder == null) {
             recorder = new LRecorder();

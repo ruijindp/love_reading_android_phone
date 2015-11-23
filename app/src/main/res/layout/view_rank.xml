@@ -15,8 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipChildren="false"
-            android:divider="@drawable/inset_divider_72"
-            android:dividerHeight="0.5dp"
+            android:divider="@drawable/inset_divider_40"
+            android:dividerHeight="0.2dp"
             tools:listheader="@layout/head_rank"
             tools:listitem="@layout/item_rank" />
 

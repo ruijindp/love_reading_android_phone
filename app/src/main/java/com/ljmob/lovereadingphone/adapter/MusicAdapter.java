@@ -26,7 +26,7 @@ import pl.droidsonroids.gif.GifImageView;
 public class MusicAdapter extends LAdapter {
     private int selectedIndex = -1;
     private int playingIndex = -1;
-    private int accentColor;
+    private int primaryColor;
     private int textColor;
     private ViewHolder selectedHolder;
 
@@ -36,8 +36,8 @@ public class MusicAdapter extends LAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (accentColor == 0) {
-            accentColor = ContextCompat.getColor(parent.getContext(), R.color.colorAccent);
+        if (primaryColor == 0) {
+            primaryColor = ContextCompat.getColor(parent.getContext(), R.color.colorPrimary);
             textColor = ContextCompat.getColor(parent.getContext(), R.color.textPrimary);
         }
         if (convertView == null) {
@@ -101,12 +101,16 @@ public class MusicAdapter extends LAdapter {
             }
             if (isSelected) {
                 selectedHolder = this;
-                itemMusicRbSelect.setSupportButtonTintList(ColorStateList.valueOf(accentColor));
-                itemMusicRbSelect.setChecked(true);
-                itemMusicTvMusic.setTextColor(accentColor);
+                itemMusicRbSelect.setSupportButtonTintList(ColorStateList.valueOf(primaryColor));
+                if (!itemMusicRbSelect.isChecked()) {
+                    itemMusicRbSelect.setChecked(true);
+                }
+                itemMusicTvMusic.setTextColor(primaryColor);
             } else {
                 itemMusicRbSelect.setSupportButtonTintList(ColorStateList.valueOf(textColor));
-                itemMusicRbSelect.setChecked(false);
+                if (itemMusicRbSelect.isChecked()) {
+                    itemMusicRbSelect.setChecked(false);
+                }
                 itemMusicTvMusic.setTextColor(textColor);
             }
         }

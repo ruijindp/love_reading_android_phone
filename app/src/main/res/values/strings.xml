@@ -75,8 +75,12 @@
     <string name="first_run3">重新感受语言和文化的魅力</string>
     <string name="start_taste">开始体验</string>
     <string name="slogan">“听  另一个世界”</string>
+    <string name="no_wifi">你还没有连接wifi，这会使用你的手机上网流量哟</string>
+    <string name="continue_no_wifi">继续</string>
+    <string name="return_no_wifi">返回</string>
 
     <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>
+    <string name="toast_article_invalid">这篇文章现已不可用</string>
     <string name="toast_music_err">选择一首音乐吧</string>
     <string name="toast_clean_ok">已全部清除</string>
     <string name="toast_clean_undone">一些文件将在退出时删除</string>
@@ -88,12 +92,15 @@
     <string name="toast_avatar_ok">头像设置成功</string>
     <string name="toast_password_ok">密码设置成功</string>
     <string name="toast_headset">为了提高录音质量，建议使用耳机录制</string>
+    <string name="toast_server_err_0">哟，网络不好，请检查网络连接</string>
+    <string name="toast_server_err_1">哟，网络不好，请检查网络连接!</string>
 
     <string name="dialog_feeling">说点什么吧!</string>
     <string name="dialog_feeling_confirm">上传</string>
     <string name="dialog_clean_cache">是否清除所有缓存</string>
     <string name="dialog_update">发现新版本</string>
     <string name="dialog_permission_denied">权限不足</string>
+    <string name="dialog_wifi">未连接WiFi</string>
 
     <string name="hint_feeling">在上传之前说说你的感想吧</string>
     <string name="hint_feedback">有什么想对我们说的？</string>

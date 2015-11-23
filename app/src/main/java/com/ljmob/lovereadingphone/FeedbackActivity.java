@@ -73,6 +73,10 @@ public class FeedbackActivity extends AppCompatActivity implements LRequestTool.
 
     @Override
     public void onResponse(LResponse response) {
+        if (response.responseCode == 0) {
+            ToastUtil.show(R.string.toast_server_err_0);
+            return;
+        }
         ToastUtil.show(R.string.toast_feedback_ok);
     }
 }

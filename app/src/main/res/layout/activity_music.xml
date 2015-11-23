@@ -51,7 +51,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:contentDescription="@string/dcd"
-                android:src="@mipmap/icon_drop_down"
+                android:src="@mipmap/icon_top_0"
                 android:tint="?colorPrimary" />
         </LinearLayout>
 

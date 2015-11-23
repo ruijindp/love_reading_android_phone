@@ -413,8 +413,22 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
 
     @Override
     public void onResponse(LResponse response) {
+        if (response.responseCode == 401) {
+            Intent loginIntent = new Intent(getContext(), LoginActivity.class);
+            loginIntent.putExtra("isReLogin", true);
+            startActivity(loginIntent);
+            return;
+        }
+        if (response.responseCode == 0) {
+            ToastUtil.show(R.string.toast_server_err_0);
+            return;
+        }
         if (response.responseCode != 200 && response.responseCode != 201) {
             ToastUtil.serverErr(response);
+            return;
+        }
+        if (!response.body.startsWith("[") && !response.body.startsWith("{")) {
+            ToastUtil.show(R.string.toast_server_err_1);
             return;
         }
         switch (response.requestCode) {

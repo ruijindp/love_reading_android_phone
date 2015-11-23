@@ -8,4 +8,4 @@
     android:minHeight="40dp"
     android:minWidth="120dp"
     android:text="@string/test_sub_cate"
-    android:textColor="@color/textSecondary" />
+    android:textColor="?colorAccent" />

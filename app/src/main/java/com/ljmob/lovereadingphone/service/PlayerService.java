@@ -17,16 +17,18 @@ import com.londonx.lutil.util.LMediaPlayer;
  * Created by london on 15/11/11.
  * 全局播放器
  */
-public class PlayerService extends Service {
+public class PlayerService extends Service implements
+        MediaPlayer.OnPreparedListener {
     public static final String ACTION_RESULT_CHANGED = "com.londonx.lutil.util.LMediaPlayer.ACTION_RESULT_CHANGED";
     private static Result result;
     private static LMediaPlayer player;
+    private boolean isPreparing;
 
     @Override
     public void onCreate() {
         super.onCreate();
         if (player == null) {
-            player = new LMediaPlayer(null, null);
+            player = new LMediaPlayer(null, null, this);
         }
     }
 
@@ -36,7 +38,16 @@ public class PlayerService extends Service {
         return new PlayerBinder();
     }
 
-    public void setResult(Result result) {
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        player.play();
+        Intent playerIntent = new Intent(ACTION_RESULT_CHANGED);
+        playerIntent.putExtra("result", PlayerService.result);
+        sendBroadcast(playerIntent);
+        isPreparing = false;
+    }
+
+    public void setResult(final Result result) {
         PlayerService.result = result;
         if (PlayerService.result == null) {
             if (isPlaying()) {
@@ -48,14 +59,9 @@ public class PlayerService extends Service {
             System.gc();
             player.mediaPlayer = new MediaPlayer();
         }
-        if (player.mediaPlayer.isPlaying()) {
-            player.stop();
-        }
-        player.prepareUrl(NetConstant.ROOT_URL + PlayerService.result.file_url);
-        player.play();
-        Intent playerIntent = new Intent(ACTION_RESULT_CHANGED);
-        playerIntent.putExtra("result", PlayerService.result);
-        sendBroadcast(playerIntent);
+        player.stop();
+        isPreparing = true;
+        player.playUrl(NetConstant.ROOT_URL + PlayerService.result.file_url);
     }
 
     public Result getResult() {
@@ -69,7 +75,7 @@ public class PlayerService extends Service {
 
     public boolean isPlaying() {
         if (player.mediaPlayer == null) {
-            getPlayer().mediaPlayer = new MediaPlayer();
+            player.mediaPlayer = new MediaPlayer();
             return false;
         } else {
             boolean isMediaPlaying;
@@ -78,7 +84,7 @@ public class PlayerService extends Service {
             } catch (IllegalStateException ignore) {
                 isMediaPlaying = false;
             }
-            return isMediaPlaying;
+            return isMediaPlaying || isPreparing;
         }
     }
 

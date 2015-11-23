@@ -113,9 +113,16 @@ public class CategoryActivity extends AppCompatActivity implements
             startActivity(loginIntent);
             return;
         }
-
+        if (response.responseCode == 0) {
+            ToastUtil.show(R.string.toast_server_err_0);
+            return;
+        }
         if (response.responseCode != 200) {
             ToastUtil.serverErr(response);
+            return;
+        }
+        if (!response.body.startsWith("[") && !response.body.startsWith("{")) {
+            ToastUtil.show(R.string.toast_server_err_1);
             return;
         }
         switch (response.requestCode) {
@@ -158,9 +165,9 @@ public class CategoryActivity extends AppCompatActivity implements
                     && selectedSubject.id != 0 && selectedGrade.id != 0) {
                 headCategoryTvAll.setBackgroundResource(R.drawable.selector_cate_stroke);
                 headCategoryTvAll.setTextColor(
-                        ContextCompat.getColor(CategoryActivity.this, R.color.textSecondary));
+                        ContextCompat.getColor(CategoryActivity.this, R.color.colorAccent));
             } else {
-                headCategoryTvAll.setBackgroundResource(R.drawable.selector_btn_primary_corner);
+                headCategoryTvAll.setBackgroundResource(R.drawable.selector_btn_primary);
                 headCategoryTvAll.setTextColor(
                         ContextCompat.getColor(CategoryActivity.this, android.R.color.white));
             }

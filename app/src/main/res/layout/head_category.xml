@@ -8,7 +8,7 @@
         android:id="@+id/head_category_tvAll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/selector_btn_primary_corner"
+        android:background="@drawable/selector_btn_primary"
         android:gravity="center"
         android:text="@string/all"
         android:textColor="@android:color/white"

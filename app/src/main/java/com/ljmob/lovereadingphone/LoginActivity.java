@@ -56,14 +56,10 @@ public class LoginActivity extends AppCompatActivity implements LRequestTool.OnR
     ImageView activityLoginImgCleanUserName;
     @Bind(R.id.activity_login_etPassword)
     EditText activityLoginEtPassword;
-    @Bind(R.id.activity_login_imgShowPassword)
-    ImageView activityLoginImgShowPassword;
     @Bind(R.id.activity_login_imgCleanPassword)
     ImageView activityLoginImgCleanPassword;
     @Bind(R.id.activity_login_btnLogin)
     TextView activityLoginBtnLogin;
-    @Bind(R.id.activity_login_tvReason)
-    TextView activityLoginTvReason;
     @Bind(R.id.activity_login_frameErr)
     FrameLayout activityLoginFrameErr;
 
@@ -73,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements LRequestTool.OnR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean isReLogin = getIntent().getBooleanExtra("isReLogin", false);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
@@ -100,6 +97,11 @@ public class LoginActivity extends AppCompatActivity implements LRequestTool.OnR
                 });
             }
         }, 16);
+        if (isReLogin) {//为重登录
+            ToastUtil.show(R.string.toast_login_timeout);
+            MyApplication.currentUser = null;
+            Lutil.preferences.edit().remove("UB64").apply();
+        }
     }
 
     @Override
@@ -118,9 +120,17 @@ public class LoginActivity extends AppCompatActivity implements LRequestTool.OnR
     @Override
     public void onResponse(LResponse response) {
         activityLoginBtnLogin.setEnabled(true);
+        if (response.responseCode == 0) {
+            ToastUtil.show(R.string.toast_server_err_0);
+            return;
+        }
         if (response.responseCode != 200) {
             activityLoginFrameErr.setVisibility(View.VISIBLE);
             ToastUtil.serverErr(response);
+            return;
+        }
+        if (!response.body.startsWith("[") && !response.body.startsWith("{")) {
+            ToastUtil.show(R.string.toast_server_err_1);
             return;
         }
         activityLoginFrameErr.setVisibility(View.INVISIBLE);

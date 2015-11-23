@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
@@ -34,6 +33,8 @@ import com.ljmob.lovereadingphone.fragment.RecommendFragment;
 import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.PermissionUtil;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
+import com.londonx.lutil.entity.LResponse;
+import com.londonx.lutil.util.LRequestTool;
 import com.soundcloud.android.crop.Crop;
 
 import butterknife.Bind;
@@ -43,7 +44,8 @@ import butterknife.OnPageChange;
 import de.hdodenhof.circleimageview.CircleImageView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements ServiceConnection, FirimUpdate.OnUpdateListener {
+public class MainActivity extends AppCompatActivity implements
+        ServiceConnection, FirimUpdate.OnUpdateListener, LRequestTool.OnResponseListener, LRequestTool.OnDownloadListener {
     private static final int PAGE_ARTICLE = 0;
     private static final int PAGE_RECOMMEND = 1;
     private static final int PAGE_RANK = 2;
@@ -73,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     boolean isAvatarSet;
 
     private PlayerService playerService;
+    private LRequestTool requestTool;
+    private Update newUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         bindService(new Intent(this, PlayerService.class), this, Context.BIND_AUTO_CREATE);
+        requestTool = new LRequestTool(this);
+        requestTool.setOnDownloadListener(this);
         playerBarFragment = (PlayerBarFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.activity_main_fragmentPlayer);
         drawerFragment = (DrawerFragment) getSupportFragmentManager()
@@ -177,7 +183,32 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     @Override
-    public void onUpdateFound(final Update newUpdate) {
+    public void onUpdateFound(Update newUpdate) {
+        this.newUpdate = newUpdate;
+        requestTool.download(newUpdate.installUrl, 1);
+    }
+
+
+    @Override
+    public void onResponse(LResponse response) {
+
+    }
+
+    @Override
+    public void onStartDownload(LResponse response) {
+
+    }
+
+    @Override
+    public void onDownloading(float progress) {
+
+    }
+
+    @Override
+    public void onDownloaded(final LResponse response) {
+        if (response.downloadFile == null) {
+            return;
+        }
         new MaterialDialog.Builder(this)
                 .theme(Theme.LIGHT)
                 .title(R.string.dialog_update)
@@ -190,8 +221,9 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
                                         @NonNull DialogAction dialogAction) {
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_VIEW);
-                        Uri content_url = Uri.parse(newUpdate.installUrl);
-                        intent.setData(content_url);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setDataAndType(Uri.fromFile(response.downloadFile),
+                                "application/vnd.android.packagearchive");
                         startActivity(intent);
                     }
                 })
@@ -275,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     public void hideAppBar() {
         if (!isAppBarHided) {
             toolbarMain.animate().translationY(-toolbarMain.getHeight())
-                    .setInterpolator(new AccelerateInterpolator(2)).start();
+                    .setInterpolator(new DecelerateInterpolator(2)).start();
             hidePlayerBar();
             isAppBarHided = true;
         }

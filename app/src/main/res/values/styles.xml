@@ -33,7 +33,7 @@
 
     <style name="AppTheme.AppBarImage">
         <item name="android:src">@android:color/white</item>
-        <item name="android:padding">12dp</item>
+        <item name="android:padding">9dp</item>
         <item name="android:clickable">true</item>
         <item name="android:background">?selectableItemBackgroundBorderless</item>
     </style>
@@ -61,10 +61,4 @@
         <item name="android:background">@drawable/layer_progressbar</item>
     </style>
 
-    <style name="SegmentButton" parent="RadioButton">
-        <item name="android:minWidth">35dp</item>
-        <item name="android:minHeight">20dp</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:paddingRight">4dp</item>
-    </style>
 </resources>
