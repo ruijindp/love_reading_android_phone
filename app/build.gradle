@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 5
-        versionName "0.9-RC3"
+        versionName "0.9-RC4"
 
         renderscriptTargetApi 23
         renderscriptSupportModeEnabled true
