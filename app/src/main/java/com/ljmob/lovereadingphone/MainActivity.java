@@ -219,11 +219,9 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog,
                                         @NonNull DialogAction dialogAction) {
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.fromFile(response.downloadFile),
-                                "application/vnd.android.packagearchive");
+                                "application/vnd.android.package-archive");
                         startActivity(intent);
                     }
                 })

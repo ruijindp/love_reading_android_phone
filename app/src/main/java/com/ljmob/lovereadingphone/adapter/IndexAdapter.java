@@ -88,6 +88,7 @@ public class IndexAdapter extends LAdapter {
             if (shelf.articles[0].author.length() == 0) {
                 itemIndexTvAuthor0.setVisibility(View.INVISIBLE);
             } else {
+                itemIndexTvAuthor0.setVisibility(View.VISIBLE);
                 itemIndexTvAuthor0.setText(shelf.articles[0].author);
             }
             itemIndexTvReadCount0.setText(String.format("%d", shelf.articles[0].count));
