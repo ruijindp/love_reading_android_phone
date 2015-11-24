@@ -277,6 +277,9 @@ public class RatedResultFragment extends Fragment
         if (viewRatedResultTvTimerCurrent == null) {
             return;
         }
+        if (playerService == null || !playerService.isPlaying() || playerService.isPreparing()) {
+            return;
+        }
         viewRatedResultTvTimerCurrent.setText(DateFormat.format("mm:ss", position));
         viewRatedResultTvTimerTotal.setText(DateFormat.format("mm:ss", duration));
     }

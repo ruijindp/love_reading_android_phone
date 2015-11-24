@@ -46,7 +46,7 @@
     <string name="password">密码</string>
     <string name="all">全部</string>
     <string name="total__count">共%1$d篇</string>
-    <string name="download_">下载%1$s</string>
+    <string name="download_">正在加载配乐%1$s</string>
     <string name="upload_">上传%1$s</string>
     <string name="upload">上传</string>
     <string name="mixing">正在合成</string>

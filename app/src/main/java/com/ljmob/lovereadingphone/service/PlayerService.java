@@ -73,6 +73,10 @@ public class PlayerService extends Service implements
         return player;
     }
 
+    public boolean isPreparing() {
+        return isPreparing;
+    }
+
     public boolean isPlaying() {
         if (player.mediaPlayer == null) {
             player.mediaPlayer = new MediaPlayer();

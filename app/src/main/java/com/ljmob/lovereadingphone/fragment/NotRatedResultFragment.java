@@ -110,6 +110,9 @@ public class NotRatedResultFragment extends Fragment implements
         if (viewNotRatedResultTvTimerCurrent == null) {
             return;
         }
+        if (playerService == null || !playerService.isPlaying() || playerService.isPreparing()) {
+            return;
+        }
         viewNotRatedResultTvTimerCurrent.setText(DateFormat.format("mm:ss", position));
         viewNotRatedResultTvTimerTotal.setText(DateFormat.format("mm:ss", duration));
 
