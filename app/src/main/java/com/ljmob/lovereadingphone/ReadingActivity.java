@@ -25,6 +25,9 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.ljmob.lovereadingphone.adapter.ReadingStatusPagerAdapter;
 import com.ljmob.lovereadingphone.context.MyApplication;
@@ -215,7 +218,7 @@ public class ReadingActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                exitByStatus();
                 break;
             case R.id.action_share:
                 if (result == null) {
@@ -257,19 +260,9 @@ public class ReadingActivity extends AppCompatActivity implements
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    private void doShare() {
-        BottomSheet shareSheet = new BottomSheet.Builder(this)
-                .title(R.string.share_)
-                .sheet(R.menu.menu_share)
-                .listener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        onOptionsItemSelected(item);
-                        return false;
-                    }
-                })
-                .build();
-        shareSheet.show();
+    @Override
+    public void onBackPressed() {
+        exitByStatus();
     }
 
     @Override
@@ -335,7 +328,6 @@ public class ReadingActivity extends AppCompatActivity implements
 
     @Override
     public void onStartUpload(LResponse response) {
-
     }
 
     @Override
@@ -349,7 +341,15 @@ public class ReadingActivity extends AppCompatActivity implements
 
     @Override
     public void onUploaded(LResponse response) {
+    }
 
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        playerService = ((PlayerService.PlayerBinder) service).getService();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
     }
 
     private void initData() {
@@ -519,6 +519,61 @@ public class ReadingActivity extends AppCompatActivity implements
         });
     }
 
+    private void exitByStatus() {
+        if (currentStatus == Status.record) {
+            if (recorderFragment.isRecording() || recorderFragment.isPaused()) {
+                new MaterialDialog.Builder(this)
+                        .theme(Theme.LIGHT)
+                        .title(R.string.dialog_recording)
+                        .content(R.string.recording_exit_confirm)
+                        .positiveText(R.string.recording_exit)
+                        .negativeText(R.string.cancel)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog materialDialog,
+                                                @NonNull DialogAction dialogAction) {
+                                finish();
+                            }
+                        })
+                        .show();
+                return;
+            }
+        }
+        if (currentStatus == Status.upload) {
+            new MaterialDialog.Builder(this)
+                    .theme(Theme.LIGHT)
+                    .title(R.string.dialog_upload)
+                    .content(R.string.upload_exit_confirm)
+                    .positiveText(R.string.recording_exit)
+                    .negativeText(R.string.cancel)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog materialDialog,
+                                            @NonNull DialogAction dialogAction) {
+                            finish();
+                        }
+                    })
+                    .show();
+            return;
+        }
+        finish();
+    }
+
+    private void doShare() {
+        BottomSheet shareSheet = new BottomSheet.Builder(this)
+                .title(R.string.share_)
+                .sheet(R.menu.menu_share)
+                .listener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        onOptionsItemSelected(item);
+                        return false;
+                    }
+                })
+                .build();
+        shareSheet.show();
+    }
+
     public void setCurrentStatus(Status currentStatus) {
         this.currentStatus = currentStatus;
         makeViewByStatus();
@@ -607,15 +662,6 @@ public class ReadingActivity extends AppCompatActivity implements
         ratedResultFragment.setResult(result);
         currentStatus = Status.ratedResult;
         makeViewByStatus();
-    }
-
-    @Override
-    public void onServiceConnected(ComponentName name, IBinder service) {
-        playerService = ((PlayerService.PlayerBinder) service).getService();
-    }
-
-    @Override
-    public void onServiceDisconnected(ComponentName name) {
     }
 
     public enum Status {

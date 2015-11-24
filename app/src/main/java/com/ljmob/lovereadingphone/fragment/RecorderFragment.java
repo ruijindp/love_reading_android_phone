@@ -261,6 +261,10 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
         return currentStatus == Status.recording;
     }
 
+    public boolean isPaused() {
+        return recorder != null && recorder.isPaused();
+    }
+
     public void release() {
         isRunning = false;
         if (player != null) {

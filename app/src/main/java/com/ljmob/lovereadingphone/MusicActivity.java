@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -59,7 +60,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * 音乐选择
  */
 public class MusicActivity extends AppCompatActivity implements
-        LRequestTool.OnResponseListener, LRequestTool.OnDownloadListener, ServiceConnection {
+        LRequestTool.OnResponseListener,
+        LRequestTool.OnDownloadListener,
+        ServiceConnection, MediaPlayer.OnPreparedListener {
     private static final int API_MUSICS = 1;
     private static final int API_MUSIC_TYPES = 2;
     private static final int DOWNLOAD_FILE = 3;
@@ -97,6 +100,8 @@ public class MusicActivity extends AppCompatActivity implements
     private Dialog downloadDialog;
 
     private PlayerService playerService;
+
+    private long lastPress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +149,11 @@ public class MusicActivity extends AppCompatActivity implements
 
     @OnItemClick(R.id.primaryAbsListView)
     protected void selectAndPlay(View item, final int position) {
+        if (musics.indexOf(selectedMusic) == position) {
+            return;
+        }
+        selectedMusic = musics.get(position);
+
         if (playerService.isPlaying()) {
             playerService.getPlayer().pause();
         }
@@ -155,40 +165,27 @@ public class MusicActivity extends AppCompatActivity implements
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         } else {
-            mediaPlayer = new LMediaPlayer(null, null, null);
+            mediaPlayer = new LMediaPlayer(null, null, this);
         }
         if (downloadDialog != null) {
             return;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mediaPlayer.prepareUrl(NetConstant.ROOT_URL + musics.get(position).file_url);
-                try {
-                    mediaPlayer.play();
-                } catch (IllegalStateException ignore) {
-                    return;
-                }
-
-                primaryAbsListView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.setPlayingIndex(position);
-                    }
-                }, 1500);
-            }
-        }).start();
+        mediaPlayer.playUrl(NetConstant.ROOT_URL + selectedMusic.file_url);
     }
 
     @OnClick(R.id.activity_music_tvStart)
     protected void startReading() {
+        if (System.currentTimeMillis() - lastPress < 500) {//防止两次进朗读
+            return;
+        }
+        lastPress = System.currentTimeMillis();
+
         int position = adapter.getSelectedIndex();
-        if (position == -1) {
+        if (position == -1 || selectedMusic == null) {
             ToastUtil.show(R.string.toast_music_err);
             return;
         }
         mediaPlayer.stop();
-        selectedMusic = musics.get(position);
 
         if (!PermissionUtil.isAllPermissionAllowed()) {
             new MaterialDialog.Builder(this)
@@ -414,5 +411,16 @@ public class MusicActivity extends AppCompatActivity implements
     @Override
     public void onServiceDisconnected(ComponentName name) {
         playerService = null;
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        mediaPlayer.play();
+        primaryAbsListView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapter.setPlayingIndex(musics.indexOf(selectedMusic));
+            }
+        }, 1500);
     }
 }

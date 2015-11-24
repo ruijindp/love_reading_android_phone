@@ -78,6 +78,9 @@
     <string name="no_wifi">你还没有连接wifi，这会使用你的手机上网流量哟</string>
     <string name="continue_no_wifi">继续</string>
     <string name="return_no_wifi">返回</string>
+    <string name="recording_exit_confirm">现在退出将会停止录音</string>
+    <string name="upload_exit_confirm">确定要舍弃这次的朗读作品并退出吗</string>
+    <string name="recording_exit">退出</string>
 
     <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>
     <string name="toast_article_invalid">这篇文章现已不可用</string>
@@ -101,6 +104,8 @@
     <string name="dialog_update">发现新版本</string>
     <string name="dialog_permission_denied">权限不足</string>
     <string name="dialog_wifi">未连接WiFi</string>
+    <string name="dialog_recording">正在录音</string>
+    <string name="dialog_upload">还未上传</string>
 
     <string name="hint_feeling">在上传之前说说你的感想吧</string>
     <string name="hint_feedback">有什么想对我们说的？</string>

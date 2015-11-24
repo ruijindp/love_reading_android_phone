@@ -141,8 +141,8 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
             e.printStackTrace();
             try {
                 rescue(videoUrl);
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            } catch (IOException ignore) {
+                System.err.print("LMediaPlayer:rescue failed!!!");
             }
         }
     }
