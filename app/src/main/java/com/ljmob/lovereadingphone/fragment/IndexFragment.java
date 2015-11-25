@@ -151,7 +151,7 @@ public class IndexFragment extends Fragment implements
                         primarySwipeRefreshLayout.setRefreshing(false);
                     }
                 }
-            }, 100);
+            }, 1000);
         }
         if (response.responseCode == 401) {
             Intent loginIntent = new Intent(getActivity(), LoginActivity.class);

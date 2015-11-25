@@ -144,7 +144,7 @@ public abstract class EasyLoadActivity extends AppCompatActivity implements
                             primarySwipeRefreshLayout.setRefreshing(false);
                         }
                     }
-                }, 100);
+                }, 1000);
             }
             if (response.responseCode == 401) {
                 Intent loginIntent = new Intent(this, LoginActivity.class);

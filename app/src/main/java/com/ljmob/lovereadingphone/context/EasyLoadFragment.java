@@ -147,7 +147,7 @@ public abstract class EasyLoadFragment extends Fragment implements
                             primarySwipeRefreshLayout.setRefreshing(false);
                         }
                     }
-                }, 100);
+                }, 1000);
             }
         }
         if (response.responseCode == 0) {
