@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 
 import com.google.gson.Gson;
@@ -51,6 +52,8 @@ public class MyApplication extends Application {
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .resetViewBeforeLoading(true)
+                .showImageOnLoading(ContextCompat.getDrawable(this, R.mipmap.bg_admin))
+                .showImageOnFail(R.mipmap.bg_admin)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .showImageOnLoading(0);
 

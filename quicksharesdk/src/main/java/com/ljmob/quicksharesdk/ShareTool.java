@@ -8,7 +8,11 @@ import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
 
+import java.util.HashMap;
+
 import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
@@ -18,7 +22,7 @@ import cn.sharesdk.wechat.moments.WechatMoments;
  */
 public class ShareTool implements
         LRequestTool.OnResponseListener,
-        LRequestTool.OnDownloadListener {
+        LRequestTool.OnDownloadListener, PlatformActionListener {
     private Platform platform;
     private LRequestTool lRequestTool;
     private Shareable shareable;
@@ -40,7 +44,14 @@ public class ShareTool implements
                 return;
             }
         }
-        ToastUtil.show(R.string.quick_share_prepare);
+        platform.setPlatformActionListener(this);
+        if (platform instanceof SinaWeibo) {
+            if (platform.isAuthValid()) {
+                ToastUtil.show(R.string.quick_share_ok);
+            }
+        } else {
+            ToastUtil.show(R.string.quick_share_prepare);
+        }
         if (shareable.imgFullUrl == null || shareable.imgFullUrl.length() == 0) {
             onDownloaded(new LResponse());
         } else {
@@ -72,5 +83,21 @@ public class ShareTool implements
         shareParams.setUrl(shareable.url);
         shareParams.setTitleUrl(shareable.url);
         platform.share(shareParams);
+    }
+
+    @Override
+    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+        ToastUtil.show(R.string.quick_share_ok);
+    }
+
+    @Override
+    public void onError(Platform platform, int i, Throwable throwable) {
+        ToastUtil.show(R.string.quick_share_failed);
+        throwable.printStackTrace();
+    }
+
+    @Override
+    public void onCancel(Platform platform, int i) {
+        ToastUtil.show(R.string.quick_share_canceled);
     }
 }

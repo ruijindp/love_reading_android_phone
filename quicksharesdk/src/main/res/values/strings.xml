@@ -1,4 +1,7 @@
 <resources>
     <string name="quick_share_prepare">准备分享内容</string>
     <string name="quick_share_no_wechat">您没有安装微信</string>
+    <string name="quick_share_ok">分享成功</string>
+    <string name="quick_share_failed">分享失败</string>
+    <string name="quick_share_canceled">取消分享</string>
 </resources>
