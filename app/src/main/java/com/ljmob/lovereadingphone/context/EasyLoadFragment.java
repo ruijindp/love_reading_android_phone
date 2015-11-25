@@ -139,12 +139,16 @@ public abstract class EasyLoadFragment extends Fragment implements
     public void onResponse(LResponse response) {
         if (response.requestCode == GET_DATA) {
             isLoading = false;
-            primarySwipeRefreshLayout.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    primarySwipeRefreshLayout.setRefreshing(false);
-                }
-            }, 100);
+            if (primarySwipeRefreshLayout != null && primarySwipeRefreshLayout.isRefreshing()) {
+                primarySwipeRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (primarySwipeRefreshLayout != null) {
+                            primarySwipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                }, 100);
+            }
         }
         if (response.responseCode == 0) {
             ToastUtil.show(R.string.toast_server_err_0);

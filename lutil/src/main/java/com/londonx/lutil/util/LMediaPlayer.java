@@ -252,7 +252,9 @@ public class LMediaPlayer implements MediaPlayer.OnBufferingUpdateListener,
             return;
         }
         if (onProgressChangeListener != null) {
-            onProgressChangeListener.progressChanged(progress, seekBar.getMax());
+            if (mediaPlayer != null) {
+                onProgressChangeListener.progressChanged(progress, mediaPlayer.getDuration());
+            }
         }
     }
 

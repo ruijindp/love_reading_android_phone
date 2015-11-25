@@ -135,11 +135,14 @@ public abstract class EasyLoadActivity extends AppCompatActivity implements
     public void onResponse(LResponse response) {
         if (response.requestCode == GET_DATA) {
             isLoading = false;
+
             if (primarySwipeRefreshLayout != null && primarySwipeRefreshLayout.isRefreshing()) {
                 primarySwipeRefreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        primarySwipeRefreshLayout.setRefreshing(false);
+                        if (primarySwipeRefreshLayout != null) {
+                            primarySwipeRefreshLayout.setRefreshing(false);
+                        }
                     }
                 }, 100);
             }

@@ -143,11 +143,13 @@ public class IndexFragment extends Fragment implements
     @Override
     public void onResponse(LResponse response) {
         isLoading = false;
-        if (primarySwipeRefreshLayout != null) {
+        if (primarySwipeRefreshLayout != null && primarySwipeRefreshLayout.isRefreshing()) {
             primarySwipeRefreshLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    primarySwipeRefreshLayout.setRefreshing(false);
+                    if (primarySwipeRefreshLayout != null) {
+                        primarySwipeRefreshLayout.setRefreshing(false);
+                    }
                 }
             }, 100);
         }
