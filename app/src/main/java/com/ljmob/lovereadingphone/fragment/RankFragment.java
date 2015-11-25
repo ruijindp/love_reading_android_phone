@@ -46,7 +46,8 @@ import butterknife.OnItemClick;
  * Created by london on 15/10/26.
  * 排行榜
  */
-public class RankFragment extends EasyLoadFragment implements SimpleStringPopup.SimpleStringListener {
+public class RankFragment extends EasyLoadFragment implements
+        SimpleStringPopup.SimpleStringListener {
     public static final int ACTION_RANK_FILTER = 0xACAF;
     public static boolean hasDataChanged = false;
     private static final int API_SUBJECTS = 1;

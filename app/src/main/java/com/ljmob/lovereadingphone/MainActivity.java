@@ -211,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         new MaterialDialog.Builder(this)
                 .theme(Theme.LIGHT)
+                .cancelable(false)
                 .title(R.string.dialog_update)
                 .content(newUpdate.changelog + "\n" + getString(R.string.update_now_))
                 .positiveText(R.string.update)
@@ -220,8 +221,12 @@ public class MainActivity extends AppCompatActivity implements
                     public void onClick(@NonNull MaterialDialog materialDialog,
                                         @NonNull DialogAction dialogAction) {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setDataAndType(Uri.fromFile(response.downloadFile),
-                                "application/vnd.android.package-archive");
+                        if (response.downloadFile.exists() && response.downloadFile.length() != 0) {
+                            intent.setDataAndType(Uri.fromFile(response.downloadFile),
+                                    "application/vnd.android.package-archive");
+                        } else {
+                            intent.setData(Uri.parse(newUpdate.installUrl));
+                        }
                         startActivity(intent);
                     }
                 })
