@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.umeng.analytics.MobclickAgent;
 
 import cn.sharesdk.framework.ShareSDK;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -63,12 +64,16 @@ public class MyApplication extends Application {
                 .defaultDisplayImageOptions(imageOptions.build());
         ImageLoader.getInstance().init(builder.build());
 
+        MobclickAgent.setDebugMode(true);
         String UB64 = Lutil.preferences.getString("UB64", "");
         if (UB64.length() != 0) {
             String userString = new String(Base64.decode(UB64, Base64.DEFAULT));
             if (userString.startsWith("{") && userString.endsWith("}")) {
                 currentUser = new Gson()
                         .fromJson(userString, User.class);
+            }
+            if (currentUser != null) {
+                MobclickAgent.onProfileSignIn(String.format("%d_%s", currentUser.id, currentUser.role));
             }
         }
 

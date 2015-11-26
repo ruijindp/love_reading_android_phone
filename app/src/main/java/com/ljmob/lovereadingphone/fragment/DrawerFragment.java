@@ -43,6 +43,7 @@ import com.londonx.lutil.util.FileUtil;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
 import com.soundcloud.android.crop.Crop;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -302,6 +303,7 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
         MyApplication.currentUser = null;
 //        Lutil.preferences.edit().clear().apply();
         Lutil.preferences.edit().remove("UB64").apply();
+        MobclickAgent.onProfileSignOff();
         ((MainActivity) getActivity()).clearAvatar();
         initDrawerViews();
     }

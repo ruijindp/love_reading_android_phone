@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.ljmob.lovereadingphone.entity.Image;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,6 +36,18 @@ public class ZoomActivity extends AppCompatActivity implements
         activityZoomImg.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         SimpleImageLoader.displayImage(image.url, activityZoomImg);
         activityZoomImg.setSingleTapListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

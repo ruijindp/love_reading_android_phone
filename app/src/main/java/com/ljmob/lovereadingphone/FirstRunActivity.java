@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.ljmob.lovereadingphone.adapter.FirstRunAdapter;
 import com.ljmob.lovereadingphone.context.FirstRunFragment;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,6 +42,18 @@ public class FirstRunActivity extends AppCompatActivity {
         fragment0.setTextRes(R.string.first_run1);
         fragment1.setTextRes(R.string.first_run2);
         fragment2.setTextRes(R.string.first_run3);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

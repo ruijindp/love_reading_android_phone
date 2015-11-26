@@ -25,6 +25,7 @@ import com.ljmob.lovereadingphone.view.SimpleStringPopup;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +108,18 @@ public class FilterActivity extends AppCompatActivity implements
         }
         initSelectedData();
         requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_CITIES, new DefaultParam(), API_CITIES);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

@@ -44,6 +44,7 @@ import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,6 +138,18 @@ public class MusicActivity extends AppCompatActivity implements
         }
         requestTool = new LRequestTool(this);
         initData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

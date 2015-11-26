@@ -30,6 +30,7 @@ import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
 import com.londonx.lutil.util.UserTool;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +102,20 @@ public class LoginActivity extends AppCompatActivity implements LRequestTool.OnR
             ToastUtil.show(R.string.toast_login_timeout);
             MyApplication.currentUser = null;
             Lutil.preferences.edit().remove("UB64").apply();
+            MobclickAgent.onProfileSignOff();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

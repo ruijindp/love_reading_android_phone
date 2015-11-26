@@ -36,6 +36,7 @@ import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.soundcloud.android.crop.Crop;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -101,6 +102,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
@@ -152,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPause(this);
         if (playerService == null || playerService.getResult() == null) {
             if (playerBarFragment != null) {
                 playerBarFragment.hideView(false);

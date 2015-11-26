@@ -32,6 +32,7 @@ import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -117,6 +118,12 @@ public class ListenedActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
@@ -140,6 +147,7 @@ public class ListenedActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         if (hasDataChanged) {
             currentPage = 1;
             getData();

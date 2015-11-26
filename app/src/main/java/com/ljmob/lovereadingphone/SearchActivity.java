@@ -26,6 +26,7 @@ import com.ljmob.lovereadingphone.util.ArticleShelfWrapper;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.adapter.LAdapter;
 import com.londonx.lutil.entity.LResponse;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -71,6 +72,18 @@ public class SearchActivity extends EasyLoadActivity implements ServiceConnectio
             activitySearchEtKeyWord.setHint(R.string.hint_search_article);
             ((ListView) primaryListView).setDividerHeight(0);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

@@ -31,6 +31,7 @@ import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.londonx.lutil.util.ConnectionChecker;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -127,8 +128,16 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
+
         if (MyApplication.currentUser == null) {
             activityDetailFabStart.setVisibility(View.VISIBLE);
         } else {

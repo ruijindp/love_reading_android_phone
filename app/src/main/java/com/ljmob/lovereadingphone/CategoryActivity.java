@@ -24,6 +24,7 @@ import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -82,6 +83,18 @@ public class CategoryActivity extends AppCompatActivity implements
 
         primaryAbsListView.addHeaderView(headView);
         initData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override
