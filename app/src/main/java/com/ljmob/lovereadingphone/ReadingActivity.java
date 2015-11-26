@@ -272,7 +272,7 @@ public class ReadingActivity extends AppCompatActivity implements
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        long sleep = (long) (128 * (1 / getResources().getDimension(R.dimen.auto_scroll_speed)));
+        long sleep = (long) (320 * (1 / getResources().getDimension(R.dimen.auto_scroll_speed)));
         while (recorderFragment.isRecording() ||//正在录制
                 uploadResultFragment.isPlaying() ||//正在回放
                 (playerService != null && playerService.isPlaying())//正在播放
