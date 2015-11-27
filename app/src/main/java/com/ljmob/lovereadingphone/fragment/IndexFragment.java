@@ -49,7 +49,7 @@ public class IndexFragment extends Fragment implements
     public static final int ACTION_CATEGORY = 0xACAE;
     private static final int API_ARTICLES = 2;
     private static final int API_ARTICLE_UNITS = 3;
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 18;
 
     LayoutInflater inflater;
     View rootView;
