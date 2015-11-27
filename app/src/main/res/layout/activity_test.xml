@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.ljmob.lovereadingphone.fragment.CountDownFragment"
-        tools:layout="@layout/view_count_down"
-        android:id="@+id/activity_test_countdown" />
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="@string/test_long" />
 </FrameLayout>

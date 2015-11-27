@@ -31,6 +31,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Main" />
         <activity
@@ -99,6 +100,18 @@
             android:name=".FirstRunActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Welcome" />
+        <activity
+            android:name=".ProtocolActivity"
+            android:theme="@style/AppTheme.Transparent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="happysong" />
+            </intent-filter>
+        </activity>
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
@@ -107,9 +120,12 @@
         <!--test-->
         <!--<activity android:name=".TestActivity">-->
         <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<action android:name="android.intent.action.VIEW" />-->
+        <!--<category android:name="android.intent.category.DEFAULT" />-->
+        <!--<category android:name="android.intent.category.BROWSABLE" />-->
 
-        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--<data-->
+        <!--android:scheme="happysong" />-->
         <!--</intent-filter>-->
         <!--</activity>-->
     </application>
