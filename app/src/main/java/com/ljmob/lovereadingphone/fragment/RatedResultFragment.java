@@ -174,7 +174,7 @@ public class RatedResultFragment extends Fragment
             return;
         }
         viewRatedResultTvTimerCurrent.setText(DateFormat.format("mm:ss", position));
-        viewRatedResultTvTimerTotal.setText(DateFormat.format("mm:ss", duration));
+        viewRatedResultTvTimerTotal.setText(DateFormat.format("mm:ss", playerService.getDuration()));
     }
 
     @Override

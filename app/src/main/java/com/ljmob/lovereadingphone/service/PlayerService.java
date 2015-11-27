@@ -92,6 +92,13 @@ public class PlayerService extends Service implements
         }
     }
 
+    public long getDuration() {
+        if (player.mediaPlayer == null) {
+            return 0;
+        }
+        return player.mediaPlayer.getDuration();
+    }
+
     /**
      * Created by london on 15/11/11.
      * 播放器控制器

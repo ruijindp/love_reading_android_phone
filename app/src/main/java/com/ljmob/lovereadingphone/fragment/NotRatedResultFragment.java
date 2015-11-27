@@ -120,7 +120,7 @@ public class NotRatedResultFragment extends Fragment implements
             return;
         }
         viewNotRatedResultTvTimerCurrent.setText(DateFormat.format("mm:ss", position));
-        viewNotRatedResultTvTimerTotal.setText(DateFormat.format("mm:ss", duration));
+        viewNotRatedResultTvTimerTotal.setText(DateFormat.format("mm:ss", playerService.getDuration()));
 
         if (duration - position <= 100) {
             viewNotRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
