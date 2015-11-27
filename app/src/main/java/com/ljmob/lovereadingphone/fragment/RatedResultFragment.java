@@ -110,7 +110,6 @@ public class RatedResultFragment extends Fragment
         if (requestTool == null) {
             return;
         }
-        //TODO
         DefaultParam params = new DefaultParam();
         params.put("result_id", result.id);
         requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_RESULTS, params, API_RESULTS);
