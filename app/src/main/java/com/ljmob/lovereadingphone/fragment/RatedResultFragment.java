@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.google.gson.Gson;
 import com.ljmob.lovereadingphone.LoginActivity;
 import com.ljmob.lovereadingphone.MusicActivity;
 import com.ljmob.lovereadingphone.R;
@@ -48,6 +49,7 @@ import butterknife.OnClick;
 public class RatedResultFragment extends Fragment
         implements LRequestTool.OnResponseListener, ServiceConnection, LMediaPlayer.OnProgressChangeListener {
     private static final int API_VOTES = 1;
+    private static final int API_RESULTS = 2;
 
     View rootView;
     @Bind(R.id.view_rated_result_tvTimerCurrent)
@@ -99,6 +101,21 @@ public class RatedResultFragment extends Fragment
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (result == null) {
+            return;
+        }
+        if (requestTool == null) {
+            return;
+        }
+        //TODO
+        DefaultParam params = new DefaultParam();
+        params.put("result_id", result.id);
+        requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_RESULTS, params, API_RESULTS);
+    }
+
     @OnClick(R.id.view_rated_result_imgPlay)
     protected void playOrPause() {
         if (playerService == null) {
@@ -112,6 +129,53 @@ public class RatedResultFragment extends Fragment
             ((ReadingActivity) getActivity()).startScrolling();
             viewRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
         }
+    }
+
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        playerService = ((PlayerService.PlayerBinder) service).getService();
+        playerService.getPlayer().setSkbProgress(viewRatedResultSbPlayer);
+        playerService.getPlayer().setOnProgressChangeListener(this);
+        if (result != null) {
+            if (playerService.getResult() != null) {
+                if (result.id != playerService.getResult().id) {
+                    playerService.setResult(result);
+                    ((ReadingActivity) getActivity()).startScrolling();
+                }
+            } else {
+                playerService.setResult(result);
+                ((ReadingActivity) getActivity()).startScrolling();
+            }
+        }
+        if (playerService.isPlaying()) {
+            viewRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
+            ((ReadingActivity) getActivity()).startScrolling();
+        } else {
+            viewRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+    }
+
+    @Override
+    public void progressChanged(int position, int duration) {
+        if (viewRatedResultTvTimerCurrent == null) {
+            return;
+        }
+        if (playerService == null) {
+            return;
+        }
+        if (!playerService.isPlaying()) {
+            return;
+        }
+        if (playerService.isPreparing()) {
+            return;
+        }
+        viewRatedResultTvTimerCurrent.setText(DateFormat.format("mm:ss", position));
+        viewRatedResultTvTimerTotal.setText(DateFormat.format("mm:ss", duration));
     }
 
     @Override
@@ -131,7 +195,7 @@ public class RatedResultFragment extends Fragment
             ToastUtil.show(R.string.toast_server_err_0);
             return;
         }
-        if (response.responseCode != 201) {
+        if (response.responseCode != 201 && response.responseCode != 200) {
             ToastUtil.serverErr(response);
             return;
         }
@@ -142,6 +206,14 @@ public class RatedResultFragment extends Fragment
         MyReadingFragment.hasDataChanged = true;
         RecommendFragment.hasDataChanged = true;
         RankFragment.hasDataChanged = true;
+        switch (response.requestCode) {
+            case API_RESULTS:
+                result = new Gson().fromJson(response.body, Result.class);
+                if (viewRatedResultImgLike != null) {
+                    initViews();
+                }
+                break;
+        }
     }
 
     @OnClick(R.id.view_rated_result_imgLetMeTry)
@@ -242,51 +314,5 @@ public class RatedResultFragment extends Fragment
             viewRatedResultImgLike.setImageResource(R.mipmap.icon_love_u);
         }
         viewRatedResultTvLike.setText(getString(R.string.like_, result.votes));
-    }
-
-    @Override
-    public void onServiceConnected(ComponentName name, IBinder service) {
-        playerService = ((PlayerService.PlayerBinder) service).getService();
-        playerService.getPlayer().setSkbProgress(viewRatedResultSbPlayer);
-        playerService.getPlayer().setOnProgressChangeListener(this);
-        if (result != null) {
-            if (playerService.getResult() != null) {
-                if (result.id != playerService.getResult().id) {
-                    playerService.setResult(result);
-                    ((ReadingActivity) getActivity()).startScrolling();
-                }
-            } else {
-                playerService.setResult(result);
-                ((ReadingActivity) getActivity()).startScrolling();
-            }
-        }
-        if (playerService.isPlaying()) {
-            viewRatedResultImgPlay.setImageResource(R.mipmap.icon_pause);
-            ((ReadingActivity) getActivity()).startScrolling();
-        } else {
-            viewRatedResultImgPlay.setImageResource(R.mipmap.icon_play);
-        }
-    }
-
-    @Override
-    public void onServiceDisconnected(ComponentName name) {
-    }
-
-    @Override
-    public void progressChanged(int position, int duration) {
-        if (viewRatedResultTvTimerCurrent == null) {
-            return;
-        }
-        if (playerService == null) {
-            return;
-        }
-        if (!playerService.isPlaying()) {
-            return;
-        }
-        if (playerService.isPreparing()) {
-            return;
-        }
-        viewRatedResultTvTimerCurrent.setText(DateFormat.format("mm:ss", position));
-        viewRatedResultTvTimerTotal.setText(DateFormat.format("mm:ss", duration));
     }
 }
