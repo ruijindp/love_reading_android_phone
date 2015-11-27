@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -192,7 +193,11 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onUpdateFound(Update newUpdate) {
         this.newUpdate = newUpdate;
-        requestTool.download(newUpdate.installUrl, 1);
+        if (Build.VERSION.SDK_INT < 16) {//4.1以下不从本地安装
+            showUpdate(null);
+        } else {
+            requestTool.download(newUpdate.installUrl, 1);
+        }
     }
 
 
@@ -216,6 +221,10 @@ public class MainActivity extends AppCompatActivity implements
         if (response.downloadFile == null) {
             return;
         }
+        showUpdate(response);
+    }
+
+    private void showUpdate(final LResponse response) {
         new MaterialDialog.Builder(this)
                 .theme(Theme.LIGHT)
                 .cancelable(false)
@@ -228,11 +237,15 @@ public class MainActivity extends AppCompatActivity implements
                     public void onClick(@NonNull MaterialDialog materialDialog,
                                         @NonNull DialogAction dialogAction) {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                        if (response.downloadFile.exists() && response.downloadFile.length() != 0) {
-                            intent.setDataAndType(Uri.fromFile(response.downloadFile),
-                                    "application/vnd.android.package-archive");
-                        } else {
+                        if (response == null) {
                             intent.setData(Uri.parse(newUpdate.installUrl));
+                        } else {
+                            if (response.downloadFile.exists() && response.downloadFile.length() != 0) {
+                                intent.setDataAndType(Uri.fromFile(response.downloadFile),
+                                        "application/vnd.android.package-archive");
+                            } else {
+                                intent.setData(Uri.parse(newUpdate.installUrl));
+                            }
                         }
                         startActivity(intent);
                     }

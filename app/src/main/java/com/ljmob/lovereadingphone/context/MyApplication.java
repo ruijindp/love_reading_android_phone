@@ -64,7 +64,6 @@ public class MyApplication extends Application {
                 .defaultDisplayImageOptions(imageOptions.build());
         ImageLoader.getInstance().init(builder.build());
 
-        MobclickAgent.setDebugMode(true);
         String UB64 = Lutil.preferences.getString("UB64", "");
         if (UB64.length() != 0) {
             String userString = new String(Base64.decode(UB64, Base64.DEFAULT));
