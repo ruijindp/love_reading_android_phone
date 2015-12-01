@@ -248,6 +248,7 @@ public class ReadingActivity extends AppCompatActivity implements
                 }
                 shareable.imgFullUrl = NetConstant.ROOT_URL + result.article.cover_img.cover_img.url;
                 shareable.title = result.article.title + " - " + result.user.name;
+                shareable.url = String.format(shareable.url, result.id);
                 break;
             case R.id.action_share_wechat:
                 new ShareTool(new Wechat(this), shareable).share();

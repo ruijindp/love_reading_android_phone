@@ -29,6 +29,7 @@ import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.entity.School;
 import com.ljmob.lovereadingphone.entity.Subject;
 import com.ljmob.lovereadingphone.entity.TeamClass;
+import com.ljmob.lovereadingphone.entity.User;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.ljmob.lovereadingphone.view.SimpleStringPopup;
@@ -95,6 +96,9 @@ public class RankFragment extends EasyLoadFragment implements
             requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_SUBJECTS, new DefaultParam(), API_SUBJECTS);
         }
         ButterKnife.bind(this, rootView);
+        if (MyApplication.currentUser != null && MyApplication.currentUser.role == User.Role.student) {
+            selectedSchool = MyApplication.currentUser.team_classes.get(0).school;
+        }
         initTabs();
 
         return rootView;
@@ -229,7 +233,14 @@ public class RankFragment extends EasyLoadFragment implements
         } else {
             param.put("school_id", selectedSchool.id);
             if (headHolder != null && selectedSchool.id != 0) {
-                headHolder.headRankTvDataSource.setText(selectedSchool.name);
+                if (MyApplication.currentUser != null &&
+                        MyApplication.currentUser.role == User.Role.student) {
+                    if (MyApplication.currentUser.team_classes.get(0).school.id == selectedSchool.id) {
+                        headHolder.headRankTvDataSource.setText(R.string.my_school);
+                    }
+                } else {
+                    headHolder.headRankTvDataSource.setText(selectedSchool.name);
+                }
             }
         }
         if (selectedGrade == null) {

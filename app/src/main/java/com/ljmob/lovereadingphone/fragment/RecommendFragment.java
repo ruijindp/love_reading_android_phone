@@ -32,6 +32,7 @@ import com.ljmob.lovereadingphone.entity.District;
 import com.ljmob.lovereadingphone.entity.Result;
 import com.ljmob.lovereadingphone.entity.School;
 import com.ljmob.lovereadingphone.entity.Subject;
+import com.ljmob.lovereadingphone.entity.User;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.DefaultParam;
@@ -91,6 +92,9 @@ public class RecommendFragment extends EasyLoadFragment implements ServiceConnec
         }
         ButterKnife.bind(this, rootView);
         getActivity().bindService(new Intent(getContext(), PlayerService.class), this, Context.BIND_AUTO_CREATE);
+        if (MyApplication.currentUser != null && MyApplication.currentUser.role == User.Role.student) {
+            selectedSchool = MyApplication.currentUser.team_classes.get(0).school;
+        }
         initSubjects();
         return rootView;
     }
@@ -218,7 +222,14 @@ public class RecommendFragment extends EasyLoadFragment implements ServiceConnec
         } else {
             param.put("school_id", selectedSchool.id);
             if (headHolder != null && selectedSchool.id != 0) {
-                headHolder.headRecommendTvDataSource.setText(selectedSchool.name);
+                if (MyApplication.currentUser != null &&
+                        MyApplication.currentUser.role == User.Role.student) {
+                    if (MyApplication.currentUser.team_classes.get(0).school.id == selectedSchool.id) {
+                        headHolder.headRecommendTvDataSource.setText(R.string.my_school);
+                    }
+                } else {
+                    headHolder.headRecommendTvDataSource.setText(selectedSchool.name);
+                }
             }
         }
         if (selectedSubject != null) {

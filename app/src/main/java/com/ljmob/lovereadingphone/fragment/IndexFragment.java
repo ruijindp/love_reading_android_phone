@@ -190,6 +190,9 @@ public class IndexFragment extends Fragment implements
             case API_ARTICLE_UNITS:
                 units = new Gson().fromJson(response.body, new TypeToken<List<Unit>>() {
                 }.getType());
+                if (units == null || primaryAbsListView == null) {
+                    break;
+                }
                 primaryAbsListView.setAdapter(new IndexUnitAdapter(units));
                 break;
         }

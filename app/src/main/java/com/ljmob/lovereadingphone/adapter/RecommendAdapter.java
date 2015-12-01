@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.entity.TeamClass;
 import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.londonx.lutil.adapter.LAdapter;
@@ -26,6 +27,7 @@ import butterknife.OnClick;
  */
 public class RecommendAdapter extends LAdapter {
     private PlayerService playerService;
+    private String mySchool = null;
 
     public RecommendAdapter(List<? extends LEntity> lEntities) {
         super(lEntities);
@@ -41,6 +43,9 @@ public class RecommendAdapter extends LAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        if (mySchool == null) {
+            mySchool = parent.getContext().getString(R.string.my_school);
+        }
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_recommend, parent, false);
@@ -87,7 +92,12 @@ public class RecommendAdapter extends LAdapter {
                 itemRecommendRating.setRating(result.score.get(0).score);
             }
             itemRecommendTvUser.setText(result.user.name);
-            itemRecommendTvSchool.setText(result.user.team_classes.get(0).school.name);
+            TeamClass t = result.user.team_classes.get(0);
+            if (mySchool.equals(t.school.name)) {
+                itemRecommendTvSchool.setText(String.format("%s%s", t.grade.name, t.name));
+            } else {
+                itemRecommendTvSchool.setText(t.school.name);
+            }
             itemRecommendTvPraiseCount.setText(String.format("%d", result.votes));
         }
 

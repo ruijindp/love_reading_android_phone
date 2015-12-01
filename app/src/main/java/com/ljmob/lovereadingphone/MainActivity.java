@@ -225,6 +225,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void showUpdate(final LResponse response) {
+        if (isFinishing()) {
+            return;
+        }
         new MaterialDialog.Builder(this)
                 .theme(Theme.LIGHT)
                 .cancelable(false)

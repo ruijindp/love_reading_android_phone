@@ -41,10 +41,10 @@ public class PlayerService extends Service implements
     @Override
     public void onPrepared(MediaPlayer mp) {
         player.play();
+        isPreparing = false;
         Intent playerIntent = new Intent(ACTION_RESULT_CHANGED);
         playerIntent.putExtra("result", PlayerService.result);
         sendBroadcast(playerIntent);
-        isPreparing = false;
     }
 
     public void setResult(final Result result) {

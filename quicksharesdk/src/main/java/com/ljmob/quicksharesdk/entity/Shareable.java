@@ -8,6 +8,6 @@ package com.ljmob.quicksharesdk.entity;
 public class Shareable {
     public String title;
     public String content;
-    public String url = "http://happysong.com.cn";
+    public String url = "http://happysong.com.cn/share?result_id=%d";
     public String imgFullUrl;
 }

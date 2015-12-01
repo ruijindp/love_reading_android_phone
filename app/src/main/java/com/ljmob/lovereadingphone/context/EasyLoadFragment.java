@@ -93,6 +93,12 @@ public abstract class EasyLoadFragment extends Fragment implements
         if (this.params == null) {
             this.params = new HashMap<>();
         }
+        if (MyApplication.currentUser != null && !this.params.containsKey("token")) {
+            this.params.put("token", MyApplication.currentUser.token);
+        }
+        if (MyApplication.currentUser == null && this.params.containsKey("token")) {
+            this.params.remove("token");
+        }
         this.params.put("page", currentPage);
         requestTool.doGet(NetConstant.ROOT_URL + this.apiUrl, this.params, GET_DATA);
         isLoading = true;

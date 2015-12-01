@@ -14,13 +14,11 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.City;
 import com.ljmob.lovereadingphone.entity.District;
 import com.ljmob.lovereadingphone.entity.Grade;
 import com.ljmob.lovereadingphone.entity.School;
 import com.ljmob.lovereadingphone.entity.TeamClass;
-import com.ljmob.lovereadingphone.entity.User;
 import com.ljmob.lovereadingphone.net.NetConstant;
 import com.ljmob.lovereadingphone.util.DefaultParam;
 import com.ljmob.lovereadingphone.view.SimpleStringPopup;
@@ -155,11 +153,7 @@ public class FilterActivity extends AppCompatActivity implements
     private void initSelectedData() {
         activityFilterTvCity.setText(R.string.all);
         activityFilterTvArea.setText(R.string.all);
-        if (MyApplication.currentUser != null && MyApplication.currentUser.role == User.Role.student) {
-            activityFilterTvSchool.setText(R.string.my_school);
-        } else {
-            activityFilterTvSchool.setText(R.string.all);
-        }
+        activityFilterTvSchool.setText(R.string.all);
         activityFilterTvGrade.setText(R.string.all);
         activityFilterTvTeamClass.setText(R.string.all);
     }

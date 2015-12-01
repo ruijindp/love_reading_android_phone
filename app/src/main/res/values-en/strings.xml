@@ -98,7 +98,7 @@
     <string name="return_no_wifi">Return</string>
     <string name="school">School</string>
     <string name="share_">Share to:</string>
-    <string name="slogan">"Listen to another world"</string>
+    <string name="slogan">Listen to another world</string>
     <string name="start_n_reading">Start\nReading</string>
     <string name="start_reading">Start reading</string>
     <string name="start_taste">Start Reading</string>
@@ -128,4 +128,5 @@
     <string name="upload_">Upload %1$s</string>
     <string name="upload_exit_confirm">Sure you want to give up this reading and quit?</string>
     <string name="username">Username</string>
+    <string name="toast_protocol_error">Protocol Error</string>
 </resources>

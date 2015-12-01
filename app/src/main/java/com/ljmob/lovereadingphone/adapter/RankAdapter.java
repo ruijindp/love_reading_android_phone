@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.entity.TeamClass;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 import com.londonx.lutil.adapter.LAdapter;
 import com.londonx.lutil.entity.LEntity;
@@ -70,8 +71,13 @@ public class RankAdapter extends LAdapter {
         @Bind(R.id.item_rank_tvPraiseCount)
         TextView itemRankTvPraiseCount;
 
+        private String mySchool = null;
+
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
+            if (mySchool == null) {
+                mySchool = view.getContext().getString(R.string.my_school);
+            }
         }
 
         public void setResult(Result result) {
@@ -80,7 +86,12 @@ public class RankAdapter extends LAdapter {
             itemRankTvTitle.setText(result.article.title);
             itemRankTvFeeling.setText(result.feeling);
             itemRankTvUser.setText(result.user.name);
-            itemRankTvSchool.setText(result.user.team_classes.get(0).school.name);
+            TeamClass t = result.user.team_classes.get(0);
+            if (mySchool.equals(t.school.name)) {
+                itemRankTvSchool.setText(String.format("%s%s", t.grade.name, t.name));
+            } else {
+                itemRankTvSchool.setText(t.school.name);
+            }
             itemRankTvPraiseCount.setText(String.format("%d", result.votes));
         }
     }
