@@ -107,6 +107,9 @@ public class MyReadingFragment extends EasyLoadFragment {
 
     @OnItemClick(R.id.primaryAbsListView)
     protected void inspectResult(int position) {
+        if (position < 1) {
+            return;
+        }
         Intent intent = new Intent(getContext(), ReadingActivity.class);
         intent.putExtra("result", results.get(position - 1));//有header
         startActivity(intent);
