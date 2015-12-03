@@ -123,7 +123,16 @@ public class MyReadingFragment extends EasyLoadFragment {
             return;
         }
         DefaultParam param = new DefaultParam();
-        param.put("subject_id", subject.id);
+        switch (subject.type) {
+            case subject:
+                param.put("subject_id", subject.id);
+                param.put("category_id", 0);
+                break;
+            case category:
+                param.put("subject_id", 0);
+                param.put("category_id", subject.id);
+                break;
+        }
         if (type == Type.rated) {
             param.put("is_check", true);
         } else {

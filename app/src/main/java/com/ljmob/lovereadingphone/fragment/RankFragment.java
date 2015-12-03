@@ -262,7 +262,16 @@ public class RankFragment extends EasyLoadFragment implements
             }
         }
         if (selectedSubject != null) {
-            param.put("subject_id", selectedSubject.id);
+            switch (selectedSubject.type) {
+                case subject:
+                    param.put("subject_id", selectedSubject.id);
+                    param.put("category_id", 0);
+                    break;
+                case category:
+                    param.put("subject_id", 0);
+                    param.put("category_id", selectedSubject.id);
+                    break;
+            }
         }
         return param;
     }
