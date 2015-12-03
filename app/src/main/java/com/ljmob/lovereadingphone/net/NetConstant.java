@@ -5,8 +5,8 @@ package com.ljmob.lovereadingphone.net;
  * APIs
  */
 public class NetConstant {
-//    public static final String ROOT_URL = "http://192.168.31.148:3106";
-    public static final String ROOT_URL = "http://happysong.com.cn";
+    public static final String ROOT_URL = "http://192.168.31.148:3106";
+//    public static final String ROOT_URL = "http://happysong.com.cn";
 
     public static final String API_ARTICLES = "/api/v1/articles";
     public static final String API_MUSICS = "/api/v1/musics";
@@ -15,6 +15,7 @@ public class NetConstant {
     public static final String API_GRADES = "/api/v1/grades";
     public static final String API_ARTICLE_TYPES = "/api/v1/article_types";
     public static final String API_ARTICLE_UNITS = "/api/v1/articles/units";
+    public static final String API_ARTICLE_CATEGORY = "/api/v1/articles/category";
     public static final String API_FEEDBACK = "/api/v1/advise";
     public static final String API_MY_RESULTS_COUNT = "/api/v1/my_results/count";
     public static final String API_STUDENT_RESULTS_COUNT = "/api/v1/student_results/count";

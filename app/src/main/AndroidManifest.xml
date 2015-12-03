@@ -101,6 +101,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Welcome" />
         <activity
+            android:name=".Category2Activity"
+            android:label="@string/activity_category"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ProtocolActivity"
             android:theme="@style/AppTheme.Transparent">
             <intent-filter>

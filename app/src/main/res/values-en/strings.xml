@@ -12,7 +12,7 @@
     <string name="action_share_wechat">Wechat</string>
     <string name="action_share_wechat_moment">Wechat Moment</string>
     <string name="action_share_weibo">Sina Weibo</string>
-    <string name="activity_category">Article Form</string>
+    <string name="activity_category">Article Category</string>
     <string name="activity_change_password">Change Password</string>
     <string name="activity_detail">Article Detail</string>
     <string name="activity_feedback">Feedback</string>

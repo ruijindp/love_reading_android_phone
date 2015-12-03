@@ -36,7 +36,10 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 /**
  * Created by london on 15/10/26.
  * 分类
+ *
+ * @deprecated 不能切换教材版本和课外文章，使用{@link Category2Activity}
  */
+@Deprecated
 public class CategoryActivity extends AppCompatActivity implements
         LRequestTool.OnResponseListener {
     private static final int API_SUBJECTS = 1;

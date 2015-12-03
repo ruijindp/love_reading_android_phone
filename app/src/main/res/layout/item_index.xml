@@ -77,7 +77,8 @@
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="@string/test_title" />
+                android:text="@string/test_title"
+                android:textColor="@color/textPrimary" />
 
             <TextView
                 android:id="@+id/item_index_tvAuthor0"
@@ -86,7 +87,8 @@
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="@string/test_author" />
+                android:text="@string/test_author"
+                android:textColor="@color/textPrimary" />
         </LinearLayout>
 
         <LinearLayout
@@ -144,7 +146,8 @@
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="@string/test_title" />
+                android:text="@string/test_title"
+                android:textColor="@color/textPrimary" />
 
             <TextView
                 android:id="@+id/item_index_tvAuthor1"
@@ -153,7 +156,8 @@
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="@string/test_author" />
+                android:text="@string/test_author"
+                android:textColor="@color/textPrimary" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

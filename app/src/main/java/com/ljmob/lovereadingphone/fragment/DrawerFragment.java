@@ -433,6 +433,12 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
             ToastUtil.show(R.string.toast_server_err_1);
             return;
         }
+        if (viewDrawerTvNotRatedCount == null) {
+            return;
+        }
+        if (!isVisible()) {
+            return;
+        }
         switch (response.requestCode) {
             case API_RESULTS_COUNT:
                 lastGetCountAt = System.currentTimeMillis();

@@ -11,4 +11,11 @@
 
     <dimen name="toolbar_h">56dp</dimen>
     <dimen name="auto_scroll_speed">1dp</dimen>
+    <dimen name="cate_item_h">36dp</dimen>
+    <dimen name="cate_item_h_big">48dp</dimen>
+
+    <dimen name="horizontal_space_4">8dp</dimen>
+    <dimen name="horizontal_space_3">14dp</dimen>
+    <dimen name="horizontal_space_2">16dp</dimen>
+
 </resources>

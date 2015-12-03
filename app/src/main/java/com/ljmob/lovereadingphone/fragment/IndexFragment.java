@@ -15,13 +15,15 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.ljmob.lovereadingphone.CategoryActivity;
+import com.ljmob.lovereadingphone.Category2Activity;
 import com.ljmob.lovereadingphone.LoginActivity;
 import com.ljmob.lovereadingphone.MainActivity;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.adapter.IndexAdapter;
 import com.ljmob.lovereadingphone.adapter.IndexUnitAdapter;
 import com.ljmob.lovereadingphone.entity.Article;
+import com.ljmob.lovereadingphone.entity.Category;
+import com.ljmob.lovereadingphone.entity.Edition;
 import com.ljmob.lovereadingphone.entity.Grade;
 import com.ljmob.lovereadingphone.entity.Subject;
 import com.ljmob.lovereadingphone.entity.Unit;
@@ -49,6 +51,7 @@ public class IndexFragment extends Fragment implements
     public static final int ACTION_CATEGORY = 0xACAE;
     private static final int API_ARTICLES = 2;
     private static final int API_ARTICLE_UNITS = 3;
+    private static final int API_ARTICLE_CATEGORY = 2;//数据处理与API_ARTICLES相同
     private static final int PAGE_SIZE = 18;
 
     LayoutInflater inflater;
@@ -70,8 +73,11 @@ public class IndexFragment extends Fragment implements
     List<Unit> units;
     IndexAdapter adapter;
 
+    Subject.Type selectedType;
     Subject selectedSubject;
+    Edition selectedEdition;
     Grade selectedGrade;
+    Category selectedCategory;
 
     @Nullable
     @Override
@@ -89,12 +95,12 @@ public class IndexFragment extends Fragment implements
     public void getData() {
         if (currentPage == 1) {
             if (!primarySwipeRefreshLayout.isRefreshing()) {
-                primarySwipeRefreshLayout.postDelayed(new Runnable() {
+                primarySwipeRefreshLayout.post(new Runnable() {
                     @Override
                     public void run() {
                         primarySwipeRefreshLayout.setRefreshing(true);
                     }
-                }, 100);
+                });
             }
         }
         if (requestTool == null) {
@@ -102,11 +108,26 @@ public class IndexFragment extends Fragment implements
         }
 
         DefaultParam param = new DefaultParam();
-        if (selectedGrade != null && selectedSubject != null
-                && selectedGrade.id != 0 && selectedSubject.id != 0) {
-            param.put("subject_id", selectedSubject.id);
-            param.put("grade_id", selectedGrade.id);
-            requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_ARTICLE_UNITS, param, API_ARTICLE_UNITS);
+        if (selectedType == Subject.Type.subject) {
+            if (selectedSubject != null) {
+                param.put("subject_id", selectedSubject.id);
+                if (selectedEdition != null) {
+                    param.put("edition_id", selectedEdition.id);
+                }
+                if (selectedGrade == null) {
+                    param.put("page", currentPage);
+                    requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_ARTICLES, param, API_ARTICLES);
+                } else {
+                    param.put("grade_id", selectedGrade.id);
+                    requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_ARTICLE_UNITS, param, API_ARTICLE_UNITS);
+                }
+            }
+        } else if (selectedType == Subject.Type.category) {
+            param.put("page", currentPage);
+            if (selectedCategory != null) {
+                param.put("cate_item_id", selectedCategory.id);
+            }
+            requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_ARTICLE_CATEGORY, param, API_ARTICLE_CATEGORY);
         } else {
             param.put("page", currentPage);
             requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_ARTICLES, param, API_ARTICLES);
@@ -126,7 +147,7 @@ public class IndexFragment extends Fragment implements
                 headHolder.headMainTvCurrentCate.setText(String.format("%s%s",
                         selectedGrade.name, selectedSubject.name));
             } else {
-                headHolder.headMainTvCurrentCate.setText(R.string.all);
+                headHolder.headMainTvCurrentCate.setText(R.string.default_subject);
             }
             primaryAbsListView.addHeaderView(headMain);
         }
@@ -135,19 +156,14 @@ public class IndexFragment extends Fragment implements
         primaryAbsListView.setOnScrollListener(this);
     }
 
-    public void onLoadMore() {
-        currentPage++;
-        getData();
-    }
-
     @Override
     public void onResponse(LResponse response) {
         isLoading = false;
-        if (primarySwipeRefreshLayout != null && primarySwipeRefreshLayout.isRefreshing()) {
+        if (primarySwipeRefreshLayout != null) {
             primarySwipeRefreshLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (primarySwipeRefreshLayout != null) {
+                    if (primarySwipeRefreshLayout != null && primarySwipeRefreshLayout.isRefreshing()) {
                         primarySwipeRefreshLayout.setRefreshing(false);
                     }
                 }
@@ -218,14 +234,12 @@ public class IndexFragment extends Fragment implements
         if (isLoading || view.getCount() == 0) {
             return;
         }
-        if (selectedSubject != null && selectedGrade != null
-                && selectedSubject.id != 0 && selectedGrade.id != 0) {
+        if (selectedSubject != null && selectedGrade != null) {
             return;
         }
         //Load more when scrolling over last PAGE_SIZE / 2 items;
         boolean isDivDPage = firstVisibleItem + visibleItemCount > totalItemCount - PAGE_SIZE / 2;
         if (isDivDPage && hasMore) {
-            onLoadMore();
             currentPage++;
             getData();
             isLoading = true;
@@ -241,14 +255,36 @@ public class IndexFragment extends Fragment implements
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        selectedGrade = (Grade) data.getSerializableExtra("grade");
-        selectedSubject = (Subject) data.getSerializableExtra("subject");
-        if (selectedGrade.id == 0 && selectedSubject.id == 0) {
-            headHolder.headMainTvCurrentCate.setText(R.string.all);
+        selectedSubject = (Subject) data.getSerializableExtra("selectedSubject");
+        selectedGrade = (Grade) data.getSerializableExtra("selectedGrade");
+        selectedEdition = (Edition) data.getSerializableExtra("selectedEdition");
+        selectedCategory = (Category) data.getSerializableExtra("selectedCategory");
+        if (selectedSubject != null) {
+            selectedType = selectedSubject.type;
         } else {
-            headHolder.headMainTvCurrentCate.setText(String.format("%s%s",
-                    selectedGrade.name, selectedSubject.name));
+            selectedType = Subject.Type.category;
         }
+
+        if (selectedSubject == null && selectedGrade == null && selectedCategory == null) {
+            headHolder.headMainTvCurrentCate.setText(R.string.default_subject);
+        }
+        if (selectedSubject != null) {
+            String currentCate = "";
+            if (selectedEdition != null) {
+                currentCate += selectedEdition.name;
+            }
+            if (selectedGrade != null) {
+                currentCate += selectedGrade.name;
+            }
+            if (selectedSubject != null) {
+                currentCate += selectedSubject.name;
+            }
+            headHolder.headMainTvCurrentCate.setText(currentCate);
+        }
+        if (selectedCategory != null) {
+            headHolder.headMainTvCurrentCate.setText(selectedCategory.name);
+        }
+
         currentPage = 1;
         hasMore = true;
         getData();
@@ -282,12 +318,11 @@ public class IndexFragment extends Fragment implements
 
         @OnClick(R.id.head_index_lnFilter)
         protected void openCateActivity() {
-            Intent cateIntent = new Intent(getActivity(), CategoryActivity.class);
-            if (selectedSubject != null && selectedGrade != null
-                    && selectedSubject.id != 0 && selectedGrade.id != 0) {
-                cateIntent.putExtra("selectedSubject", selectedSubject);
-                cateIntent.putExtra("selectedGrade", selectedGrade);
-            }
+            Intent cateIntent = new Intent(getActivity(), Category2Activity.class);
+            cateIntent.putExtra("selectedGrade", selectedGrade);
+            cateIntent.putExtra("selectedSubject", selectedSubject);
+            cateIntent.putExtra("selectedEdition", selectedEdition);
+            cateIntent.putExtra("selectedCategory", selectedCategory);
             IndexFragment.this.startActivityForResult(cateIntent, ACTION_CATEGORY);
         }
     }

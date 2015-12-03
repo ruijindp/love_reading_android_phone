@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
  * Created by london on 15/10/28.
  * 子类型（语文类的一年级等）
  */
+@Deprecated
 public class SubCateAdapter extends LAdapter {
     Grade selectedGrade;
 

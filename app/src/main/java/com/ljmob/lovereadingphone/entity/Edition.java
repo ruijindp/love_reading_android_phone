@@ -3,9 +3,9 @@ package com.ljmob.lovereadingphone.entity;
 import com.londonx.lutil.entity.LEntity;
 
 /**
- * Created by london on 15/11/2.
- * 分类
+ * Created by london on 15/12/3.
+ * 教材版本（人教版）
  */
-public class Category extends LEntity {
+public class Edition extends LEntity {
     public String name;
 }

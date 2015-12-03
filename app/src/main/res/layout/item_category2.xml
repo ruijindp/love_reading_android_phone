@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <LinearLayout
+        android:id="@+id/item_cate2_lnLibTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0px"
+            android:layout_height="1dp"
+            android:layout_marginRight="22dp"
+            android:layout_weight="1"
+            android:background="@color/textReadable" />
+
+        <TextView
+            android:id="@+id/item_cate2_tvLibTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/library_in_class"
+            android:textColor="@color/textReadable"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="0px"
+            android:layout_height="1dp"
+            android:layout_marginLeft="22dp"
+            android:layout_weight="1"
+            android:background="@color/textReadable" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp">
+
+        <TextView
+            android:id="@+id/item_cate2_tvSubject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_primary_stroke"
+            android:paddingBottom="7dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="7dp"
+            android:text="@string/test_subject"
+            android:textColor="@color/textReadable"
+            android:textStyle="bold" />
+
+        <FrameLayout
+            android:id="@+id/item_cate2_flCate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="14dp"
+                android:layout_gravity="center_vertical"
+                android:background="?colorPrimary" />
+
+            <TextView
+                android:id="@+id/item_cate2_tvCate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="@string/test_subject" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/item_cate2_lnEdition"
+            android:layout_width="148dp"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/item_cate2_tvEdition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test_edition"
+                android:textColor="@color/textReadable"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="6dp"
+                android:contentDescription="@string/dcd"
+                android:src="@mipmap/icon_top_0" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--每行4个：8
+        每行3个：14
+        每行2个：16-->
+    <com.ljmob.lovereadingphone.view.UnScrollableGridView
+        android:id="@+id/item_cate2_gvItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:horizontalSpacing="8dp"
+        android:numColumns="4"
+        android:verticalSpacing="12dp"
+        tools:listitem="@layout/item_sub_cate2" />
+</LinearLayout>

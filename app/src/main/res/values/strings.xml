@@ -82,6 +82,9 @@
     <string name="upload_exit_confirm">确定要舍弃这次的朗读作品并退出吗</string>
     <string name="recording_exit">退出</string>
     <string name="entering">正在进入</string>
+    <string name="library_in_class">课内</string>
+    <string name="library_out_class">课外</string>
+    <string name="default_subject">语文</string>
 
     <string name="toast_protocol_error">协议错误</string>
     <string name="toast_article_err">这篇文章还没有准备好，重新选一篇吧</string>
@@ -127,7 +130,7 @@
     <string name="activity_change_password">修改密码</string>
     <string name="activity_listened">已听历史</string>
     <string name="activity_login">登录</string>
-    <string name="activity_category">文章类型</string>
+    <string name="activity_category">文章分类</string>
     <string name="activity_search">搜索</string>
     <string name="activity_zoom">查看图片</string>
 
@@ -140,6 +143,7 @@
     <string name="action_done">完成</string>
     <string name="action_commit">提交</string>
     <string name="action_clean">清空</string>
+    <string name="action_switch">切换</string>
 
     <string name="test_long" translatable="false">一二三四甲乙丙丁子丑寅卯ABCD The quick brown fox jumps over the lazy dog.</string>
     <string name="test_title" translatable="false">从百草园到三味书屋</string>
@@ -170,4 +174,5 @@
     <string name="test_feeling" translatable="false">感觉读的还不错，老师求五分！</string>
     <string name="test_data_source" translatable="false">闵行区</string>
     <string name="test_subject" translatable="false">语文</string>
+    <string name="test_edition" translatable="false">人教版</string>
 </resources>

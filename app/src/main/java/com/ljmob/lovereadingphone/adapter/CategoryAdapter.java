@@ -26,7 +26,10 @@ import butterknife.OnItemClick;
 /**
  * Created by london on 15/10/28.
  * 分类
+ *
+ * @deprecated {@link Category2Adapter}
  */
+@Deprecated
 public class CategoryAdapter extends LAdapter {
     CategoryActivity categoryActivity;
 
