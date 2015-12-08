@@ -9,7 +9,10 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.ljmob.lovereadingphone.R;
+import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.Result;
+import com.ljmob.lovereadingphone.entity.TeamClass;
+import com.ljmob.lovereadingphone.entity.User;
 import com.ljmob.lovereadingphone.service.PlayerService;
 import com.ljmob.lovereadingphone.util.SimpleImageLoader;
 
@@ -57,7 +60,15 @@ public class ListenedAdapter extends RecyclerView.Adapter {
             holder.itemListenedRbRating.setRating(result.score.get(0).score);
         }
         holder.itemListenedTvUser.setText(result.user.name);
-        holder.itemListenedTvSchool.setText(result.user.team_classes.get(0).school.name);
+        if (MyApplication.currentUser.role == User.Role.student) {
+            if (result.user.team_classes.get(0).school.id
+                    == MyApplication.currentUser.team_classes.get(0).school.id) {
+                TeamClass t = result.user.team_classes.get(0);
+                holder.itemListenedTvSchool.setText(String.format("%s%s", t.grade.name, t.name));
+            }
+        } else {
+            holder.itemListenedTvSchool.setText(result.user.team_classes.get(0).school.name);
+        }
         holder.itemListenedTvLikeCount.setText(String.format("%d", result.votes));
     }
 

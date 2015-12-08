@@ -51,6 +51,7 @@
                 fontPath="@string/font_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text="@string/test_title"
                 android:textColor="@color/textReadable"
                 android:textSize="16sp"
