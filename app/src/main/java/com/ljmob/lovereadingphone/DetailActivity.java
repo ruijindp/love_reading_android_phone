@@ -213,12 +213,15 @@ public class DetailActivity extends AppCompatActivity {
         activityDetailImgBackground.post(new Runnable() {//图片加载完成后
             @Override
             public void run() {
-                Blurry.with(DetailActivity.this)
-                        .radius(16)
-                        .sampling(8)
-                        .color(0x33FFFFFF)
-                        .capture(activityDetailImgBackground)
-                        .into(activityDetailImgBackground);
+                try {
+                    Blurry.with(DetailActivity.this)
+                            .radius(16)
+                            .sampling(8)
+                            .color(0x33FFFFFF)
+                            .capture(activityDetailImgBackground)
+                            .into(activityDetailImgBackground);
+                } catch (Exception ignore) {
+                }
                 if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled()) {
                     MyApplication.blurryBg.recycle();
                 }

@@ -269,12 +269,15 @@ public class MusicActivity extends AppCompatActivity implements
         activityMusicImgBackground.post(new Runnable() {//图片加载完成后
             @Override
             public void run() {
-                Blurry.with(MusicActivity.this)
-                        .radius(16)
-                        .sampling(8)
-                        .color(0x33FFFFFF)
-                        .capture(activityMusicImgBackground)
-                        .into(activityMusicImgBackground);
+                try {
+                    Blurry.with(MusicActivity.this)
+                            .radius(16)
+                            .sampling(8)
+                            .color(0x33FFFFFF)
+                            .capture(activityMusicImgBackground)
+                            .into(activityMusicImgBackground);
+                } catch (Exception ignore) {
+                }
                 if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled()) {
                     MyApplication.blurryBg.recycle();
                 }

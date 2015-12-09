@@ -416,12 +416,15 @@ public class ReadingActivity extends AppCompatActivity implements
         activityReadingImgBackground.post(new Runnable() {//图片加载完成后
             @Override
             public void run() {
-                Blurry.with(ReadingActivity.this)
-                        .radius(16)
-                        .sampling(8)
-                        .color(0x33FFFFFF)
-                        .capture(activityReadingImgBackground)
-                        .into(activityReadingImgBackground);
+                try {
+                    Blurry.with(ReadingActivity.this)
+                            .radius(16)
+                            .sampling(8)
+                            .color(0x33FFFFFF)
+                            .capture(activityReadingImgBackground)
+                            .into(activityReadingImgBackground);
+                } catch (Exception ignore) {
+                }
                 if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled()) {
                     MyApplication.blurryBg.recycle();
                 }
