@@ -162,7 +162,9 @@ public class Category2Adapter extends LAdapter {
                     itemCate2FlCate.setVisibility(View.GONE);
 
                     CateItemAdapter cateItemGradeAdapter = new CateItemAdapter(subject.grades);
-                    cateItemGradeAdapter.setSelection(selectedGrade);
+                    if (selectedSubject != null && selectedSubject.id == subject.id) {
+                        cateItemGradeAdapter.setSelection(selectedGrade);
+                    }
                     itemCate2GvItems.setAdapter(cateItemGradeAdapter);
 
                     if (selectedSubject != null && selectedSubject.id == subject.id && selectedGrade == null) {
