@@ -193,8 +193,9 @@ public class MusicActivity extends AppCompatActivity implements
         }
         lastPress = System.currentTimeMillis();
 
-        int position = adapter.getSelectedIndex();
-        if (position == -1 || selectedMusic == null) {
+        if (adapter == null ||
+                adapter.getSelectedIndex() == -1 ||
+                selectedMusic == null) {
             ToastUtil.show(R.string.toast_music_err);
             return;
         }

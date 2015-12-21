@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements LRequestTool.OnR
             @Override
             public void run() {
                 simpleUsers = UserTool.getSimpleUsers(LoginActivity.this);
-                List<String> userNames = new ArrayList<>();
+                final List<String> userNames = new ArrayList<>();
                 for (UserTool.SimpleUser s : simpleUsers) {
                     userNames.add(s.username);
                 }
@@ -93,7 +93,8 @@ public class LoginActivity extends AppCompatActivity implements LRequestTool.OnR
                 activityLoginEtUserName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        chooseUser(position);
+                        String username = ((TextView) view).getText().toString();
+                        chooseUser(userNames.indexOf(username));
                     }
                 });
             }

@@ -197,6 +197,9 @@ public class IndexFragment extends Fragment implements
                 if (currentPage == 1) {
                     articles = appendData;
                     adapter = new IndexAdapter(ArticleShelfWrapper.wrap(articles));
+                    if (primaryAbsListView == null) {
+                        break;
+                    }
                     primaryAbsListView.setAdapter(adapter);
                 } else {
                     articles.addAll(appendData);
