@@ -1,7 +1,10 @@
 package com.ljmob.lovereadingphone.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -81,6 +84,8 @@ public class IndexFragment extends Fragment implements
     Grade selectedGrade;
     Category selectedCategory;
 
+    private IndexFragmentReceiver receiver;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,16 +95,11 @@ public class IndexFragment extends Fragment implements
         }
         ButterKnife.bind(this, rootView);
         initViews(inflater);
-        if (MyApplication.currentUser != null &&
-                MyApplication.currentUser.team_classes.size() != 0) {//已登录且已设置所属班级
-            School mySchool = MyApplication.currentUser.team_classes.get(0).school;
-            if (mySchool != null && mySchool.editions.size() != 0) {//已设置默认教材版本
-                selectedSubject = mySchool.editions.get(0).subject;
-                selectedEdition = mySchool.editions.get(0).edition;
-            }
-            setCurrentCateBySelections();
-        }
-        getData();
+        getDefaultData();
+        receiver = new IndexFragmentReceiver();
+        IntentFilter filter = new IntentFilter(
+                getContext().getPackageName() + LoginActivity.ACTION_USER_CHANGED);
+        getContext().registerReceiver(receiver, filter);
         return rootView;
     }
 
@@ -290,6 +290,7 @@ public class IndexFragment extends Fragment implements
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        getContext().unregisterReceiver(receiver);
     }
 
     @Override
@@ -320,6 +321,21 @@ public class IndexFragment extends Fragment implements
         }
     }
 
+    private void getDefaultData() {
+        if (MyApplication.currentUser != null &&
+                MyApplication.currentUser.team_classes.size() != 0) {//已登录且已设置所属班级
+            School mySchool = MyApplication.currentUser.team_classes.get(0).school;
+            if (mySchool != null && mySchool.editions.size() != 0) {//已设置默认教材版本
+                selectedSubject = mySchool.editions.get(0).subject;
+                selectedEdition = mySchool.editions.get(0).edition;
+            }
+            setCurrentCateBySelections();
+        }
+        currentPage = 1;
+        hasMore = true;
+        getData();
+    }
+
     /**
      * This class contains all butterknife-injected Views & Layouts from layout file 'head_index.xml'
      * for easy to all layout elements.
@@ -342,6 +358,18 @@ public class IndexFragment extends Fragment implements
             cateIntent.putExtra("selectedEdition", selectedEdition);
             cateIntent.putExtra("selectedCategory", selectedCategory);
             IndexFragment.this.startActivityForResult(cateIntent, ACTION_CATEGORY);
+        }
+    }
+
+    private class IndexFragmentReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!intent.getAction().equalsIgnoreCase(getContext()
+                    .getPackageName() + LoginActivity.ACTION_USER_CHANGED)) {
+                return;
+            }
+            getDefaultData();
         }
     }
 }

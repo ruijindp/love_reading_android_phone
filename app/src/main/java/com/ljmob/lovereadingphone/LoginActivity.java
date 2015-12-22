@@ -1,6 +1,7 @@
 package com.ljmob.lovereadingphone;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -48,6 +49,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class LoginActivity extends AppCompatActivity implements LRequestTool.OnResponseListener {
     private static final int USER_SIGN_IN = 1;
+    public static final String ACTION_USER_CHANGED = ".ActionUserChanged";
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -162,6 +164,7 @@ public class LoginActivity extends AppCompatActivity implements LRequestTool.OnR
                 editor.apply();
                 UserTool.rememberUser(this, activityLoginEtUserName.getText().toString(),
                         activityLoginEtPassword.getText().toString());
+                sendBroadcast(new Intent(getPackageName() + ACTION_USER_CHANGED));
                 finish();
                 break;
         }
