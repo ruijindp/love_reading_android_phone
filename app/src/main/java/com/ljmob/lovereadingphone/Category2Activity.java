@@ -33,7 +33,9 @@ import butterknife.ButterKnife;
  * 分类2
  * 切换教材版本和课外文章
  */
-public class Category2Activity extends AppCompatActivity implements LRequestTool.OnResponseListener, Category2Adapter.Category2SelectedListener {
+public class Category2Activity extends AppCompatActivity implements
+        LRequestTool.OnResponseListener,
+        Category2Adapter.Category2SelectedListener {
     private static final int API_SUBJECTS = 1;
     @Bind(R.id.toolbar)
     Toolbar toolbar;

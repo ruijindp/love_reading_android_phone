@@ -21,10 +21,12 @@ import com.ljmob.lovereadingphone.MainActivity;
 import com.ljmob.lovereadingphone.R;
 import com.ljmob.lovereadingphone.adapter.IndexAdapter;
 import com.ljmob.lovereadingphone.adapter.IndexUnitAdapter;
+import com.ljmob.lovereadingphone.context.MyApplication;
 import com.ljmob.lovereadingphone.entity.Article;
 import com.ljmob.lovereadingphone.entity.Category;
 import com.ljmob.lovereadingphone.entity.Edition;
 import com.ljmob.lovereadingphone.entity.Grade;
+import com.ljmob.lovereadingphone.entity.School;
 import com.ljmob.lovereadingphone.entity.Subject;
 import com.ljmob.lovereadingphone.entity.Unit;
 import com.ljmob.lovereadingphone.net.NetConstant;
@@ -88,6 +90,15 @@ public class IndexFragment extends Fragment implements
         }
         ButterKnife.bind(this, rootView);
         initViews(inflater);
+        if (MyApplication.currentUser != null &&
+                MyApplication.currentUser.team_classes.size() != 0) {//已登录且已设置所属班级
+            School mySchool = MyApplication.currentUser.team_classes.get(0).school;
+            if (mySchool != null && mySchool.editions.size() != 0) {//已设置默认教材版本
+                selectedSubject = mySchool.editions.get(0).subject;
+                selectedEdition = mySchool.editions.get(0).edition;
+            }
+            setCurrentCateBySelections();
+        }
         getData();
         return rootView;
     }
@@ -268,6 +279,26 @@ public class IndexFragment extends Fragment implements
             selectedType = Subject.Type.category;
         }
 
+        setCurrentCateBySelections();
+
+        currentPage = 1;
+        hasMore = true;
+        getData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onRefresh() {
+        currentPage = 1;
+        getData();
+    }
+
+    private void setCurrentCateBySelections() {
         if (selectedSubject == null && selectedGrade == null && selectedCategory == null) {
             headHolder.headMainTvCurrentCate.setText(R.string.default_subject);
         }
@@ -287,22 +318,6 @@ public class IndexFragment extends Fragment implements
         if (selectedCategory != null) {
             headHolder.headMainTvCurrentCate.setText(selectedCategory.name);
         }
-
-        currentPage = 1;
-        hasMore = true;
-        getData();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
-    @Override
-    public void onRefresh() {
-        currentPage = 1;
-        getData();
     }
 
     /**
