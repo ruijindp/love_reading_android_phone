@@ -17,7 +17,7 @@
         android:contentDescription="@string/dcd"
         android:src="@mipmap/icon_re_recording" />
 
-    <com.ljmob.lovereadingphone.view.RecorderRipple
+    <com.happysong.android.view.RecorderRipple
         android:id="@+id/view_recorder_ripple"
         android:layout_width="72dp"
         android:layout_height="64dp"

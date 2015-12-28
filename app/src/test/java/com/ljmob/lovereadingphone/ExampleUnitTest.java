@@ -1,4 +1,4 @@
-package com.ljmob.lovereadingphone;
+package com.happysong.android;
 
 import org.junit.Test;
 

@@ -7,21 +7,21 @@
 			微信好友        http://open.weixin.qq.com
     -->
 
-    <ShareSDK AppKey="c41f62fea82a" AppSecret="e1b69086168a67f4475cc58d275863e0" />
+    <ShareSDK AppKey="dec3870892cc" AppSecret="8cc393a44fa7c3aa311ebc2083f5cfaf" />
 
-    <SinaWeibo AppKey="541466248" AppSecret="56959984119f82e2af765414c336bff0" Enable="true" Id="1"
+    <SinaWeibo AppKey="3630816774" AppSecret="d89f9ee4699f2c0cb38fd734d88b3487" Enable="true" Id="1"
         RedirectUrl="http://www.happysong.com.cn/formal/index" ShareByAppClient="true" SortId="1" />
 
-    <Wechat AppId="wx292db2130afd47a0" AppSecret="d4624c36b6795d1d99dcf0547af5443d"
+    <Wechat AppId="wx081852380cd96902" AppSecret="5c1384a000082d898eb50da2e13561a8"
         BypassApproval="false" Enable="true" Id="4" SortId="4" />
 
-    <WechatMoments AppId="wx292db2130afd47a0" AppSecret="d4624c36b6795d1d99dcf0547af5443d"
+    <WechatMoments AppId="wx081852380cd96902" AppSecret="5c1384a000082d898eb50da2e13561a8"
         BypassApproval="false" Enable="true" Id="5" SortId="5" />
 
-    <QQ AppId="1104890153" AppKey="qUU2NwR3L2LOxm5s" Enable="true" Id="7" ShareByAppClient="true"
+    <QQ AppId="1105051586" AppKey="O5E2MidNwMWyDw6t" Enable="true" Id="7" ShareByAppClient="true"
         SortId="7" />
 
-    <QZone AppId="1104890153" AppKey="qUU2NwR3L2LOxm5s" Enable="true" Id="3"
+    <QZone AppId="1105051586" AppKey="O5E2MidNwMWyDw6t" Enable="true" Id="3"
         ShareByAppClient="true" SortId="3" />
 
 </DevInfor>

@@ -34,7 +34,7 @@
             android:textColor="@color/textReadable" />
     </LinearLayout>
 
-    <com.ljmob.lovereadingphone.view.UnScrollableGridView
+    <com.happysong.android.view.UnScrollableGridView
         android:id="@+id/item_category_gridSubCate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

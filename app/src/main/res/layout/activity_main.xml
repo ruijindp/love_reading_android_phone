@@ -20,7 +20,7 @@
 
         <fragment
             android:id="@+id/activity_main_fragmentPlayer"
-            android:name="com.ljmob.lovereadingphone.fragment.PlayerBarFragment"
+            android:name="com.happysong.android.fragment.PlayerBarFragment"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="bottom"
@@ -36,7 +36,7 @@
 
         <fragment
             android:id="@+id/activity_main_fragmentDrawer"
-            android:name="com.ljmob.lovereadingphone.fragment.DrawerFragment"
+            android:name="com.happysong.android.fragment.DrawerFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout="@layout/view_drawer" />

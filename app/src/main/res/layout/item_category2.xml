@@ -111,7 +111,7 @@
     <!--每行4个：8
         每行3个：14
         每行2个：16-->
-    <com.ljmob.lovereadingphone.view.UnScrollableGridView
+    <com.happysong.android.view.UnScrollableGridView
         android:id="@+id/item_cate2_gvItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

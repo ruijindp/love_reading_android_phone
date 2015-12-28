@@ -16,7 +16,7 @@
         android:src="@drawable/gif"
         android:tint="?colorPrimary" />
 
-    <com.ljmob.lovereadingphone.view.MarqueeTextView
+    <com.happysong.android.view.MarqueeTextView
         android:id="@+id/view_player_tvTitleReader"
         android:layout_width="0px"
         android:layout_height="wrap_content"

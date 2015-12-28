@@ -130,14 +130,14 @@
 
     <fragment
         android:id="@+id/activity_reading_fragmentCountDown"
-        android:name="com.ljmob.lovereadingphone.fragment.CountDownFragment"
+        android:name="com.happysong.android.fragment.CountDownFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/view_count_down" />
 
     <include layout="@layout/toolbar_trans" />
 
-    <com.ljmob.lovereadingphone.view.StuckViewPager
+    <com.happysong.android.view.StuckViewPager
         android:id="@+id/activity_reading_pagerStatus"
         android:layout_width="match_parent"
         android:layout_height="120dp"
