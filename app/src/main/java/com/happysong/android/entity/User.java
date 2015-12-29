@@ -21,6 +21,7 @@ public class User extends LEntity {
     public String token;
     public String name;
     public Role role = Role.student;
+    public String qiniu_url;
     public Avatar avatar;
     public Sex sex;
     public List<TeamClass> team_classes;

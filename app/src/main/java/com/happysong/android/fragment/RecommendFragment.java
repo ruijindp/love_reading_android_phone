@@ -298,6 +298,9 @@ public class RecommendFragment extends EasyLoadFragment implements ServiceConnec
                 v.findViewById(R.id.viewTabIndicator).animate().alpha(0.0f).setDuration(200).start();
             }
         }
+        if (subjects.size() == 0) {
+            return;
+        }
         selectedSubject = subjects.get(index);
         currentPage = 1;
         initData(NetConstant.API_RECOMMEND, wrapParams());

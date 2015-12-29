@@ -16,6 +16,8 @@ public class SimpleImageLoader {
     public static void displayImage(String picApiUrl, ImageView imageView) {
         if (picApiUrl.startsWith("/")) {
             LOADER.displayImage(NetConstant.ROOT_URL + picApiUrl, imageView);
+        } else if (picApiUrl.startsWith("http")) {
+            LOADER.displayImage(picApiUrl, imageView);
         } else {
             try {
                 @DrawableRes int mipmapId = Integer.parseInt(picApiUrl);

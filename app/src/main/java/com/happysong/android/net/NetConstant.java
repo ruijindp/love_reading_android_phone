@@ -5,8 +5,8 @@ package com.happysong.android.net;
  * APIs
  */
 public class NetConstant {
-//    public static final String ROOT_URL = "http://192.168.31.148:3106";
-    public static final String ROOT_URL = "http://happysong.com.cn";
+    public static final String ROOT_URL = "http://192.168.31.148:3105";
+//    public static final String ROOT_URL = "http://happysong.com.cn";
 
     public static final String API_ARTICLES = "/api/v1/articles";
     public static final String API_MUSICS = "/api/v1/musics";
@@ -37,6 +37,7 @@ public class NetConstant {
     public static final String API_VOTES = "/api/v1/results/votes";
     public static final String API_SEARCH_RESULTS = "/api/v1/search/results";
     public static final String API_SEARCH_ARTICLES = "/api/v1/search/articles";
+    public static final String API_QINIU_TOKEN = "/api/v1/qiniu_uptoken";
 
     public static final String USER_SIGN_IN = "/users/sign_in.json";
     public static final String USER_SIGN_OUT = "/users/sign_out.json";

@@ -123,11 +123,15 @@ public class MusicActivity extends AppCompatActivity implements
             ab.setDisplayHomeAsUpEnabled(true);
         }
         if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled() &&
-                article.cover_img.cover_img.small.url.equals(MyApplication.blurryName)) {
+                (article.qiniu_url == null ?
+                        article.cover_img.cover_img.small.url :
+                        article.qiniu_url).equals(MyApplication.blurryName)) {
             activityMusicImgBackground.setImageBitmap(MyApplication.blurryBg);
             activityMusicMask.setAlpha(0.4f);
         } else {
-            imageLoader.displayImage(NetConstant.ROOT_URL + article.cover_img.cover_img.small.url,
+            imageLoader.displayImage(article.qiniu_url == null ?
+                            (NetConstant.ROOT_URL + article.cover_img.cover_img.small.url) :
+                            article.qiniu_url,
                     activityMusicImgBackground,
                     new SimpleImageLoadingListener() {
                         @Override
@@ -183,7 +187,9 @@ public class MusicActivity extends AppCompatActivity implements
         if (downloadDialog != null) {
             return;
         }
-        mediaPlayer.playUrl(NetConstant.ROOT_URL + selectedMusic.file_url);
+        mediaPlayer.playUrl(selectedMusic.qiniu_url == null ?
+                (NetConstant.ROOT_URL + selectedMusic.file_url) :
+                selectedMusic.qiniu_url);
     }
 
     @OnClick(R.id.activity_music_tvStart)
@@ -221,7 +227,9 @@ public class MusicActivity extends AppCompatActivity implements
         }
 
         requestTool.setOnDownloadListener(this);
-        requestTool.download(NetConstant.ROOT_URL + selectedMusic.file_url, DOWNLOAD_FILE);
+        requestTool.download(selectedMusic.qiniu_url == null ?
+                (NetConstant.ROOT_URL + selectedMusic.file_url) :
+                selectedMusic.qiniu_url, DOWNLOAD_FILE);
 
 
         downloadDialog = new Dialog(this, R.style.AppTheme_DownloadDialog);
@@ -284,7 +292,9 @@ public class MusicActivity extends AppCompatActivity implements
                 }
                 MyApplication.blurryBg = ((BitmapDrawable) activityMusicImgBackground
                         .getDrawable()).getBitmap();
-                MyApplication.blurryName = article.cover_img.cover_img.small.url;
+                MyApplication.blurryName = article.qiniu_url == null ?
+                        article.cover_img.cover_img.small.url :
+                        article.qiniu_url;
                 fadeMaskOut();
             }
         });

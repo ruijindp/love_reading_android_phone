@@ -14,6 +14,7 @@ public class Result extends LEntity {
     public boolean is_vote;
     public long created_at;
     public String feeling;
+    public String qiniu_url;
     public String file_url;
     public Music music;
     public List<Score> score;

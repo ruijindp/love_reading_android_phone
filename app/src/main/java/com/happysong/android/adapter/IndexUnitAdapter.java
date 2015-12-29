@@ -129,7 +129,9 @@ public class IndexUnitAdapter extends BaseAdapter {
                 lastUnit = shelf.unitName;
             }
             SimpleImageLoader
-                    .displayImage(shelf.articles[0].cover_img.cover_img.normal.url, itemIndexImgCover0);
+                    .displayImage(shelf.articles[0].qiniu_url == null ?
+                            shelf.articles[0].cover_img.cover_img.normal.url :
+                            shelf.articles[0].qiniu_url, itemIndexImgCover0);
             itemIndexTvTitle0.setText(shelf.articles[0].title);
             if (shelf.articles[0].author.length() == 0) {
                 itemIndexTvAuthor0.setVisibility(View.INVISIBLE);
@@ -144,7 +146,9 @@ public class IndexUnitAdapter extends BaseAdapter {
 
             if (shelf.articles[1] != null) {
                 SimpleImageLoader
-                        .displayImage(shelf.articles[1].cover_img.cover_img.normal.url, itemIndexImgCover1);
+                        .displayImage(shelf.articles[1].qiniu_url == null ?
+                                shelf.articles[1].cover_img.cover_img.normal.url :
+                                shelf.articles[1].qiniu_url, itemIndexImgCover1);
                 itemIndexTvTitle1.setText(shelf.articles[1].title);
                 if (shelf.articles[1].author.length() == 0) {
                     itemIndexTvAuthor1.setVisibility(View.INVISIBLE);

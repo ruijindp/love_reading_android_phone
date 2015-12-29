@@ -50,7 +50,9 @@ public class ListenedAdapter extends RecyclerView.Adapter {
         ViewHolder holder = ((ViewHolder) viewHolder);
         holder.setPosition(position);
 
-        SimpleImageLoader.displayImage(result.article.cover_img.cover_img.small.url,
+        SimpleImageLoader.displayImage(result.article.qiniu_url == null ?
+                        result.article.cover_img.cover_img.small.url :
+                        result.article.qiniu_url,
                 holder.itemListenedImgCover);
         holder.itemListenedTvTitle.setText(result.article.title);
         if (result.score.size() == 0) {

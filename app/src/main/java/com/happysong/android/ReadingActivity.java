@@ -29,10 +29,12 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.cocosw.bottomsheet.BottomSheet;
+import com.google.gson.Gson;
 import com.happysong.android.adapter.ReadingStatusPagerAdapter;
 import com.happysong.android.context.MyApplication;
 import com.happysong.android.entity.Article;
 import com.happysong.android.entity.Music;
+import com.happysong.android.entity.QiniuToken;
 import com.happysong.android.entity.Result;
 import com.happysong.android.entity.Section;
 import com.happysong.android.fragment.CountDownFragment;
@@ -51,6 +53,7 @@ import com.ljmob.quicksharesdk.entity.Shareable;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
+import com.londonx.qiniuuploader.QiniuUploader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.umeng.analytics.MobclickAgent;
@@ -75,10 +78,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class ReadingActivity extends AppCompatActivity implements
         Runnable, LRequestTool.OnResponseListener
-        , LRequestTool.OnUploadListener, ServiceConnection {
+        , ServiceConnection {
 
     private static final int API_RESULTS_UPLOAD = 1;
     private static final int API_HISTORY = 2;
+    private static final int API_QINIU_TOKEN = 3;
 
     @Bind(R.id.toolbar_trans)
     Toolbar toolbarTrans;
@@ -135,6 +139,9 @@ public class ReadingActivity extends AppCompatActivity implements
     private PlayerService playerService;
     private boolean isRetry;
 
+    private File fileWaiting;//七牛token失效时才不为null
+    private QiniuUploader qiniuUploader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,11 +189,15 @@ public class ReadingActivity extends AppCompatActivity implements
         initData();
 
         if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled()
-                && MyApplication.blurryName.equals(article.cover_img.cover_img.small.url)) {
+                && MyApplication.blurryName.equals(article.qiniu_url == null ?
+                article.cover_img.cover_img.small.url :
+                article.qiniu_url)) {
             activityReadingImgBackground.setImageBitmap(MyApplication.blurryBg);
             activityReadingMask.setAlpha(0.4f);
         } else {
-            imageLoader.displayImage(NetConstant.ROOT_URL + article.cover_img.cover_img.small.url,
+            imageLoader.displayImage(article.qiniu_url == null ?
+                            (NetConstant.ROOT_URL + article.cover_img.cover_img.small.url) :
+                            article.qiniu_url,
                     activityReadingImgBackground,
                     new SimpleImageLoadingListener() {
                         @Override
@@ -246,7 +257,9 @@ public class ReadingActivity extends AppCompatActivity implements
                     shareable.content += "\n“"
                             + result.feeling + "”";
                 }
-                shareable.imgFullUrl = NetConstant.ROOT_URL + result.article.cover_img.cover_img.url;
+                shareable.imgFullUrl = result.article.qiniu_url == null ?
+                        (NetConstant.ROOT_URL + result.article.cover_img.cover_img.url) :
+                        result.article.qiniu_url;
                 shareable.title = result.article.title + " - " + result.user.name;
                 shareable.url = String.format(shareable.url, result.id);
                 break;
@@ -337,24 +350,19 @@ public class ReadingActivity extends AppCompatActivity implements
                 MyReadingFragment.hasDataChanged = true;
                 finish();
                 break;
+            case API_QINIU_TOKEN:
+                if (qiniuUploader == null) {
+                    if (uploadDialog != null && uploadDialog.isShowing()) {
+                        uploadDialog.dismiss();
+                    }
+                    ToastUtil.show(R.string.toast_qiniu_token);
+                    break;
+                }
+                QiniuToken token = new Gson().fromJson(response.body, QiniuToken.class);
+                QiniuUploader.setToken(token.uptoken);
+                qiniuUploader.upload(fileWaiting);
+                break;
         }
-    }
-
-    @Override
-    public void onStartUpload(LResponse response) {
-    }
-
-    @Override
-    public void onUploading(float progress) {
-        if (dialogUploadTvProgress == null) {
-            return;
-        }
-        dialogUploadTvProgress.setText(getString(R.string.upload_, (int) (progress * 100) + "%"));
-        dialogUploadPbProgress.setProgress((int) (progress * 100));
-    }
-
-    @Override
-    public void onUploaded(LResponse response) {
     }
 
     @Override
@@ -430,7 +438,9 @@ public class ReadingActivity extends AppCompatActivity implements
                 }
                 MyApplication.blurryBg = ((BitmapDrawable) activityReadingImgBackground
                         .getDrawable()).getBitmap();
-                MyApplication.blurryName = article.cover_img.cover_img.small.url;
+                MyApplication.blurryName = article.qiniu_url == null ?
+                        article.cover_img.cover_img.small.url :
+                        article.qiniu_url;
 
                 fadeMaskOut();
             }
@@ -619,7 +629,7 @@ public class ReadingActivity extends AppCompatActivity implements
         uploadResultFragment.setRecorderFile(recorderFile);
     }
 
-    public void upload(File uploadFile, String feeling) {
+    public void upload(File uploadFile, final String feeling) {
         if (uploadDialog == null) {
             uploadDialog = new Dialog(this, R.style.AppTheme_DownloadDialog);
         }
@@ -632,13 +642,34 @@ public class ReadingActivity extends AppCompatActivity implements
         dialogUploadTvProgress.setText(getString(R.string.upload_, "0%"));
         dialogUploadPbProgress.setProgress(0);
 
-        requestTool.setOnUploadListener(this);
-        DefaultParam param = new DefaultParam();
-        param.put("article_id", article.id);
-        param.put("music_id", music.id);
-        param.put("file_url", uploadFile);
-        param.put("feeling", feeling);
-        requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_RESULTS, param, API_RESULTS_UPLOAD);
+        qiniuUploader = new QiniuUploader();
+        qiniuUploader.setUploadListener(new QiniuUploader.UploadListener() {
+            @Override
+            public void onUploaded(@NonNull String fileKey, int index) {
+                DefaultParam param = new DefaultParam();
+                param.put("article_id", article.id);
+                param.put("music_id", music.id);
+                param.put("file_key", fileKey);
+                param.put("feeling", feeling);
+                requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_RESULTS, param, API_RESULTS_UPLOAD);
+            }
+
+            @Override
+            public void onUploading(@NonNull String fileKey, float progress) {
+                if (dialogUploadTvProgress == null) {
+                    return;
+                }
+                dialogUploadTvProgress.setText(getString(R.string.upload_, (int) (progress * 100) + "%"));
+                dialogUploadPbProgress.setProgress((int) (progress * 100));
+            }
+        });
+        if (QiniuUploader.isTokenValid()) {
+            qiniuUploader.upload(uploadFile);
+        } else {
+            this.fileWaiting = uploadFile;
+            requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_QINIU_TOKEN,
+                    new DefaultParam(), API_QINIU_TOKEN);
+        }
     }
 
     public void startCountDown() {

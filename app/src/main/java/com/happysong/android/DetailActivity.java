@@ -84,7 +84,8 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         if (MyApplication.blurryBg != null && !MyApplication.blurryBg.isRecycled() &&
-                MyApplication.blurryName.equals(article.cover_img.cover_img.small.url)) {
+                MyApplication.blurryName.equals(article.qiniu_url == null ?
+                        article.cover_img.cover_img.small.url : article.qiniu_url)) {
             activityDetailImgBackground.setImageBitmap(MyApplication.blurryBg);
             activity_detail_mask.setAlpha(0.4f);
         } else {
@@ -93,7 +94,9 @@ public class DetailActivity extends AppCompatActivity {
                 MyApplication.blurryBg = null;
                 System.gc();
             }
-            imageLoader.displayImage(NetConstant.ROOT_URL + article.cover_img.cover_img.small.url,
+            imageLoader.displayImage(article.qiniu_url == null ?
+                            (NetConstant.ROOT_URL + article.cover_img.cover_img.small.url) :
+                            article.qiniu_url,
                     activityDetailImgBackground, new SimpleImageLoadingListener() {
                         @Override
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
@@ -102,7 +105,9 @@ public class DetailActivity extends AppCompatActivity {
                         }
                     });
         }
-        SimpleImageLoader.displayImage(article.cover_img.cover_img.normal.url, activityDetailImgCover);
+        SimpleImageLoader.displayImage(article.qiniu_url == null ?
+                article.cover_img.cover_img.normal.url :
+                article.qiniu_url, activityDetailImgCover);
         activityDetailTvTitle.setText(article.title);
         activityDetailTvAuthor.setText(article.author);
         activityDetailTvReadCount.setText(String.format("%d", article.count));
@@ -165,7 +170,11 @@ public class DetailActivity extends AppCompatActivity {
     @OnClick(R.id.activity_detail_imgCover)
     protected void zoomImage() {
         Intent intent = new Intent(this, ZoomActivity.class);
-        intent.putExtra("image", article.cover_img.cover_img);
+        if (article.qiniu_url == null) {
+            intent.putExtra("image", article.cover_img.cover_img);
+        } else {
+            intent.putExtra("qiniuUrl", article.qiniu_url);
+        }
         startActivity(intent);
     }
 
@@ -227,7 +236,9 @@ public class DetailActivity extends AppCompatActivity {
                 }
                 MyApplication.blurryBg = ((BitmapDrawable) activityDetailImgBackground
                         .getDrawable()).getBitmap();
-                MyApplication.blurryName = article.cover_img.cover_img.small.url;
+                MyApplication.blurryName = article.qiniu_url == null ?
+                        article.cover_img.cover_img.small.url :
+                        article.qiniu_url;
                 fadeMaskOut();
             }
         });

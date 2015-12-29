@@ -227,7 +227,7 @@ public class RecorderFragment extends Fragment implements AmplitudeListener, Run
         this.music = music;
         this.article = article;
         try {
-            this.musicFile = FileUtil.getDownloadFile(music.file_url);
+            this.musicFile = FileUtil.getDownloadFile(music.qiniu_url == null ? music.file_url : music.qiniu_url);
         } catch (IOException e) {
             e.printStackTrace();
         }

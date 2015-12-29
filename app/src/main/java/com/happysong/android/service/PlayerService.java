@@ -61,7 +61,9 @@ public class PlayerService extends Service implements
         }
         player.stop();
         isPreparing = true;
-        player.playUrl(NetConstant.ROOT_URL + PlayerService.result.file_url);
+        player.playUrl(PlayerService.result.qiniu_url == null ?
+                (NetConstant.ROOT_URL + PlayerService.result.file_url) :
+                PlayerService.result.qiniu_url);
     }
 
     public Result getResult() {

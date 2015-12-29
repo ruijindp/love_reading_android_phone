@@ -15,4 +15,5 @@ public class Music extends LEntity {
 
     public String name;
     public String file_url;
+    public String qiniu_url;
 }

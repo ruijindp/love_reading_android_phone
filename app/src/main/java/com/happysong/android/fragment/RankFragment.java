@@ -126,6 +126,9 @@ public class RankFragment extends EasyLoadFragment implements
                 subjectsPopup = new SimpleStringPopup(getContext(), container);
                 subjectsPopup.setSimpleStringListener(this);
 
+                if (subjects.size() == 0) {
+                    return;
+                }
                 selectedSubject = subjects.get(0);
                 refreshDataWithSubject();
                 break;

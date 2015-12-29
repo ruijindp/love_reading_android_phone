@@ -21,20 +21,22 @@ public class ZoomActivity extends AppCompatActivity implements
     @Bind(R.id.activity_zoom_img)
     ImageViewTouch activityZoomImg;
 
+    String qiniuUrl;
     Image image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         image = (Image) getIntent().getSerializableExtra("image");
-        if (image == null) {
+        qiniuUrl = getIntent().getStringExtra("qiniuUrl");
+        if (image == null && qiniuUrl == null) {
             finish();
             return;
         }
         setContentView(R.layout.activity_zoom);
         ButterKnife.bind(this);
         activityZoomImg.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-        SimpleImageLoader.displayImage(image.url, activityZoomImg);
+        SimpleImageLoader.displayImage(image == null ? qiniuUrl : image.url, activityZoomImg);
         activityZoomImg.setSingleTapListener(this);
     }
 

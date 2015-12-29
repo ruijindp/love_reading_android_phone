@@ -49,7 +49,9 @@ public class MyReadingAdapter extends LAdapter {
             holder.itemMyReadingTvTitle.setText(String.format("%s - %s",
                     result.article.title, result.article.author));
         }
-        SimpleImageLoader.displayImage(result.article.cover_img.cover_img.small.url
+        SimpleImageLoader.displayImage(result.article.qiniu_url == null ?
+                result.article.cover_img.cover_img.small.url :
+                result.article.qiniu_url
                 , holder.itemMyReadingImgCover);
         holder.itemMyReadingTvReader.setText(result.user.name);
         holder.itemMyReadingTvTime.setText(TimeFormat.format(result.created_at * 1000l));

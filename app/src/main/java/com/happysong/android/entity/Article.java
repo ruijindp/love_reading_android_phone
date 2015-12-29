@@ -11,6 +11,7 @@ import java.util.List;
 public class Article extends LEntity {
     public String title;
     public String author;
+    public String qiniu_url;
     public CoverImg cover_img;
     public Grade grade;
     public ArticleType article_type;

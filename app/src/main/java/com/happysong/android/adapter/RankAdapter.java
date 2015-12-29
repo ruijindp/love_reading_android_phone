@@ -81,7 +81,9 @@ public class RankAdapter extends LAdapter {
         }
 
         public void setResult(Result result) {
-            SimpleImageLoader.displayImage(result.article.cover_img.cover_img.small.url,
+            SimpleImageLoader.displayImage(result.article.qiniu_url == null ?
+                            result.article.cover_img.cover_img.small.url :
+                            result.article.qiniu_url,
                     itemRankImgCover);
             itemRankTvTitle.setText(result.article.title);
             itemRankTvFeeling.setText(result.feeling);

@@ -102,6 +102,7 @@
     <string name="toast_headset">建议使用耳机录制以提高录音质量</string>
     <string name="toast_server_err_0">哟，网络不好，请检查网络连接</string>
     <string name="toast_server_err_1">哟，网络不好，请检查网络连接!</string>
+    <string name="toast_qiniu_token">文件无法上传</string>
 
     <string name="dialog_feeling">说点什么吧!</string>
     <string name="dialog_feeling_confirm">上传</string>

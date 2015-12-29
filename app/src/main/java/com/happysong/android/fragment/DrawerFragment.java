@@ -32,6 +32,7 @@ import com.happysong.android.MyReadingActivity;
 import com.happysong.android.R;
 import com.happysong.android.context.MyApplication;
 import com.happysong.android.entity.CheckCount;
+import com.happysong.android.entity.QiniuToken;
 import com.happysong.android.entity.TeamClass;
 import com.happysong.android.entity.User;
 import com.happysong.android.net.NetConstant;
@@ -42,6 +43,7 @@ import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.FileUtil;
 import com.londonx.lutil.util.LRequestTool;
 import com.londonx.lutil.util.ToastUtil;
+import com.londonx.qiniuuploader.QiniuUploader;
 import com.soundcloud.android.crop.Crop;
 import com.umeng.analytics.MobclickAgent;
 
@@ -66,6 +68,7 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
     private static final int USER_SIGN_OUT = 1;
     private static final int API_RESULTS_COUNT = 2;
     private static final int API_AVATAR = 3;
+    private static final int API_QINIU_TOKEN = 4;
 
     View rootView;
 
@@ -160,9 +163,29 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
                 return;
             }
             viewDrawerImgHead.setImageResource(R.color.test);
-            DefaultParam param = new DefaultParam();
-            param.put("avatar", tempAvatar);
-            requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_AVATAR, param, API_AVATAR);
+            uploadAvatar();
+        }
+    }
+
+    private void uploadAvatar() {
+        QiniuUploader qiniuUploader = new QiniuUploader();
+        qiniuUploader.setUploadListener(new QiniuUploader.UploadListener() {
+            @Override
+            public void onUploaded(@NonNull String fileKey, int index) {
+                DefaultParam param = new DefaultParam();
+                param.put("avatar_key", fileKey);
+                requestTool.doPost(NetConstant.ROOT_URL + NetConstant.API_AVATAR, param, API_AVATAR);
+            }
+
+            @Override
+            public void onUploading(@NonNull String fileKey, float progress) {
+            }
+        });
+        if (QiniuUploader.isTokenValid()) {
+            qiniuUploader.upload(tempAvatar);
+        } else {
+            requestTool.doGet(NetConstant.ROOT_URL + NetConstant.API_QINIU_TOKEN,
+                    new DefaultParam(), API_QINIU_TOKEN);
         }
     }
 
@@ -345,7 +368,9 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
                         new DefaultParam(), API_RESULTS_COUNT);
             }
 
-            SimpleImageLoader.displayImage(MyApplication.currentUser.avatar.avatar.big.url,
+            SimpleImageLoader.displayImage(MyApplication.currentUser.qiniu_url == null ?
+                            MyApplication.currentUser.avatar.avatar.big.url :
+                            MyApplication.currentUser.qiniu_url,
                     viewDrawerImgHead);
             viewDrawerTvUserName.setText(MyApplication.currentUser.name);
 
@@ -448,25 +473,29 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
                 break;
             case API_AVATAR:
                 ToastUtil.show(R.string.toast_avatar_ok);
-                User.Avatar avatar = null;
+                String avatarString = null;
                 try {
                     JSONObject jsonObject = new JSONObject(response.body);
-                    String avatarString = jsonObject.get("avatar").toString();
-                    avatar = new Gson().fromJson(avatarString, User.Avatar.class);
+                    avatarString = jsonObject.get("qiniu_url").toString();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if (avatar == null) {
+                if (avatarString == null) {
                     break;
                 }
-                SimpleImageLoader.displayImage(avatar.avatar.big.url, viewDrawerImgHead);
-                ((MainActivity) getActivity()).setAvatar(avatar.avatar.normal.url);
-                MyApplication.currentUser.avatar = avatar;
+                SimpleImageLoader.displayImage(avatarString, viewDrawerImgHead);
+                ((MainActivity) getActivity()).setAvatar(avatarString);
+                MyApplication.currentUser.qiniu_url = avatarString;
                 String userB64 = Base64.encodeToString(new Gson()
                         .toJson(MyApplication.currentUser).getBytes(), Base64.DEFAULT);
                 SharedPreferences.Editor editor = Lutil.preferences.edit();
                 editor.putString("UB64", userB64);
                 editor.apply();
+                break;
+            case API_QINIU_TOKEN:
+                QiniuToken token = new Gson().fromJson(response.body, QiniuToken.class);
+                QiniuUploader.setToken(token.uptoken);
+                uploadAvatar();
                 break;
         }
     }

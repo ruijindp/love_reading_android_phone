@@ -22,8 +22,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.MaterialDialog.SingleButtonCallback;
 import com.afollestad.materialdialogs.Theme;
-import com.ljmob.firimupdate.FirimUpdate;
-import com.ljmob.firimupdate.entity.Update;
 import com.happysong.android.adapter.MainPagerAdapter;
 import com.happysong.android.context.MyApplication;
 import com.happysong.android.fragment.DrawerFragment;
@@ -34,6 +32,8 @@ import com.happysong.android.fragment.RecommendFragment;
 import com.happysong.android.service.PlayerService;
 import com.happysong.android.util.PermissionUtil;
 import com.happysong.android.util.SimpleImageLoader;
+import com.ljmob.firimupdate.FirimUpdate;
+import com.ljmob.firimupdate.entity.Update;
 import com.londonx.lutil.entity.LResponse;
 import com.londonx.lutil.util.LRequestTool;
 import com.soundcloud.android.crop.Crop;
@@ -169,7 +169,9 @@ public class MainActivity extends AppCompatActivity implements
         }
         if (MyApplication.currentUser != null) {
             if (!isAvatarSet) {
-                SimpleImageLoader.displayImage(MyApplication.currentUser.avatar.avatar.normal.url,
+                SimpleImageLoader.displayImage(MyApplication.currentUser.qiniu_url == null ?
+                                MyApplication.currentUser.avatar.avatar.small.url :
+                                MyApplication.currentUser.qiniu_url,
                         toolbarMainImgHead);
                 isAvatarSet = true;
             }
