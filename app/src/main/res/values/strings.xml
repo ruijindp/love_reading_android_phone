@@ -103,6 +103,8 @@
     <string name="toast_server_err_0">哟，网络不好，请检查网络连接</string>
     <string name="toast_server_err_1">哟，网络不好，请检查网络连接!</string>
     <string name="toast_qiniu_token">文件无法上传</string>
+    <string name="toast_qiniu_token_network">网络连接错误，文件无法上传</string>
+    <string name="toast_qiniu_token_internal">文件无法上传，文件可能已被删除</string>
 
     <string name="dialog_feeling">说点什么吧!</string>
     <string name="dialog_feeling_confirm">上传</string>

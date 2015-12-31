@@ -180,6 +180,18 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
             @Override
             public void onUploading(@NonNull String fileKey, float progress) {
             }
+
+            @Override
+            public void onUploadingErr(@NonNull Error error) {
+                switch (error) {
+                    case network:
+                        ToastUtil.show(R.string.toast_qiniu_token_network);
+                        break;
+                    case internal:
+                        ToastUtil.show(R.string.toast_qiniu_token_internal);
+                        break;
+                }
+            }
         });
         if (QiniuUploader.isTokenValid()) {
             qiniuUploader.upload(tempAvatar);

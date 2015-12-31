@@ -77,9 +77,16 @@ public class QiniuUploader {
                     new UpCompletionHandler() {
                         @Override
                         public void complete(String key, ResponseInfo info, JSONObject res) {
-                            if (uploadListener != null) {
-                                uploadListener.onUploaded(key, index);
+                            if (uploadListener == null) {
+                                return;
                             }
+                            if (!info.isOK()) {
+                                if (info.isNetworkBroken() || info.isServerError()) {
+                                    uploadListener.onUploadingErr(UploadListener.Error.network);
+                                }
+                                return;
+                            }
+                            uploadListener.onUploaded(key, index);
                         }
                     }, options);
         }
@@ -117,6 +124,10 @@ public class QiniuUploader {
     }
 
     public interface UploadListener {
+        enum Error {
+            network, internal
+        }
+
         /**
          * called when upload is finished
          *
@@ -127,5 +138,12 @@ public class QiniuUploader {
         void onUploaded(@NonNull String fileKey, int index);
 
         void onUploading(@NonNull String fileKey, float progress);
+
+        /**
+         * called when uploading failed
+         *
+         * @param error network or internal error
+         */
+        void onUploadingErr(@NonNull Error error);
     }
 }
