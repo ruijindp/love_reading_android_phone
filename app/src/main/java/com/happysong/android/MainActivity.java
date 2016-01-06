@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements
 
         primaryViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
 
-        new FirimUpdate(this).check(this, "564484db748aac4b76000008", "e9400a3620552593c1851beecb8431a0");
+        new FirimUpdate(this).check(this, "568cfce500fc745c7c00000e", "6e39c871f3427eb0467e7ed406960cd4");
 
         if (!PermissionUtil.isAllPermissionAllowed()) {
             PermissionUtil.request(this);
