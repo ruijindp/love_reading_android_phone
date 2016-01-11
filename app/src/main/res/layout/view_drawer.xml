@@ -330,6 +330,33 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/view_drawer_lnAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="12dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@mipmap/icon_about" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:text="@string/activity_about"
+                android:textColor="@color/textReadable"
+                android:textSize="16sp" />
+        </LinearLayout>
+
         <View
             android:id="@+id/view_drawer_div"
             android:layout_width="match_parent"

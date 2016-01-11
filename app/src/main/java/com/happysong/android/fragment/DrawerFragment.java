@@ -23,6 +23,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.google.gson.Gson;
+import com.happysong.android.AboutActivity;
 import com.happysong.android.ChangePasswordActivity;
 import com.happysong.android.FeedbackActivity;
 import com.happysong.android.ListenedActivity;
@@ -317,6 +318,11 @@ public class DrawerFragment extends Fragment implements LRequestTool.OnResponseL
     @OnClick(R.id.view_drawer_lnFeedBack)
     protected void feedback() {
         startActivity(new Intent(getActivity(), FeedbackActivity.class));
+    }
+
+    @OnClick(R.id.view_drawer_lnAbout)
+    protected void about() {
+        startActivity(new Intent(getActivity(), AboutActivity.class));
     }
 
     @OnClick(R.id.view_drawer_lnChangePassword)

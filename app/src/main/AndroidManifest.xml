@@ -105,6 +105,10 @@
             android:label="@string/activity_category"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.happysong.android.AboutActivity"
+            android:label="@string/activity_about"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name="com.happysong.android.ProtocolActivity"
             android:theme="@style/AppTheme.Transparent">
             <intent-filter>

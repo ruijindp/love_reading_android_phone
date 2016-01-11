@@ -27,5 +27,8 @@
     <color name="first_run_bg">#f1EADD</color>
     <color name="head_filter_bg">#F5F5F5</color>
 
+    <color name="about_copyright">#737373</color>
+    <color name="exonerate">#636363</color>
+
     <color name="test">#44000000</color>
 </resources>
