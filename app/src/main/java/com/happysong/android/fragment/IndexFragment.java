@@ -104,6 +104,7 @@ public class IndexFragment extends Fragment implements
     }
 
     public void getData() {
+        isLoading = true;
         if (currentPage == 1) {
             if (!primarySwipeRefreshLayout.isRefreshing()) {
                 primarySwipeRefreshLayout.post(new Runnable() {
@@ -256,7 +257,6 @@ public class IndexFragment extends Fragment implements
         if (isDivDPage && hasMore) {
             currentPage++;
             getData();
-            isLoading = true;
         }
     }
 

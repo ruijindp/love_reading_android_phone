@@ -5,7 +5,7 @@ package com.happysong.android.net;
  * APIs
  */
 public class NetConstant {
-//    public static final String ROOT_URL = "http://192.168.31.148:3105";
+//    public static final String ROOT_URL = "http://192.168.31.148:3106";
     public static final String ROOT_URL = "http://happysong.com.cn";
 
     public static final String API_ARTICLES = "/api/v1/articles";

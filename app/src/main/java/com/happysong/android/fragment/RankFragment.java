@@ -213,11 +213,7 @@ public class RankFragment extends EasyLoadFragment implements
             param.put("city_id", selectedCity.id);
             if (headHolder != null) {
                 if (selectedCity.id == 0) {
-                    if (MyApplication.currentUser == null) {
-                        headHolder.headRankTvDataSource.setText(R.string.all);
-                    } else {
-                        headHolder.headRankTvDataSource.setText(R.string.my_school);
-                    }
+                    headHolder.headRankTvDataSource.setText(R.string.all);
                 } else {
                     headHolder.headRankTvDataSource.setText(selectedCity.name);
                 }

@@ -10,5 +10,6 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:max="5"
-        android:progressDrawable="@drawable/layer_rating_l_orange" />
+        android:progressDrawable="@drawable/layer_rating_l_orange"
+        android:stepSize="1" />
 </FrameLayout>
