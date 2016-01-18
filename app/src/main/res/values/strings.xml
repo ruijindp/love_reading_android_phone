@@ -88,7 +88,7 @@
     <string name="about_version">%1$s V%2$s</string>
     <string name="copyright">%1$s©All Rights Reserved.</string>
     <string name="exonerate_title">《免责声明》</string>
-    <string name="exonerate_content">　　欢乐诵是一款利用科学现代的方式，为中小学生提供语言学习方式和诵读体验的教育音频类app，部分资源来源于网络，感谢资源制作者无私的劳动，帮助中小学生开发思维、锻炼沟通与表达能力。部分资源来源于网络，感谢资源制作者无私的劳动，由于被转载多次无法联系作者或者指明出处，如果您觉得侵害了您的权益，请联系我们，我们会在最短的时间内处理。\n　　欢乐诵应用内所有孩子音频信息仅供父母们与孩子使用，请勿用于商业用途。</string>
+    <string name="exonerate_content">　　欢乐诵是一款利用科学现代的方式，为中小学生提供语言学习方式和诵读体验的教育音频类app，帮助中小学生开发思维、锻炼沟通与表达能力。部分资源来源于网络，感谢资源制作者无私的劳动，由于被转载多次无法联系作者或者指明出处，如果您觉得侵害了您的权益，请联系我们，我们会在最短的时间内处理。\n　　欢乐诵应用内所有孩子音频信息仅供父母们与孩子使用，请勿用于商业用途。</string>
     <string name="about_contact">联系邮箱：help@happysong.com.cn</string>
 
     <string name="toast_protocol_error">协议错误</string>
