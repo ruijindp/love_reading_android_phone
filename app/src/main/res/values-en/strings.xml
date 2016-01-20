@@ -64,7 +64,6 @@
     <string name="first_run3">Re-experience the charm of the language and culture</string>
     <string name="goto_settings">Settings</string>
     <string name="grade">Grade</string>
-    <string name="hint_feedback">What should we do for you?</string>
     <string name="hint_feeling">Say something before uploading</string>
     <string name="hint_pwd_confirm">Confirm</string>
     <string name="hint_pwd_new">New Password</string>
@@ -129,4 +128,14 @@
     <string name="upload_exit_confirm">Sure you want to give up this reading and quit?</string>
     <string name="username">Username</string>
     <string name="toast_protocol_error">Protocol Error</string>
+    <string name="about_contact">Email: help@happysong.com.cn</string>
+    <string name="action_switch">Switch</string>
+    <string name="activity_about">About us</string>
+    <string name="entering">Entering</string>
+    <string name="library_out_class">Extracurricular</string>
+    <string name="library_in_class">Curricular</string>
+    <string name="toast_qiniu_token">Unable to upload file, token error</string>
+    <string name="toast_qiniu_token_internal">Files can not be uploaded, may have been deleted</string>
+    <string name="toast_qiniu_token_network">Files can not be uploaded, network connection error</string>
+    <string name="hint_feedback">Fill Format: Schools + Grade and Class + identity (parent / student / teacher) + questions + Information (QQ / phone)</string>
 </resources>
