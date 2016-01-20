@@ -63,7 +63,7 @@ public class RankFragment extends EasyLoadFragment implements
 
     HeadHolder headHolder;
     private RankAdapter rankAdapter;
-    String currentApi = NetConstant.API_RANKS_ALL;
+    String currentApi = NetConstant.API_RANKS_MONTH;
     private View itemAll;
     private View itemMonth;
     private boolean isShowingAppBar = true;
@@ -294,13 +294,14 @@ public class RankFragment extends EasyLoadFragment implements
         itemMonth.setOnClickListener(new TabItemClickListener(NetConstant.API_RANKS_MONTH));
         itemMonth.setLayoutParams(layoutParams);
 
-        ((TextView) itemAll.findViewById(R.id.tvTab))
+        //默认为月榜
+        ((TextView) itemMonth.findViewById(R.id.tvTab))
                 .setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-        itemAll.findViewById(R.id.viewTabIndicator)
+        itemMonth.findViewById(R.id.viewTabIndicator)
                 .animate().alpha(1.0f).setDuration(200).start();
 
-        tabLinear.addView(itemAll);
         tabLinear.addView(itemMonth);
+        tabLinear.addView(itemAll);
     }
 
     private void refreshDataWithSubject() {
