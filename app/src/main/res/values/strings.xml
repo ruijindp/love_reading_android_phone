@@ -60,7 +60,7 @@
     <string name="checker_">(审核老师：%1$s)</string>
     <string name="data_source">数据来源</string>
     <string name="filter">筛选</string>
-    <string name="rank_week">周排行</string>
+    <string name="rank_all">总排行</string>
     <string name="rank_month">月排行</string>
     <string name="my_school">本校</string>
     <string name="_ago_year">年前</string>

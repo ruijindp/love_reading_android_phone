@@ -63,8 +63,8 @@ public class RankFragment extends EasyLoadFragment implements
 
     HeadHolder headHolder;
     private RankAdapter rankAdapter;
-    String currentApi = NetConstant.API_RANKS_WEEK;
-    private View itemWeek;
+    String currentApi = NetConstant.API_RANKS_ALL;
+    private View itemAll;
     private View itemMonth;
     private boolean isShowingAppBar = true;
     private List<Subject> subjects;
@@ -285,21 +285,21 @@ public class RankFragment extends EasyLoadFragment implements
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         layoutParams.weight = 1;
-        itemWeek = inflater.inflate(R.layout.view_tab_item, tabLinear, false);
-        ((TextView) itemWeek.findViewById(R.id.tvTab)).setText(R.string.rank_week);
-        itemWeek.setOnClickListener(new TabItemClickListener(NetConstant.API_RANKS_WEEK));
-        itemWeek.setLayoutParams(layoutParams);
+        itemAll = inflater.inflate(R.layout.view_tab_item, tabLinear, false);
+        ((TextView) itemAll.findViewById(R.id.tvTab)).setText(R.string.rank_all);
+        itemAll.setOnClickListener(new TabItemClickListener(NetConstant.API_RANKS_ALL));
+        itemAll.setLayoutParams(layoutParams);
         itemMonth = inflater.inflate(R.layout.view_tab_item, tabLinear, false);
         ((TextView) itemMonth.findViewById(R.id.tvTab)).setText(R.string.rank_month);
         itemMonth.setOnClickListener(new TabItemClickListener(NetConstant.API_RANKS_MONTH));
         itemMonth.setLayoutParams(layoutParams);
 
-        ((TextView) itemWeek.findViewById(R.id.tvTab))
+        ((TextView) itemAll.findViewById(R.id.tvTab))
                 .setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-        itemWeek.findViewById(R.id.viewTabIndicator)
+        itemAll.findViewById(R.id.viewTabIndicator)
                 .animate().alpha(1.0f).setDuration(200).start();
 
-        tabLinear.addView(itemWeek);
+        tabLinear.addView(itemAll);
         tabLinear.addView(itemMonth);
     }
 
@@ -354,23 +354,23 @@ public class RankFragment extends EasyLoadFragment implements
         @Override
         public void onClick(View v) {
             currentApi = api;
-            if (currentApi.equals(NetConstant.API_RANKS_WEEK)) {
-                ((TextView) itemWeek.findViewById(R.id.tvTab))
+            if (currentApi.equals(NetConstant.API_RANKS_ALL)) {
+                ((TextView) itemAll.findViewById(R.id.tvTab))
                         .setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
                 ((TextView) itemMonth.findViewById(R.id.tvTab))
                         .setTextColor(ContextCompat.getColor(getContext(), R.color.div_tab));
 
-                itemWeek.findViewById(R.id.viewTabIndicator)
+                itemAll.findViewById(R.id.viewTabIndicator)
                         .animate().alpha(1.0f).setDuration(200).start();
                 itemMonth.findViewById(R.id.viewTabIndicator)
                         .animate().alpha(0.0f).setDuration(200).start();
             } else {
-                ((TextView) itemWeek.findViewById(R.id.tvTab))
+                ((TextView) itemAll.findViewById(R.id.tvTab))
                         .setTextColor(ContextCompat.getColor(getContext(), R.color.div_tab));
                 ((TextView) itemMonth.findViewById(R.id.tvTab))
                         .setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
 
-                itemWeek.findViewById(R.id.viewTabIndicator)
+                itemAll.findViewById(R.id.viewTabIndicator)
                         .animate().alpha(0.0f).setDuration(200).start();
                 itemMonth.findViewById(R.id.viewTabIndicator)
                         .animate().alpha(1.0f).setDuration(200).start();

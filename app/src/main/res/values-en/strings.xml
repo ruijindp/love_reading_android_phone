@@ -86,7 +86,7 @@
     <string name="password">Password</string>
     <string name="password_not_match">Password mismatch</string>
     <string name="rank_month">Month</string>
-    <string name="rank_week">Week</string>
+    <string name="rank_all">All</string>
     <string name="rate">Rate</string>
     <string name="rate_plz">Rate Plz</string>
     <string name="rated">Rated</string>
