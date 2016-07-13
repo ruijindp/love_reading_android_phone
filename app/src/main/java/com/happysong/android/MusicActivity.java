@@ -231,7 +231,6 @@ public class MusicActivity extends AppCompatActivity implements
                 (NetConstant.ROOT_URL + selectedMusic.file_url) :
                 selectedMusic.qiniu_url, DOWNLOAD_FILE);
 
-
         downloadDialog = new Dialog(this, R.style.AppTheme_DownloadDialog);
         downloadDialog.setCancelable(false);
         downloadDialog.setContentView(R.layout.dialog_music_donwload);

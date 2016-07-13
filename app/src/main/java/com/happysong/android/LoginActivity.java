@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements LRequestTool.OnR
     LRequestTool requestTool;
     List<UserTool.SimpleUser> simpleUsers;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
